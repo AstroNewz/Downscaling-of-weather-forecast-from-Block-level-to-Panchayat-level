@@ -1,0 +1,142 @@
+# ==============================================================================
+# Git Ignore Configuration - SIH 26074 AgroWeather Downscaling
+# ==============================================================================
+
+# --- Python & Bytecode ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --- Virtual Environments ---
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+ENV.bak/
+.python-version
+
+# --- Testing, Coverage & Type Checking ---
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+.pytype/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# --- Environment & Secrets (CRITICAL: Never commit real credentials) ---
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+*.pem
+*.key
+*.cert
+*.crt
+
+# --- Node.js & Frontend Build Artifacts ---
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+.vite/
+dist/
+
+# --- IDEs & Editors ---
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# --- OS Specific Files ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- Logs & Runtime Data ---
+*.log
+logs/
+*.pid
+
+# --- Databases & Local SQLite ---
+*.sqlite
+*.sqlite3
+*.db
+
+# --- Large Spatial Datasets & Model Binaries ---
+# (Preserves directory structure via .gitkeep and sample evaluation datasets)
+backend/data/raw/*
+!backend/data/raw/.gitkeep
+backend/data/processed/*
+!backend/data/processed/.gitkeep
+backend/models/*
+!backend/models/.gitkeep
+
+# Geospatial and Raster formats
+*.tif
+*.tiff
+*.nc
+*.grib
+*.grib2
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+
+# Large Model weights (keep code/json configs, ignore large binary weights)
+*.h5
+*.keras
+*.pt
+*.pth
+*.onnx
+*.pkl
+*.joblib
+
+# Compressed archives
+*.tar.gz
+*.zip
+*.7z
+*.rar
