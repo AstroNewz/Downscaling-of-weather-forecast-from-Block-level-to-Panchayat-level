@@ -1,86 +1,123 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { LucideIcon } from 'lucide-react';
 
 interface MetricCardProps {
   title: string;
   value: string | number;
+  unit?: string;
   subtitle?: string;
-  icon: LucideIcon;
-  color?: 'emerald' | 'cyan' | 'amber' | 'crimson' | 'indigo' | 'blue';
+  icon?: LucideIcon;
+  trend?: 'up' | 'down' | 'neutral';
+  trendValue?: string;
+  status?: 'emerald' | 'amber' | 'rose' | 'sky' | 'indigo' | 'slate';
+  className?: string;
   badge?: string;
-  trend?: string;
+  onClick?: () => void;
 }
 
 export const MetricCard: React.FC<MetricCardProps> = ({
   title,
   value,
+  unit,
   subtitle,
   icon: Icon,
-  color = 'emerald',
-  badge,
   trend,
+  trendValue,
+  status = 'slate',
+  className = '',
+  badge,
+  onClick,
 }) => {
-  const colorMap = {
-    emerald: { bg: 'rgba(16, 185, 129, 0.12)', border: 'rgba(16, 185, 129, 0.3)', text: '#10b981' },
-    cyan: { bg: 'rgba(6, 182, 212, 0.12)', border: 'rgba(6, 182, 212, 0.3)', text: '#06b6d4' },
-    amber: { bg: 'rgba(245, 158, 11, 0.12)', border: 'rgba(245, 158, 11, 0.3)', text: '#f59e0b' },
-    crimson: { bg: 'rgba(239, 68, 68, 0.12)', border: 'rgba(239, 68, 68, 0.3)', text: '#ef4444' },
-    indigo: { bg: 'rgba(99, 102, 241, 0.12)', border: 'rgba(99, 102, 241, 0.3)', text: '#6366f1' },
-    blue: { bg: 'rgba(59, 130, 246, 0.12)', border: 'rgba(59, 130, 246, 0.3)', text: '#3b82f6' },
-  };
-
-  const c = colorMap[color];
+  const statusColors = {
+    emerald: {
+      border: 'border-emerald-500/30 hover:border-emerald-500/50',
+      iconBg: 'bg-emerald-500/10 text-emerald-400',
+      valueColor: 'text-emerald-300',
+      glow: 'shadow-[0_0_20px_rgba(16,185,129,0.08)]',
+    },
+    amber: {
+      border: 'border-amber-500/30 hover:border-amber-500/50',
+      iconBg: 'bg-amber-500/10 text-amber-400',
+      valueColor: 'text-amber-300',
+      glow: 'shadow-[0_0_20px_rgba(245,158,11,0.08)]',
+    },
+    rose: {
+      border: 'border-rose-500/30 hover:border-rose-500/50',
+      iconBg: 'bg-rose-500/10 text-rose-400',
+      valueColor: 'text-rose-300',
+      glow: 'shadow-[0_0_20px_rgba(244,63,94,0.08)]',
+    },
+    sky: {
+      border: 'border-sky-500/30 hover:border-sky-500/50',
+      iconBg: 'bg-sky-500/10 text-sky-400',
+      valueColor: 'text-sky-300',
+      glow: 'shadow-[0_0_20px_rgba(14,165,233,0.08)]',
+    },
+    indigo: {
+      border: 'border-indigo-500/30 hover:border-indigo-500/50',
+      iconBg: 'bg-indigo-500/10 text-indigo-400',
+      valueColor: 'text-indigo-300',
+      glow: 'shadow-[0_0_20px_rgba(99,102,241,0.08)]',
+    },
+    slate: {
+      border: 'border-slate-800 hover:border-slate-700',
+      iconBg: 'bg-slate-800/60 text-slate-300',
+      valueColor: 'text-white',
+      glow: 'shadow-[0_0_15px_rgba(15,23,42,0.5)]',
+    },
+  }[status];
 
   return (
-    <div className="glass-panel" style={{ padding: '1.25rem' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
-        <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+    <div
+      onClick={onClick}
+      className={`glass-panel p-4.5 rounded-xl border transition-all duration-200 relative overflow-hidden ${
+        statusColors.border
+      } ${statusColors.glow} ${onClick ? 'cursor-pointer hover:translate-y-[-2px]' : ''} ${className}`}
+    >
+      <div className="flex items-start justify-between gap-3 mb-2.5">
+        <span className="text-xs font-medium text-slate-400 uppercase tracking-wider line-clamp-1">
           {title}
         </span>
-        <div style={{
-          width: '36px',
-          height: '36px',
-          borderRadius: '8px',
-          background: c.bg,
-          border: `1px solid ${c.border}`,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: c.text,
-        }}>
-          <Icon size={18} />
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {badge && (
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800/80 border border-slate-700/80 text-slate-300 font-semibold">
+              {badge}
+            </span>
+          )}
+          {Icon && (
+            <div className={`p-2 rounded-lg ${statusColors.iconBg}`}>
+              <Icon className="w-4 h-4" />
+            </div>
+          )}
         </div>
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '0.25rem' }}>
-        <span style={{ fontSize: '1.75rem', fontWeight: 800, color: '#f8fafc', letterSpacing: '-0.03em' }}>
+      <div className="flex items-baseline gap-1.5 mb-1.5">
+        <span className={`text-2xl font-bold tracking-tight font-mono ${statusColors.valueColor}`}>
           {value}
         </span>
-        {badge && (
-          <span style={{
-            fontSize: '0.7rem',
-            fontWeight: 600,
-            padding: '0.15rem 0.5rem',
-            borderRadius: '12px',
-            background: c.bg,
-            color: c.text,
-            border: `1px solid ${c.border}`,
-          }}>
-            {badge}
-          </span>
+        {unit && (
+          <span className="text-xs font-mono font-medium text-slate-400">{unit}</span>
         )}
       </div>
 
-      {subtitle && (
-        <div style={{ fontSize: '0.75rem', color: '#64748b' }}>
-          {subtitle}
-        </div>
-      )}
-      {trend && (
-        <div style={{ fontSize: '0.75rem', color: c.text, marginTop: '0.25rem', fontWeight: 500 }}>
-          {trend}
-        </div>
-      )}
+      <div className="flex items-center justify-between text-xs text-slate-400 mt-2">
+        {subtitle && <span className="line-clamp-1">{subtitle}</span>}
+        {trend && trendValue && (
+          <div
+            className={`flex items-center gap-1 font-mono text-xs ml-auto ${
+              trend === 'up'
+                ? 'text-rose-400'
+                : trend === 'down'
+                ? 'text-emerald-400'
+                : 'text-slate-400'
+            }`}
+          >
+            <span>{trend === 'up' ? '▲' : trend === 'down' ? '▼' : '—'}</span>
+            <span>{trendValue}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

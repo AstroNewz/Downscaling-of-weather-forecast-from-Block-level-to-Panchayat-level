@@ -1,8 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { BlockItem } from '../types/index.js';
-import { ApiService, subscribeConnectionStatus, getIsLiveBackend } from '../services/api.js';
-
-export type UserRole = 'FARMER' | 'OFFICER' | 'ADMIN';
+import { BlockItem, Panchayat, UserRole } from '../types';
+import { subscribeConnectionStatus, getIsLiveBackend } from '../api/client';
+import { getBlocks, getPanchayats } from '../api/panchayat';
 
 interface AppContextType {
   selectedBlockId: number | null;
@@ -14,7 +13,9 @@ interface AppContextType {
   userRole: UserRole;
   setUserRole: (role: UserRole) => void;
   blocks: BlockItem[];
-  loadingBlocks: boolean;
+  panchayats: Panchayat[];
+  selectedPanchayat: Panchayat | null;
+  loadingData: boolean;
   refreshKey: number;
   triggerRefresh: () => void;
   isLiveApi: boolean;
@@ -28,42 +29,56 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [targetDate, setTargetDate] = useState<string>('2026-07-15');
   const [userRole, setUserRole] = useState<UserRole>('OFFICER');
   const [blocks, setBlocks] = useState<BlockItem[]>([]);
-  const [loadingBlocks, setLoadingBlocks] = useState<boolean>(true);
+  const [panchayats, setPanchayats] = useState<Panchayat[]>([]);
+  const [loadingData, setLoadingData] = useState<boolean>(true);
   const [refreshKey, setRefreshKey] = useState<number>(0);
   const [isLiveApi, setIsLiveApi] = useState<boolean>(getIsLiveBackend());
 
   const triggerRefresh = () => setRefreshKey((prev) => prev + 1);
 
+  // Connection status subscription
   useEffect(() => {
-    const unsubscribe = subscribeConnectionStatus((isLive) => {
+    return subscribeConnectionStatus((isLive) => {
       setIsLiveApi(isLive);
     });
-    return unsubscribe;
   }, []);
 
+  // Load Blocks & Initial Panchayats
   useEffect(() => {
     let isMounted = true;
-    async function loadBlocks() {
+    async function loadInitialData() {
       try {
-        setLoadingBlocks(true);
-        const data = await ApiService.getBlocks();
+        setLoadingData(true);
+        const [blockList, panchayatList] = await Promise.all([
+          getBlocks(),
+          getPanchayats(selectedBlockId || undefined),
+        ]);
         if (isMounted) {
-          setBlocks(data);
-          if (data.length > 0 && selectedBlockId === null) {
-            setSelectedBlockId(data[0].id);
+          setBlocks(blockList);
+          setPanchayats(panchayatList);
+
+          if (panchayatList.length > 0) {
+            // Keep current selection if valid, else pick first
+            if (!selectedPanchayatId || !panchayatList.some((p) => p.id === selectedPanchayatId)) {
+              setSelectedPanchayatId(panchayatList[0].id);
+            }
           }
         }
       } catch (err) {
-        console.error('Failed to load blocks:', err);
+        console.error('[AppContext] Failed to load initial data:', err);
       } finally {
-        if (isMounted) setLoadingBlocks(false);
+        if (isMounted) setLoadingData(false);
       }
     }
-    loadBlocks();
+
+    loadInitialData();
     return () => {
       isMounted = false;
     };
-  }, [refreshKey]);
+  }, [selectedBlockId, refreshKey]);
+
+  // Derived selected Panchayat object
+  const selectedPanchayat = panchayats.find((p) => p.id === selectedPanchayatId) || panchayats[0] || null;
 
   return (
     <AppContext.Provider
@@ -77,7 +92,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         userRole,
         setUserRole,
         blocks,
-        loadingBlocks,
+        panchayats,
+        selectedPanchayat,
+        loadingData,
         refreshKey,
         triggerRefresh,
         isLiveApi,

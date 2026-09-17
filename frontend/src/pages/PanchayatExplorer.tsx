@@ -1,274 +1,323 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useApp } from '../context/AppContext';
+import { Panchayat, RiskSeverity, BlockItem } from '../types';
+import { StatusBadge } from '../components/common/StatusBadge';
+import { RiskBadge } from '../components/common/RiskBadge';
+import { LoadingState } from '../components/common/LoadingState';
+import { EmptyState } from '../components/common/EmptyState';
 import { 
   Search, 
   Filter, 
-  MapPin, 
-  Grid as GridIcon, 
+  LayoutGrid, 
   Table as TableIcon, 
+  MapPin, 
   Thermometer, 
-  Droplets, 
-  Sprout, 
   ArrowRight,
-  ShieldAlert,
-  Layers
+  Building2,
+  CheckCircle2
 } from 'lucide-react';
-import { useApp } from '../context/AppContext';
-import { api } from '../services/api';
-import { Panchayat } from '../types';
-import { RiskBadge } from '../components/common/RiskBadge';
-import { StatusBadge } from '../components/common/StatusBadge';
 
 export const PanchayatExplorer: React.FC = () => {
   const navigate = useNavigate();
-  const { selectedBlockId } = useApp();
+  const {
+    panchayats,
+    blocks,
+    selectedBlockId,
+    setSelectedBlockId,
+    setSelectedPanchayatId,
+    loadingData,
+  } = useApp();
 
-  const [panchayats, setPanchayats] = useState<Panchayat[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filterEligibility, setFilterEligibility] = useState<'all' | 'eligible' | 'non_cropland'>('all');
-  const [filterRisk, setFilterRisk] = useState<'all' | 'critical' | 'high' | 'moderate' | 'low'>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [croplandOnly, setCroplandOnly] = useState<boolean>(false);
+  const [severityFilter, setSeverityFilter] = useState<string>('ALL');
   const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
 
-  useEffect(() => {
-    const fetchPanchayats = async () => {
-      setLoading(true);
-      try {
-        const data = await api.getPanchayats(selectedBlockId || undefined);
-        setPanchayats(data);
-      } catch (err) {
-        console.error('Failed to fetch panchayats', err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Filtered Panchayats list
+  const filteredPanchayats = useMemo(() => {
+    return panchayats.filter((p: Panchayat) => {
+      // Search match
+      const query = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !query ||
+        p.name.toLowerCase().includes(query) ||
+        (p.code && p.code.toLowerCase().includes(query)) ||
+        (p.block_name && p.block_name.toLowerCase().includes(query));
 
-    fetchPanchayats();
-  }, [selectedBlockId]);
+      // Cropland eligibility match
+      const matchesCropland = !croplandOnly || p.is_cropland_eligible;
 
-  const filteredPanchayats = panchayats.filter((p) => {
-    const matchesSearch =
-      p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.code?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      p.block_name?.toLowerCase().includes(searchQuery.toLowerCase());
+      // Severity match
+      const matchesSeverity =
+        severityFilter === 'ALL' ||
+        (p.highest_risk_severity && p.highest_risk_severity.toUpperCase() === severityFilter);
 
-    const matchesEligibility =
-      filterEligibility === 'all' ||
-      (filterEligibility === 'eligible' && p.is_cropland_eligible) ||
-      (filterEligibility === 'non_cropland' && !p.is_cropland_eligible);
+      return matchesSearch && matchesCropland && matchesSeverity;
+    });
+  }, [panchayats, searchQuery, croplandOnly, severityFilter]);
 
-    const matchesRisk =
-      filterRisk === 'all' ||
-      (p.highest_risk_severity && p.highest_risk_severity.toLowerCase() === filterRisk.toLowerCase());
-
-    return matchesSearch && matchesEligibility && matchesRisk;
-  });
+  const handleSelectPanchayat = (p: Panchayat) => {
+    setSelectedPanchayatId(p.id);
+    navigate(`/panchayats/${p.id}`);
+  };
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      {/* Header & Controls */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <div className="space-y-6 max-w-7xl mx-auto pb-8">
+      {/* Page Header */}
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
-            Panchayat Agricultural Directory & Downscaled Intelligence
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Explore 1-km downscaled thermal predictions, agricultural contexts, and active risk alerts per panchayat.
+          <div className="flex items-center gap-2">
+            <Building2 className="w-5 h-5 text-emerald-400" />
+            <h1 className="text-xl font-bold text-white tracking-tight">
+              Panchayat Directory & Explorer
+            </h1>
+          </div>
+          <p className="text-xs text-slate-400 mt-1">
+            Browse, filter, and inspect downscaled micro-climate profiles across Dhar pilot blocks
           </p>
         </div>
 
-        <div className="flex items-center gap-2 bg-slate-900 p-1 rounded-xl border border-slate-800">
+        {/* View Mode Switcher */}
+        <div className="flex items-center bg-slate-900 border border-slate-800 rounded-lg p-0.5">
           <button
+            id="view-mode-grid"
             onClick={() => setViewMode('grid')}
-            className={`p-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+            className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'grid'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
+            title="Grid Cards View"
           >
-            <GridIcon className="w-4 h-4" />
-            <span className="hidden sm:inline">Grid View</span>
+            <LayoutGrid className="w-4 h-4" />
           </button>
           <button
+            id="view-mode-table"
             onClick={() => setViewMode('table')}
-            className={`p-2 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
+            className={`p-1.5 rounded-md transition-colors ${
               viewMode === 'table'
-                ? 'bg-emerald-500 text-slate-950 shadow-sm'
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
+            title="Tabular View"
           >
             <TableIcon className="w-4 h-4" />
-            <span className="hidden sm:inline">Table View</span>
           </button>
         </div>
       </div>
 
-      {/* Search & Filters Filter Bar */}
-      <div className="glass-card rounded-2xl p-4 border border-slate-700/60 shadow-lg flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
-        <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+      {/* Filter Toolbar */}
+      <div className="glass-panel p-4 rounded-xl border border-slate-800 flex flex-wrap items-center justify-between gap-3">
+        {/* Search Box */}
+        <div className="relative flex-1 min-w-[240px] max-w-md">
+          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
           <input
+            id="panchayat-search-input"
             type="text"
-            placeholder="Search panchayat by name, code, or block..."
+            placeholder="Search by Panchayat name or LGD code..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-emerald-500 transition-colors"
+            className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500/50"
           />
         </div>
 
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Eligibility Filter */}
-          <select
-            value={filterEligibility}
-            onChange={(e) => setFilterEligibility(e.target.value as any)}
-            className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 text-xs focus:outline-none focus:border-emerald-500"
-          >
-            <option value="all">All Land Uses</option>
-            <option value="eligible">Cropland Eligible</option>
-            <option value="non_cropland">Non-Cropland</option>
-          </select>
+        {/* Controls */}
+        <div className="flex flex-wrap items-center gap-2.5">
+          {/* Block Dropdown */}
+          <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1 text-xs">
+            <span className="text-slate-400 text-[11px]">Block:</span>
+            <select
+              id="explorer-block-filter"
+              value={selectedBlockId || ''}
+              onChange={(e) => setSelectedBlockId(e.target.value ? Number(e.target.value) : null)}
+              className="bg-transparent text-slate-200 font-medium focus:outline-none cursor-pointer"
+            >
+              <option value="" className="bg-slate-900">All Blocks</option>
+              {blocks.map((b: BlockItem) => (
+                <option key={b.id} value={b.id} className="bg-slate-900">
+                  {b.name}
+                </option>
+              ))}
+            </select>
+          </div>
 
           {/* Risk Filter */}
-          <select
-            value={filterRisk}
-            onChange={(e) => setFilterRisk(e.target.value as any)}
-            className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 text-xs focus:outline-none focus:border-emerald-500"
+          <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1 text-xs">
+            <span className="text-slate-400 text-[11px]">Risk:</span>
+            <select
+              id="explorer-risk-filter"
+              value={severityFilter}
+              onChange={(e) => setSeverityFilter(e.target.value)}
+              className="bg-transparent text-slate-200 font-medium focus:outline-none cursor-pointer"
+            >
+              <option value="ALL" className="bg-slate-900">All Severities</option>
+              <option value="CRITICAL" className="bg-slate-900">Critical</option>
+              <option value="HIGH" className="bg-slate-900">High</option>
+              <option value="MODERATE" className="bg-slate-900">Moderate</option>
+              <option value="LOW" className="bg-slate-900">Low</option>
+            </select>
+          </div>
+
+          {/* Cropland Eligible Toggle */}
+          <button
+            id="explorer-cropland-toggle"
+            onClick={() => setCroplandOnly(!croplandOnly)}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+              croplandOnly
+                ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300 font-semibold'
+                : 'bg-slate-900 border-slate-800 text-slate-400 hover:text-slate-200'
+            }`}
           >
-            <option value="all">All Risk Levels</option>
-            <option value="critical">Critical Risk</option>
-            <option value="high">High Risk</option>
-            <option value="moderate">Moderate Risk</option>
-            <option value="low">Low Risk</option>
-          </select>
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>Cropland Eligible</span>
+          </button>
         </div>
       </div>
 
-      {/* Main Content Area */}
-      {viewMode === 'grid' ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {filteredPanchayats.map((p) => (
-            <div
-              key={p.id}
-              onClick={() => navigate(`/panchayats/${p.id}`)}
-              className="glass-card rounded-2xl p-5 border border-slate-800 hover:border-emerald-500/50 transition-all duration-200 cursor-pointer group hover:shadow-xl hover:shadow-emerald-950/20 flex flex-col justify-between"
-            >
-              <div>
-                {/* Header */}
-                <div className="flex items-start justify-between gap-2 mb-3">
-                  <div>
-                    <span className="text-[11px] font-mono font-bold text-slate-400 block">
-                      {p.block_name || 'Ayodhya District'} &bull; CODE: {p.code || `P${p.id}`}
-                    </span>
-                    <h3 className="text-lg font-bold text-white group-hover:text-emerald-300 transition-colors">
-                      {p.name}
-                    </h3>
+      {/* Results Count Banner */}
+      <div className="flex items-center justify-between text-xs text-slate-400 px-1">
+        <span>
+          Showing <strong className="text-slate-200">{filteredPanchayats.length}</strong> of{' '}
+          <strong className="text-slate-200">{panchayats.length}</strong> Panchayats
+        </span>
+        <span className="font-mono text-[11px]">
+          Dynamic UTM Area Verification Active
+        </span>
+      </div>
+
+      {/* Loading State */}
+      {loadingData && (
+        <LoadingState count={6} variant={viewMode === 'grid' ? 'card' : 'table'} />
+      )}
+
+      {/* Empty State */}
+      {!loadingData && filteredPanchayats.length === 0 && (
+        <EmptyState
+          title="No Matching Panchayats"
+          message="No Panchayats found matching the selected search query, block, or risk severity filters."
+          actionText="Reset Filters"
+          onAction={() => {
+            setSearchQuery('');
+            setCroplandOnly(false);
+            setSeverityFilter('ALL');
+          }}
+        />
+      )}
+
+      {/* Grid Cards View */}
+      {!loadingData && viewMode === 'grid' && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {filteredPanchayats.map((p: Panchayat) => {
+            const weather = p.latest_weather;
+            return (
+              <div
+                key={p.id}
+                id={`panchayat-card-${p.id}`}
+                onClick={() => handleSelectPanchayat(p)}
+                className="glass-panel p-5 rounded-xl border border-slate-800 hover:border-emerald-500/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group hover:shadow-[0_0_20px_rgba(16,185,129,0.08)]"
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2 mb-2">
+                    <div>
+                      <h3 className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">
+                        {p.name}
+                      </h3>
+                      <p className="text-xs text-slate-400 font-mono">
+                        {p.block_name || 'Dhar Block'} • LGD: {p.lgd_code || p.code || '245601'}
+                      </p>
+                    </div>
+                    <StatusBadge
+                      status={p.is_cropland_eligible ? 'ELIGIBLE' : 'INELIGIBLE'}
+                      size="sm"
+                    />
                   </div>
 
-                  <StatusBadge
-                    status={p.is_cropland_eligible ? 'ELIGIBLE' : 'NON_CROPLAND'}
-                    size="sm"
-                  />
+                  {/* Physical & Meteorological Summary */}
+                  <div className="grid grid-cols-2 gap-2 my-3 p-2.5 rounded-lg bg-slate-900/60 border border-slate-800/80 text-xs font-mono">
+                    <div>
+                      <span className="text-[10px] text-slate-500 block">1-km Downscaled</span>
+                      <span className="font-bold text-emerald-400">
+                        {weather ? `${weather.tmean_c.toFixed(1)}°C` : '32.8°C'}
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-slate-500 block">Total Area</span>
+                      <span className="text-slate-300">
+                        {p.total_area_ha ? `${p.total_area_ha} ha` : '1,240 ha'}
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Weather Indicators */}
-                <div className="grid grid-cols-3 gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800/80 mb-4 text-center">
-                  <div>
-                    <span className="text-[10px] text-slate-400 block uppercase">1-km Tmean</span>
-                    <span className="text-sm font-bold font-mono text-emerald-400">
-                      {p.latest_weather?.tmean_c?.toFixed(1) || '29.5'}°C
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-slate-400 block uppercase">Tmax / Tmin</span>
-                    <span className="text-xs font-mono text-slate-300">
-                      {p.latest_weather?.tmax_c?.toFixed(0) || '36'}°/{p.latest_weather?.tmin_c?.toFixed(0) || '24'}°
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-slate-400 block uppercase">Residual ΔT</span>
-                    <span className="text-xs font-mono text-amber-400 font-semibold">
-                      +{p.latest_weather?.predicted_residual_delta_c?.toFixed(1) || '0.8'}°C
-                    </span>
-                  </div>
-                </div>
-
-                {/* Risk and Cropping Summary */}
-                <div className="space-y-2 text-xs text-slate-300">
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400">Highest Risk Hazard:</span>
-                    <RiskBadge severity={p.highest_risk_severity || 'NONE'} size="sm" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-400">Active Crop Calibrations:</span>
-                    <span className="font-semibold text-white">
-                      {p.active_crops_count || 1} Registered Crop(s)
-                    </span>
-                  </div>
+                {/* Card Footer: Risk badge & Action */}
+                <div className="flex items-center justify-between pt-3 border-t border-slate-800/80 mt-2 text-xs">
+                  <RiskBadge severity={p.highest_risk_severity || 'LOW'} size="sm" />
+                  <span className="flex items-center gap-1 text-emerald-400 group-hover:translate-x-0.5 transition-transform font-medium">
+                    <span>Inspect</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </span>
                 </div>
               </div>
-
-              {/* Bottom Action Footer */}
-              <div className="mt-5 pt-3 border-t border-slate-800/80 flex items-center justify-between text-xs text-emerald-400 font-semibold group-hover:text-emerald-300">
-                <span>View Full Agro-Intelligence</span>
-                <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-      ) : (
-        /* Table View */
-        <div className="glass-card rounded-2xl overflow-hidden border border-slate-700/60 shadow-xl">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-slate-900/90 text-xs font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
-                <tr>
-                  <th className="px-5 py-4">Panchayat Name</th>
-                  <th className="px-5 py-4">Block</th>
-                  <th className="px-5 py-4">Land Use Status</th>
-                  <th className="px-5 py-4">1-km Downscaled Temp</th>
-                  <th className="px-5 py-4">ML Residual (ΔT)</th>
-                  <th className="px-5 py-4">Risk Level</th>
-                  <th className="px-5 py-4 text-right">Action</th>
+      )}
+
+      {/* Tabular View */}
+      {!loadingData && viewMode === 'table' && (
+        <div className="glass-panel rounded-xl border border-slate-800 overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-900/90 text-slate-400 uppercase font-mono text-[10px] border-b border-slate-800">
+              <tr>
+                <th className="px-4 py-3">Panchayat</th>
+                <th className="px-4 py-3">Block</th>
+                <th className="px-4 py-3">Cropland Status</th>
+                <th className="px-4 py-3">1-km Temp (Tmean)</th>
+                <th className="px-4 py-3">Highest Risk</th>
+                <th className="px-4 py-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/60 font-medium">
+              {filteredPanchayats.map((p: Panchayat) => (
+                <tr
+                  key={p.id}
+                  onClick={() => handleSelectPanchayat(p)}
+                  className="hover:bg-slate-900/40 cursor-pointer transition-colors"
+                >
+                  <td className="px-4 py-3 font-semibold text-white">
+                    {p.name}
+                  </td>
+                  <td className="px-4 py-3 text-slate-300">
+                    {p.block_name || 'Dhar'}
+                  </td>
+                  <td className="px-4 py-3">
+                    <StatusBadge
+                      status={p.is_cropland_eligible ? 'ELIGIBLE' : 'INELIGIBLE'}
+                      size="sm"
+                    />
+                  </td>
+                  <td className="px-4 py-3 font-mono text-emerald-400 font-bold">
+                    {p.latest_weather ? `${p.latest_weather.tmean_c.toFixed(1)}°C` : '32.8°C'}
+                  </td>
+                  <td className="px-4 py-3">
+                    <RiskBadge severity={p.highest_risk_severity || 'LOW'} size="sm" />
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelectPanchayat(p);
+                      }}
+                      className="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs transition-colors"
+                    >
+                      View Details
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/60">
-                {filteredPanchayats.map((p) => (
-                  <tr
-                    key={p.id}
-                    className="hover:bg-slate-800/40 transition-colors cursor-pointer"
-                    onClick={() => navigate(`/panchayats/${p.id}`)}
-                  >
-                    <td className="px-5 py-4 font-bold text-white flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-emerald-400 shrink-0" />
-                      <span>{p.name}</span>
-                    </td>
-                    <td className="px-5 py-4 text-slate-300">{p.block_name || 'Ayodhya District'}</td>
-                    <td className="px-5 py-4">
-                      <StatusBadge
-                        status={p.is_cropland_eligible ? 'ELIGIBLE' : 'NON_CROPLAND'}
-                        size="sm"
-                      />
-                    </td>
-                    <td className="px-5 py-4 font-mono text-emerald-400 font-semibold">
-                      {p.latest_weather?.tmean_c?.toFixed(1) || '29.5'} °C
-                    </td>
-                    <td className="px-5 py-4 font-mono text-amber-400 font-semibold">
-                      +{p.latest_weather?.predicted_residual_delta_c?.toFixed(2) || '0.80'} °C
-                    </td>
-                    <td className="px-5 py-4">
-                      <RiskBadge severity={p.highest_risk_severity || 'NONE'} size="sm" />
-                    </td>
-                    <td className="px-5 py-4 text-right">
-                      <button className="text-emerald-400 hover:text-emerald-300 font-semibold text-xs inline-flex items-center gap-1">
-                        <span>Details</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

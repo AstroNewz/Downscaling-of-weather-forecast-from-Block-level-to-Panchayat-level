@@ -2,42 +2,57 @@ import React from 'react';
 import { AdvisoryPriority } from '../../types';
 
 interface PriorityBadgeProps {
-  priority: AdvisoryPriority | string;
+  priority: AdvisoryPriority;
   size?: 'sm' | 'md' | 'lg';
+  className?: string;
 }
 
 export const PriorityBadge: React.FC<PriorityBadgeProps> = ({
   priority,
   size = 'md',
+  className = '',
 }) => {
-  const norm = (priority || 'LOW').toUpperCase();
+  const normPriority = (priority || 'LOW').toUpperCase() as AdvisoryPriority;
 
-  let bgClass = 'bg-slate-800 text-slate-300 border-slate-700';
-
-  if (norm === 'CRITICAL' || norm === '1') {
-    bgClass = 'bg-red-950/70 text-red-200 border-red-500/50 shadow-sm shadow-red-900/40';
-  } else if (norm === 'HIGH' || norm === '2') {
-    bgClass = 'bg-amber-950/60 text-amber-200 border-amber-500/40';
-  } else if (norm === 'MEDIUM' || norm === '3') {
-    bgClass = 'bg-sky-950/50 text-sky-200 border-sky-500/30';
-  } else if (norm === 'LOW' || norm === '4') {
-    bgClass = 'bg-emerald-950/40 text-emerald-200 border-emerald-500/30';
-  } else {
-    bgClass = 'bg-slate-800 text-slate-400 border-slate-700';
-  }
+  const config = {
+    CRITICAL: {
+      label: 'Critical Priority',
+      bg: 'bg-rose-500/15 border-rose-500/40 text-rose-300',
+      dot: 'bg-rose-500 shadow-[0_0_8px_rgba(244,63,94,0.6)] animate-pulse',
+    },
+    HIGH: {
+      label: 'High Priority',
+      bg: 'bg-amber-500/15 border-amber-500/40 text-amber-300',
+      dot: 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]',
+    },
+    MEDIUM: {
+      label: 'Medium Priority',
+      bg: 'bg-sky-500/15 border-sky-500/40 text-sky-300',
+      dot: 'bg-sky-400',
+    },
+    LOW: {
+      label: 'Low Priority',
+      bg: 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300',
+      dot: 'bg-emerald-400',
+    },
+  }[normPriority] || {
+    label: normPriority,
+    bg: 'bg-slate-700/30 border-slate-600/40 text-slate-300',
+    dot: 'bg-slate-400',
+  };
 
   const sizeClasses = {
-    sm: 'px-2 py-0.5 text-[10px] font-bold',
-    md: 'px-2.5 py-1 text-xs font-bold',
-    lg: 'px-3 py-1.5 text-sm font-bold',
-  };
+    sm: 'text-[10px] px-2 py-0.5 gap-1.5',
+    md: 'text-xs px-2.5 py-1 gap-2',
+    lg: 'text-sm px-3.5 py-1.5 gap-2.5 font-medium',
+  }[size];
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-md border ${bgClass} ${sizeClasses[size]} uppercase tracking-wider font-mono`}
+      className={`inline-flex items-center font-medium rounded-full border tracking-wide uppercase ${config.bg} ${sizeClasses} ${className}`}
     >
-      <span>PRIORITY:</span>
-      <span className="font-extrabold">{norm}</span>
+      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
+      {config.label}
     </span>
   );
 };
