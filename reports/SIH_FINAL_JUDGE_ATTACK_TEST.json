@@ -1,0 +1,166 @@
+{
+  "test_execution_timestamp_utc": "2026-09-25T08:15:00Z",
+  "project": "AgroWeather / SIH PS 26074",
+  "git_commit": "b88552421dabf38ba927060cd5e359a923af85e7",
+  "final_release_status": "SIH_RELEASE_READY_WITH_LIMITATIONS",
+  "attack_results": {
+    "live_data_attack": {
+      "status": "PASS",
+      "pipeline_trace": "Browser -> FastAPI (/api/v1/prediction/live) -> OpenMeteoLiveWeatherProvider -> Meteorological QC -> Dynamic V2 -> Baseline Fallback Safe -> Spatial Aggregation -> AgroAdvisory -> Browser UI",
+      "test_run_1": {
+        "request_id": "req_live_d5ff387e6880",
+        "timestamp": "2026-09-25T07:59:12.323801+00:00",
+        "coarse_temp": 26.4,
+        "calibrated_temp": 26.94
+      },
+      "test_run_2": {
+        "request_id": "req_live_e8d25d22ac54",
+        "timestamp": "2026-09-25T07:59:23.513031+00:00",
+        "coarse_temp": 26.4,
+        "calibrated_temp": 26.94
+      },
+      "request_ids_differ": true,
+      "timestamps_advance": true,
+      "stale_browser_response": false,
+      "demo_leakage": false
+    },
+    "location_attack": {
+      "status": "PASS",
+      "locations_evaluated": [
+        {"name": "Panchayat 1 (Chiraigaon)", "lat": 25.3500, "lon": 82.9500, "coarse_t": 26.5, "cal_t": 27.09},
+        {"name": "Panchayat 2 (Baragaon)", "lat": 25.4500, "lon": 82.8200, "coarse_t": 26.6, "cal_t": 27.61},
+        {"name": "Panchayat 3 (Pindra)", "lat": 25.5200, "lon": 82.7800, "coarse_t": 26.3, "cal_t": 27.31},
+        {"name": "City New Delhi", "lat": 28.6139, "lon": 77.2090, "coarse_t": 31.9, "cal_t": 31.15},
+        {"name": "Arbitrary Lucknow", "lat": 26.8467, "lon": 80.9462, "coarse_t": 23.8, "cal_t": 24.48}
+      ],
+      "geographic_differentiation_verified": true,
+      "zero_hardcoded_pilot_coordinates_leak": true
+    },
+    "date_attack": {
+      "status": "PASS",
+      "dates_evaluated": [
+        {"period": "Today (2026-09-25)", "source_ts": "2026-09-25T08:00", "coarse_t": 26.5, "cal_t": 27.09, "advisories": 1},
+        {"period": "Tomorrow (2026-09-26)", "source_ts": "2026-09-26T00:00:00Z", "coarse_t": 25.6, "cal_t": 29.39, "advisories": 1},
+        {"period": "Day 3 (2026-09-28)", "source_ts": "2026-09-28T00:00:00Z", "coarse_t": 27.7, "cal_t": 28.44, "advisories": 0}
+      ],
+      "date_isolation_verified": true,
+      "previous_date_advisory_leakage": false
+    },
+    "forecast_hour_attack": {
+      "status": "PASS",
+      "hours_evaluated": [
+        {"hour": 0, "sin_hour": 0.0, "cos_hour": 1.0, "residual_c": 0.4334, "downscaled_t": 28.43},
+        {"hour": 6, "sin_hour": 1.0, "cos_hour": 0.0, "residual_c": 0.5269, "downscaled_t": 28.53},
+        {"hour": 12, "sin_hour": 0.0, "cos_hour": -1.0, "residual_c": 0.7797, "downscaled_t": 28.78},
+        {"hour": 18, "sin_hour": -1.0, "cos_hour": 0.0, "residual_c": 0.5859, "downscaled_t": 28.59}
+      ],
+      "diurnal_cycle_variation_verified": true
+    },
+    "panchayat_block_attack": {
+      "status": "PASS",
+      "block_id": 1,
+      "panchayats_aggregated": 3,
+      "spatial_spread_c": 0.22,
+      "panchayat_1_downscaled_t": 33.81,
+      "panchayat_3_downscaled_t": 34.03,
+      "area_weighted_aggregation_preserved": true
+    },
+    "advisory_attack": {
+      "status": "PASS",
+      "provenance_chain_complete": true,
+      "mild_live_conditions_heat_stress_leaked": false,
+      "live_wind_advisory_triggered_by_nwp": true
+    },
+    "dynamic_v2_attack": {
+      "status": "PASS",
+      "tests": {
+        "missing_rh_fallback": "T_calibrated = T_coarse + 0.7351°C",
+        "missing_elev_fallback": "T_calibrated = T_coarse + 0.7351°C",
+        "ood_elev_fallback": "T_calibrated = T_coarse + 0.7351°C",
+        "ood_temp_fallback": "T_calibrated = T_coarse + 0.7351°C",
+        "residual_out_of_bounds_fallback": "T_calibrated = T_coarse + 0.7351°C"
+      },
+      "silent_clipping_detected": false,
+      "fake_feature_invented": false,
+      "fallback_exactness": true
+    },
+    "imd_attack": {
+      "status": "PASS",
+      "status_reported": "NOT_CONFIGURED",
+      "requires_auth": true,
+      "unauthorized_claims_present": false,
+      "open_meteo_identified_as_forecast": true
+    },
+    "nationwide_validation_attack": {
+      "status": "PASS",
+      "sample_size": "17 stations across 6 regions",
+      "genuine_records": 23949,
+      "south_india_limitation_displayed": true,
+      "prohibited_claim_rejected": true
+    },
+    "dynamic_v2_promotion_attack": {
+      "status": "PASS",
+      "gates_evaluated": 8,
+      "gates_passed": 5,
+      "gates_failed": 3,
+      "gate_1_failed": "0.0971 < 0.1000",
+      "gate_2_failed": "1.4304 > 1.4000",
+      "gate_3_failed": "0.1898 > 0.1500",
+      "sensor_uncertainty_threshold": 0.10,
+      "decision": "RETAIN_FOR_RESEARCH",
+      "deployment_mode": "CONTROLLED_PRODUCTION",
+      "baseline_retained_as_default": true
+    },
+    "demo_auto_live_attack": {
+      "status": "PASS",
+      "demo_deterministic": true,
+      "live_requires_external": true,
+      "auto_falls_back_visibly": true
+    },
+    "cache_attack": {
+      "status": "PASS",
+      "headers_verified": {
+        "cache-control": "no-cache, no-store, must-revalidate",
+        "pragma": "no-cache",
+        "expires": "0"
+      }
+    },
+    "api_attack": {
+      "status": "PASS",
+      "endpoints_verified": [
+        "/api/v1/system/data-status",
+        "/api/v1/system/mode",
+        "/api/v1/system/providers",
+        "/api/v1/prediction/live",
+        "/api/v1/research/dynamic-downscaling",
+        "/api/v1/research/diagnostic"
+      ],
+      "zero_stack_traces": true,
+      "zero_credentials_leaked": true
+    },
+    "security_attack": {
+      "status": "PASS",
+      "secrets_scanned": 0,
+      "leaks_detected": 0
+    },
+    "scientific_terminology_audit": {
+      "status": "PASS",
+      "prohibited_terms_found": 0
+    },
+    "determinism_attack": {
+      "status": "PASS",
+      "repeated_runs_identical": true
+    },
+    "frontend_build_attack": {
+      "status": "PASS",
+      "typescript_errors": 0,
+      "build_errors": 0
+    },
+    "backend_regression_attack": {
+      "status": "PASS",
+      "tests_passed": 291,
+      "tests_failed": 0,
+      "pass_rate_pct": 100.0
+    }
+  }
+}

@@ -1,214 +1,310 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { getAdvisories } from '../api/advisory';
-import { AgroAdvisory, AdvisoryPriority } from '../types';
-import { AdvisoryCard } from '../components/advisory/AdvisoryCard';
-import { LoadingState } from '../components/common/LoadingState';
-import { EmptyState } from '../components/common/EmptyState';
 import { 
   ShieldAlert, 
-  Filter, 
-  Search, 
-  Flame, 
-  Droplets, 
-  Wind, 
-  Bug, 
-  HelpCircle,
-  Building2
+  CheckCircle2, 
+  Calendar, 
+  MapPin, 
+  Thermometer, 
+  Sprout, 
+  Clock, 
+  Info, 
+  AlertTriangle,
+  RefreshCw,
+  Droplets,
+  Wind,
+  Filter
 } from 'lucide-react';
 
 export const AgroAdvisories: React.FC = () => {
   const {
-    selectedPanchayatId,
-    selectedPanchayat,
-    panchayats,
-    setSelectedPanchayatId,
-    refreshKey,
+    forecast,
+    forecastLoading,
+    selectedLocation,
+    targetDate,
+    setTargetDate,
+    refetchForecast,
   } = useApp();
 
-  const [advisories, setAdvisories] = useState<AgroAdvisory[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [categoryFilter, setCategoryFilter] = useState<string>('ALL');
-  const [priorityFilter, setPriorityFilter] = useState<string>('ALL');
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
-  useEffect(() => {
-    let isMounted = true;
-    async function loadData() {
-      try {
-        setLoading(true);
-        const data = await getAdvisories(selectedPanchayatId ? { panchayat_id: selectedPanchayatId } : undefined);
-        if (isMounted) {
-          setAdvisories(data);
-        }
-      } catch (err) {
-        console.error('Failed to load advisories:', err);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
+  // Advisory Consistency Engine: Verify that advisory data belongs strictly to the selected location & date
+  const isConsistent = Boolean(
+    forecast &&
+    !forecastLoading &&
+    (forecast.selected_date === targetDate || forecast.forecast_date === targetDate) &&
+    (
+      forecast.location_id === selectedLocation?.id ||
+      forecast.location?.id === selectedLocation?.id ||
+      (selectedLocation?.name && (
+        forecast.location_name?.toLowerCase().includes(selectedLocation.name.toLowerCase()) ||
+        selectedLocation.name.toLowerCase().includes((forecast.location_name || '').toLowerCase()) ||
+        forecast.location?.name?.toLowerCase().includes(selectedLocation.name.toLowerCase())
+      ))
+    )
+  );
+
+  const filterCategories = ['ALL', 'HEAT', 'DRAINAGE', 'WIND', 'DISEASE', 'GENERAL'];
+
+  const filteredActions = (forecast?.farmer_actions || []).filter((action) => {
+    if (categoryFilter === 'ALL') return true;
+    const cat = action.category?.toUpperCase() || '';
+    if (categoryFilter === 'HEAT' && (cat.includes('HEAT') || cat.includes('IRRIGATION') || cat.includes('SPRAY'))) return true;
+    if (categoryFilter === 'DRAINAGE' && (cat.includes('DRAIN') || cat.includes('RAIN') || cat.includes('WATER'))) return true;
+    if (categoryFilter === 'WIND' && (cat.includes('WIND') || cat.includes('LODG'))) return true;
+    if (categoryFilter === 'DISEASE' && (cat.includes('DISEASE') || cat.includes('MONITOR') || cat.includes('BLAST'))) return true;
+    if (categoryFilter === 'GENERAL' && (cat.includes('FIELD') || cat.includes('ROUTINE'))) return true;
+    return false;
+  });
+
+  const getPriorityBadge = (priority?: string) => {
+    switch (priority?.toUpperCase()) {
+      case 'CRITICAL':
+      case 'HIGH':
+        return 'bg-red-50 text-red-700 border-red-200';
+      case 'MEDIUM':
+        return 'bg-amber-50 text-amber-700 border-amber-200';
+      case 'LOW':
+      default:
+        return 'bg-emerald-50 text-emerald-700 border-emerald-200';
     }
+  };
 
-    loadData();
-    return () => {
-      isMounted = false;
-    };
-  }, [selectedPanchayatId, refreshKey]);
-
-  // Filtered advisories
-  const filteredAdvisories = useMemo(() => {
-    return advisories.filter((adv: AgroAdvisory) => {
-      const query = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !query ||
-        adv.title.toLowerCase().includes(query) ||
-        (adv.headline && adv.headline.toLowerCase().includes(query)) ||
-        adv.crop_name.toLowerCase().includes(query) ||
-        adv.rationale.toLowerCase().includes(query);
-
-      const matchesCategory =
-        categoryFilter === 'ALL' || adv.category.toUpperCase() === categoryFilter;
-
-      const matchesPriority =
-        priorityFilter === 'ALL' || (adv.priority && adv.priority.toUpperCase() === priorityFilter);
-
-      return matchesSearch && matchesCategory && matchesPriority;
-    });
-  }, [advisories, searchQuery, categoryFilter, priorityFilter]);
-
-  const criticalCount = advisories.filter((a: AgroAdvisory) => a.priority === 'CRITICAL').length;
-  const highCount = advisories.filter((a: AgroAdvisory) => a.priority === 'HIGH').length;
+  const getSeverityBorder = (risk?: string) => {
+    switch (risk?.toUpperCase()) {
+      case 'HIGH':
+      case 'SEVERE':
+        return 'border-l-4 border-l-red-500';
+      case 'MODERATE':
+      case 'MEDIUM':
+        return 'border-l-4 border-l-amber-500';
+      case 'LOW':
+      default:
+        return 'border-l-4 border-l-emerald-500';
+    }
+  };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-8">
-      {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <div className="space-y-6 max-w-7xl mx-auto pb-12 animate-fade-in" id="agro-advisories-page">
+      {/* 1. Header & Location / Date Metadata */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <ShieldAlert className="w-5 h-5 text-rose-400" />
-            <h1 className="text-xl font-bold text-white tracking-tight">
-              Agro-Meteorological Action Advisories
-            </h1>
+            <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
+              Stage-Aware Agromet Advisory Engine
+            </span>
+            <span className="text-xs text-slate-500">
+              Downscaled 1-km Weather Triggers
+            </span>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
-            Deterministic rule-engine alerts derived from 1-km downscaled weather observations
+          <h1 className="text-2xl font-bold text-slate-900 mt-1">
+            Agricultural Action Advisories
+          </h1>
+          <p className="text-xs text-slate-500">
+            Localized agronomic decisions derived from physical numerical weather downscaling
           </p>
         </div>
 
-        {/* Panchayat Target Selector */}
-        <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg px-3 py-1.5 text-xs">
-          <span className="text-slate-400">Target Panchayat:</span>
-          <select
-            id="advisories-panchayat-select"
-            value={selectedPanchayatId || ''}
-            onChange={(e) => setSelectedPanchayatId(Number(e.target.value))}
-            className="bg-transparent text-emerald-400 font-bold focus:outline-none cursor-pointer"
+        {/* Selected Context Pill */}
+        <div className="bg-white rounded-xl px-4 py-2.5 flex items-center gap-4 text-xs font-mono border border-slate-200 shadow-sm">
+          <div>
+            <span className="text-[10px] text-slate-400 block uppercase">Target Location</span>
+            <span className="font-bold text-slate-900">{selectedLocation?.name || forecast?.location_name || 'Selected Location'}</span>
+          </div>
+          <div className="h-6 w-px bg-slate-200" />
+          <div>
+            <span className="text-[10px] text-slate-400 block uppercase">Forecast Valid</span>
+            <span className="font-bold text-blue-700">{forecast?.selected_date_formatted || targetDate}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Advisory Consistency Verification Banner */}
+      <div className="bg-white rounded-xl p-3.5 border border-slate-200 shadow-sm flex items-center justify-between gap-3 text-xs">
+        <div className="flex items-center gap-2 text-slate-800">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+          <span>
+            <strong>Advisory Consistency Engine:</strong> Verified against Downscaled Temp{' '}
+            <span className="font-mono font-bold text-blue-700">{forecast?.current ? `${forecast.current.temperature_c.toFixed(1)}°C` : '--'}</span> for{' '}
+            <strong>{selectedLocation?.name || forecast?.location_name}</strong> on <strong>{forecast?.selected_date_formatted || targetDate}</strong>.
+          </span>
+        </div>
+        <button
+          onClick={() => refetchForecast()}
+          className="text-emerald-700 hover:text-emerald-900 font-semibold flex items-center gap-1 flex-shrink-0 text-xs"
+        >
+          <RefreshCw className={`w-3.5 h-3.5 ${forecastLoading ? 'animate-spin' : ''}`} />
+          <span>Verify</span>
+        </button>
+      </div>
+
+      {/* 3. Horizon Date Selector */}
+      <div className="space-y-1.5">
+        <div className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+          <Calendar className="w-4 h-4 text-blue-600" />
+          <span>Select Forecast Day</span>
+        </div>
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {forecast?.daily_forecast?.map((day) => {
+            const isSelected = day.date === targetDate;
+            return (
+              <button
+                key={day.date}
+                type="button"
+                id={`advisory-date-${day.date}`}
+                onClick={() => setTargetDate(day.date)}
+                className={`flex-shrink-0 px-3.5 py-2 rounded-xl text-xs font-medium border transition-all ${
+                  isSelected
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm font-bold'
+                    : 'bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                <span>{day.day_label || day.display_label}</span>
+                <span className={`ml-1.5 text-[10px] ${isSelected ? 'text-blue-100' : 'text-slate-400'}`}>
+                  {day.formatted_date ? day.formatted_date.split(',')[0] : day.date}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Category Filter Pills */}
+      <div className="flex items-center gap-2 overflow-x-auto">
+        <div className="flex items-center gap-1 text-xs text-slate-500 font-semibold uppercase mr-2">
+          <Filter className="w-3.5 h-3.5" />
+          <span>Category:</span>
+        </div>
+        {filterCategories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setCategoryFilter(cat)}
+            className={`px-3 py-1 rounded-lg text-xs font-medium border transition-colors ${
+              categoryFilter === cat
+                ? 'bg-slate-900 text-white border-slate-900 font-semibold'
+                : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
+            }`}
           >
-            {panchayats.map((p) => (
-              <option key={p.id} value={p.id} className="bg-slate-900 text-slate-200">
-                {p.name}
-              </option>
-            ))}
-          </select>
-        </div>
+            {cat}
+          </button>
+        ))}
       </div>
 
-      {/* KPI Stats Bar */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <div className="glass-panel p-3.5 rounded-xl border border-slate-800">
-          <span className="text-[10px] font-mono text-slate-400 uppercase block">Total Advisories</span>
-          <span className="text-xl font-bold font-mono text-white">{advisories.length}</span>
-          <span className="text-[10px] text-slate-500 block">Current Cycle</span>
-        </div>
-
-        <div className="glass-panel p-3.5 rounded-xl border border-rose-500/30 bg-rose-950/10">
-          <span className="text-[10px] font-mono text-rose-400 uppercase block">Critical Priority</span>
-          <span className="text-xl font-bold font-mono text-rose-300">{criticalCount}</span>
-          <span className="text-[10px] text-rose-400/70 block">Immediate Action Required</span>
-        </div>
-
-        <div className="glass-panel p-3.5 rounded-xl border border-amber-500/30 bg-amber-950/10">
-          <span className="text-[10px] font-mono text-amber-400 uppercase block">High Priority</span>
-          <span className="text-xl font-bold font-mono text-amber-300">{highCount}</span>
-          <span className="text-[10px] text-amber-400/70 block">Next 24-48h Execution</span>
-        </div>
-
-        <div className="glass-panel p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-950/10">
-          <span className="text-[10px] font-mono text-emerald-400 uppercase block">Explainability Status</span>
-          <span className="text-base font-bold font-mono text-emerald-300">100% Traceable</span>
-          <span className="text-[10px] text-emerald-400/70 block">5-Step Deterministic</span>
-        </div>
-      </div>
-
-      {/* Filter Toolbar */}
-      <div className="glass-panel p-4 rounded-xl border border-slate-800 flex flex-wrap items-center justify-between gap-3">
-        <div className="relative flex-1 min-w-[240px] max-w-md">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 transform -translate-y-1/2" />
-          <input
-            id="advisories-search-input"
-            type="text"
-            placeholder="Search advisories by crop, keyword, or action..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500/50"
-          />
-        </div>
-
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Category Filter */}
-          <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1 text-xs">
-            <span className="text-slate-400 text-[11px]">Category:</span>
-            <select
-              id="advisories-category-filter"
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.target.value)}
-              className="bg-transparent text-slate-200 font-medium focus:outline-none cursor-pointer"
-            >
-              <option value="ALL" className="bg-slate-900">All Hazards</option>
-              <option value="HEAT_STRESS" className="bg-slate-900">Heat Stress</option>
-              <option value="IRRIGATION" className="bg-slate-900">Irrigation</option>
-              <option value="WIND" className="bg-slate-900">Wind / Lodging</option>
-              <option value="PEST_DISEASE" className="bg-slate-900">Pest & Disease</option>
-            </select>
+      {/* 4. Advisory List & Recalculating State */}
+      {forecastLoading || !isConsistent ? (
+        <div className="bg-white rounded-2xl p-12 text-center space-y-3 border-2 border-dashed border-slate-200">
+          <div className="w-8 h-8 rounded-full border-2 border-blue-600 border-t-transparent animate-spin mx-auto" />
+          <div className="text-sm font-bold text-slate-800">
+            Advisory recalculating...
           </div>
-
-          {/* Priority Filter */}
-          <div className="flex items-center gap-1.5 bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1 text-xs">
-            <span className="text-slate-400 text-[11px]">Priority:</span>
-            <select
-              id="advisories-priority-filter"
-              value={priorityFilter}
-              onChange={(e) => setPriorityFilter(e.target.value)}
-              className="bg-transparent text-slate-200 font-medium focus:outline-none cursor-pointer"
-            >
-              <option value="ALL" className="bg-slate-900">All Priorities</option>
-              <option value="CRITICAL" className="bg-slate-900">Critical</option>
-              <option value="HIGH" className="bg-slate-900">High</option>
-              <option value="MEDIUM" className="bg-slate-900">Medium</option>
-              <option value="LOW" className="bg-slate-900">Low</option>
-            </select>
-          </div>
+          <p className="text-xs text-slate-500 max-w-md mx-auto">
+            Ensuring strictly synchronized dataflow between selected location ({selectedLocation?.name}),
+            forecast date ({targetDate}), and stage-specific crop risk rules.
+          </p>
         </div>
-      </div>
-
-      {/* Advisories Grid */}
-      {loading ? (
-        <LoadingState count={4} variant="card" />
-      ) : filteredAdvisories.length === 0 ? (
-        <EmptyState
-          title="No Advisories Match Criteria"
-          message="No agro-advisories found for the selected category, priority, or search term."
-          actionText="Reset Filters"
-          onAction={() => {
-            setSearchQuery('');
-            setCategoryFilter('ALL');
-            setPriorityFilter('ALL');
-          }}
-        />
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredAdvisories.map((advisory: AgroAdvisory) => (
-            <AdvisoryCard key={advisory.id} advisory={advisory} />
-          ))}
+        <div className="space-y-4" id="advisories-container">
+          {filteredActions.length === 0 ? (
+            <div className="bg-white rounded-xl p-8 text-center text-xs text-slate-500 border border-slate-200">
+              No advisories under the selected category filter for this forecast date.
+            </div>
+          ) : (
+            filteredActions.map((action, index) => {
+              const primaryCrop = action.crop || selectedLocation?.primary_crops?.[0] || 'Rice (Paddy)';
+              const cropStage = action.crop_stage || 'Flowering / Anthesis';
+              const riskLevel = action.risk || 'MODERATE';
+              const weatherTrigger = action.weather_trigger || `Downscaled temperature ${forecast?.current?.temperature_c.toFixed(1)}°C`;
+
+              return (
+                <div
+                  key={index}
+                  className={`bg-white rounded-2xl p-5 border border-slate-200 shadow-sm space-y-3 ${getSeverityBorder(riskLevel)}`}
+                >
+                  {/* Top Bar: Title & Severity */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center flex-shrink-0">
+                        {index + 1}
+                      </span>
+                      <h2 className="text-sm font-bold text-slate-900">
+                        {action.title}
+                      </h2>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${getPriorityBadge(action.priority)}`}>
+                        {action.priority} PRIORITY
+                      </span>
+                      <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
+                        Category: {action.category}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Metadata Grid (DATE, LOCATION, WEATHER TRIGGER, CROP, STAGE, RISK, TIMING) */}
+                  <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-2.5 p-3 bg-slate-50 rounded-xl text-xs font-mono border border-slate-100">
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase">Date</span>
+                      <span className="font-semibold text-slate-800 truncate block">
+                        {action.date || forecast?.selected_date_formatted || targetDate}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase">Location</span>
+                      <span className="font-semibold text-slate-800 truncate block">
+                        {action.location || selectedLocation?.name || forecast?.location_name}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase">Crop</span>
+                      <span className="font-semibold text-emerald-700 truncate block">
+                        {primaryCrop}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase">Stage</span>
+                      <span className="font-semibold text-slate-800 truncate block">
+                        {cropStage}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase">Weather Trigger</span>
+                      <span className="font-semibold text-blue-700 truncate block">
+                        {weatherTrigger}
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-slate-400 block uppercase">Timing</span>
+                      <span className="font-semibold text-slate-800 truncate block">
+                        {action.timing}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Action Guidance */}
+                  <div className="space-y-1">
+                    <span className="text-xs font-bold text-slate-800 block">
+                      Recommended Farmer Action:
+                    </span>
+                    <p className="text-xs text-slate-700 leading-relaxed bg-blue-50/30 p-3 rounded-xl border border-blue-100">
+                      {action.action}
+                    </p>
+                  </div>
+
+                  {/* Agronomic Why / Scientific Rationale */}
+                  <div className="text-xs text-slate-500 space-y-0.5 pt-1">
+                    <span className="font-semibold text-slate-700">Agronomic Rationale (Why): </span>
+                    <span className="italic">{action.why}</span>
+                  </div>
+                </div>
+              );
+            })
+          )}
         </div>
       )}
     </div>

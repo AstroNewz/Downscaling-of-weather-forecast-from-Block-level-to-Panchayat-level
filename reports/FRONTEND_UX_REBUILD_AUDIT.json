@@ -1,0 +1,119 @@
+{
+  "audit_name": "FRONTEND_UX_REBUILD_AUDIT",
+  "project": "AgroWeather — SIH Problem Statement 26074",
+  "audit_timestamp": "2026-09-26T09:44:00+05:30",
+  "status": "PASSED",
+  "system_summary": {
+    "theme": "Light-first (Slate-50 / White / High Contrast)",
+    "target_date_dynamic": true,
+    "current_date_observed": "2026-09-26",
+    "hardcoded_date_status": "ELIMINATED",
+    "stale_data_remediation": "ENFORCED (AbortController + State Machine Invalidation)",
+    "scientific_integrity": "PRESERVED (Certified +0.7351°C & Dynamic V2 Untouched)",
+    "safeguards_active": 5
+  },
+  "backend_contract_audit": {
+    "endpoint": "/api/v1/forecast",
+    "test_suite": "backend/tests/test_forecast_api.py",
+    "tests_total": 9,
+    "tests_passed": 9,
+    "tests_failed": 0,
+    "verified_parameters": [
+      "location_type",
+      "location_id",
+      "latitude",
+      "longitude",
+      "target_date",
+      "start_date",
+      "end_date",
+      "timezone",
+      "mode"
+    ],
+    "verified_contract_fields": [
+      "location_id",
+      "location_name",
+      "latitude",
+      "longitude",
+      "forecast_date",
+      "forecast_hour",
+      "request_id",
+      "generated_at",
+      "source_timestamp",
+      "forecast_valid_time"
+    ]
+  },
+  "frontend_ui_audit": {
+    "build_status": "SUCCESS (0 errors)",
+    "pages_verified": [
+      {
+        "route": "/",
+        "name": "Dashboard",
+        "theme": "Light",
+        "verified_elements": [
+          "Where-When-Weather-Risk-Action Hierarchy",
+          "Diurnal Hourly Temperature & Rain Curve",
+          "7-Day Synoptic Outlook Strip",
+          "Actionable Agronomic Farmer Guidance Cards",
+          "Transparent Commercial Provider Comparison Note"
+        ]
+      },
+      {
+        "route": "/forecast",
+        "name": "Forecast View",
+        "theme": "Light",
+        "verified_elements": [
+          "24-Hour Diurnal Downscaled Schedule",
+          "Micro-Climate Scalar Metrics",
+          "Synchronized Agromet Guidance"
+        ]
+      },
+      {
+        "route": "/panchayats",
+        "name": "Panchayats Directory",
+        "theme": "Light",
+        "verified_elements": [
+          "Panchayat Directory & Explorer",
+          "LGD Metadata (P1)",
+          "Spatial Coordinates & Elevation"
+        ]
+      },
+      {
+        "route": "/advisories",
+        "name": "Agro Advisories",
+        "theme": "Light",
+        "verified_elements": [
+          "Advisory Consistency Engine",
+          "Synchronized Target Date Indicator",
+          "Actionable Farmer Advice (Crop, Stage, Trigger, Timing, Why)"
+        ]
+      },
+      {
+        "route": "/map",
+        "name": "Geospatial Map",
+        "theme": "Light",
+        "verified_elements": [
+          "1-km Spatial Micro-Climate Grid",
+          "UTM Zone 44N Metric Projection",
+          "EPSG:3857 Web Rendering Layer"
+        ]
+      },
+      {
+        "route": "/system-status",
+        "name": "Scientific Governance",
+        "theme": "Light",
+        "verified_elements": [
+          "SIH PS 26074 Certification Manifest",
+          "Dynamic V2 Production Status",
+          "5 Active Operational Safeguards"
+        ]
+      }
+    ]
+  },
+  "browser_acceptance_results": {
+    "recording_file": "agroweather_ux_walkthrough_1790395586137.webp",
+    "date_switching_verified": true,
+    "location_switching_verified": true,
+    "farmer_vs_technical_toggle_verified": true,
+    "advisory_forecast_sync_verified": true
+  }
+}

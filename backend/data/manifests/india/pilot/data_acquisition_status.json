@@ -1,0 +1,269 @@
+{
+  "generated_at": "2026-09-16T20:34:40.312062+00:00",
+  "sources": {
+    "SOILGRIDS_250M": {
+      "source_type": "DERIVED",
+      "timestamp_utc": "2026-09-16T20:34:40.312076+00:00",
+      "status": "DOWNLOADED",
+      "records": 9,
+      "valid_locations": 7,
+      "files": [
+        "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/data/raw/india/pilot/soilgrids_varanasi_pilot_points.json"
+      ],
+      "notes": "Point queries for pilot AOI locations. Spatial raster download requires GDAL/WCS."
+    },
+    "OSM_ADMIN_BOUNDARIES": {
+      "source_type": "ADMINISTRATIVE",
+      "timestamp_utc": "2026-09-16T20:34:42.302254+00:00",
+      "status": "DOWNLOADED",
+      "elements": 0,
+      "relations": 0,
+      "files": [
+        "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/data/raw/india/pilot/admin_boundaries_varanasi_osm.json"
+      ],
+      "note": "OSM boundaries. LGD is authoritative for GoI but requires registration."
+    },
+    "ESA_WORLDCOVER_10M": {
+      "source_type": "REMOTE_SENSING",
+      "status": "DOWNLOADED",
+      "timestamp_utc": "2026-09-16T20:50:52.304505+00:00",
+      "tile": "ESA_WorldCover_10m_2021_v200_N24E081_Map",
+      "size_bytes": 126723055,
+      "sha256": "c55e245d83af125cd95c17c9c367174d5318a9560ebc4e58493007eafcd24959",
+      "files": [
+        "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/data/raw/india/pilot/ESA_WorldCover_10m_2021_v200_N24E081_Map.tif"
+      ]
+    },
+    "ERA5": {
+      "source_type": "REANALYSIS",
+      "timestamp_utc": "2026-09-16T20:45:33.586723+00:00",
+      "status": "SOURCE_ACCESS_REQUIRED",
+      "reason": "~/.cdsapirc not found. Register at https://cds.climate.copernicus.eu/",
+      "action": "1. Register free account at https://cds.climate.copernicus.eu/\n2. Accept ERA5 Terms of Use\n3. Copy UID and API key from profile\n4. Create ~/.cdsapirc:\n   url: https://cds.climate.copernicus.eu/api/v2\n   key: <UID>:<API_KEY>\n5. pip3 install cdsapi\n6. Run: python3 data_pipeline/download_era5.py",
+      "files": []
+    },
+    "ERA5_LAND": {
+      "source_type": "REANALYSIS",
+      "timestamp_utc": "2026-09-16T20:45:33.586857+00:00",
+      "status": "SOURCE_ACCESS_REQUIRED",
+      "reason": "Same CDS credentials as ERA5. Configure ~/.cdsapirc first.",
+      "files": []
+    },
+    "IMD_AWS_STATION": {
+      "source_type": "OBSERVATION",
+      "timestamp_utc": "2026-09-16T20:45:33.586980+00:00",
+      "status": "SOURCE_ACCESS_REQUIRED",
+      "reason": "No IMD credentials. Formal data sharing agreement required.",
+      "action": "1. Visit https://www.imd.gov.in/pages/services_data.php\n2. Apply for institutional data access (government email preferred)\n3. Request Varanasi district AWS data (2024-06-01 to 2024-08-31)\n4. Set IMD_FTP_HOST, IMD_FTP_USER, IMD_FTP_PASS in backend/.env\n5. Run: python3 data_pipeline/download_imd.py",
+      "note": "IMD OBSERVATION DATA NOT AVAILABLE. Without IMD station data, the training target can only use ERA5-Land as reference (REANALYSIS), which constitutes REANALYSIS-to-REANALYSIS evaluation \u2014 not station validation.",
+      "files": []
+    },
+    "SRTM_30M": {
+      "source_type": "REMOTE_SENSING",
+      "timestamp_utc": "2026-09-16T20:45:34.957166+00:00",
+      "status": "SOURCE_ACCESS_REQUIRED",
+      "reason": "NASA Earthdata free account OR OpenTopography API key required.",
+      "action": "Option A (preferred):\n  1. Register at https://portal.opentopography.org/\n  2. Request API key (free)\n  3. Set OPENTOPOGRAPHY_API_KEY=<key> in backend/.env\n  4. Run: python3 data_pipeline/download_dem.py\nOption B:\n  1. Register at https://urs.earthdata.nasa.gov/\n  2. Download tiles N25E082 and N25E083 from:\n     https://lpdaac.usgs.gov/products/srtmgl1v003/",
+      "files": []
+    },
+    "BHUVAN_LULC_50K": {
+      "source_type": "REMOTE_SENSING",
+      "timestamp_utc": "2026-09-16T20:45:34.958966+00:00",
+      "status": "SOURCE_ACCESS_REQUIRED",
+      "reason": "BHUVAN_USER and BHUVAN_PASS not set. Register at https://bhuvan.nrsc.gov.in/",
+      "files": []
+    },
+    "LGD_BOUNDARIES": {
+      "source_type": "ADMINISTRATIVE",
+      "status": "SOURCE_ACCESS_REQUIRED",
+      "timestamp_utc": "2026-09-16T20:41:48.789038+00:00",
+      "reason": "Registration at lgdirectory.gov.in required.",
+      "files": []
+    },
+    "NOAA_ISD_BABATPUR": {
+      "source_type": "OBSERVATION",
+      "status": "NETWORK_ERROR",
+      "timestamp_utc": "2026-09-16T20:59:57.778866+00:00",
+      "reason": "ISD Lite gzip download failed for station 423600-99999 year 2024",
+      "files": [],
+      "note": "REAL_REFERENCE_DATA_REQUIRED \u2014 without observation data, residual target cannot be constructed"
+    },
+    "OPEN_METEO_ERA5": {
+      "source_type": "REANALYSIS",
+      "status": "DOWNLOADED",
+      "timestamp_utc": "2026-09-16T21:05:51.510340+00:00",
+      "record_count": 13248,
+      "grid_points": 6,
+      "failed_points": [],
+      "size_bytes": 6267131,
+      "sha256": "1deb855b34f8b0843e2ddbd3b63a7759d66c5055ae93c0928ecc8f58cdc1b257",
+      "files": [
+        "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/data/raw/india/pilot/openmeteo_era5_varanasi_2024.json"
+      ],
+      "note": "ERA5 via Open-Meteo API. REANALYSIS. Coarse input only."
+    },
+    "NOAA_ISD_424790": {
+      "source_type": "OBSERVATION",
+      "status": "DOWNLOADED",
+      "timestamp_utc": "2026-09-16T21:05:51.515211+00:00",
+      "record_count": 1944,
+      "temperature_observations": 1944,
+      "files": [
+        "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/data/raw/india/pilot/noaa_isd_424790_2024.json"
+      ],
+      "note": "NOAA ISD Lite \u2014 real station OBSERVATION, independent reference."
+    },
+    "NOAA_ISD_424830": {
+      "source_type": "OBSERVATION",
+      "status": "DOWNLOADED",
+      "timestamp_utc": "2026-09-16T21:05:51.518401+00:00",
+      "record_count": 434,
+      "temperature_observations": 434,
+      "files": [
+        "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/data/raw/india/pilot/noaa_isd_424830_2024.json"
+      ],
+      "note": "NOAA ISD Lite \u2014 real station OBSERVATION, independent reference."
+    }
+  },
+  "last_updated_utc": "2026-09-16T21:50:08.149003+00:00",
+  "candidate_model": {
+    "version": "candidate_v1_20260916T210904Z",
+    "status": "TRAINED",
+    "timestamp_utc": "2026-09-16T21:09:04.691924+00:00",
+    "path": "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/models/candidates/temperature_residual/candidate_v1_20260916T210904Z/model.json",
+    "metrics": {
+      "train": {
+        "n": 966,
+        "MAE_C": 0.5019,
+        "RMSE_C": 0.6707,
+        "R2": 0.8208,
+        "bias_C": 0.0024
+      },
+      "validation": {
+        "n": 334,
+        "MAE_C": 0.9593,
+        "RMSE_C": 1.2379,
+        "R2": -0.4906,
+        "bias_C": -0.4039
+      },
+      "test": {
+        "n": 644,
+        "MAE_C": 1.2341,
+        "RMSE_C": 1.6064,
+        "R2": -0.4348,
+        "bias_C": -0.3337
+      }
+    },
+    "production_model_modified": false
+  },
+  "pipeline_status": {
+    "pipeline_tested": true,
+    "data_downloaded": true,
+    "data_validated": true,
+    "dataset_built": true,
+    "candidate_model_trained": true,
+    "production_model_modified": false
+  },
+  "candidate_model_v2": {
+    "version": "candidate_v2_20260916T212349Z",
+    "status": "TRAINED",
+    "timestamp_utc": "2026-09-16T21:23:49.345889+00:00",
+    "path": "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/models/candidates/temperature_residual/candidate_v2_20260916T212349Z/model.json",
+    "test_MAE": 1.0768,
+    "test_RMSE": 1.4043,
+    "test_R2": -0.0888,
+    "improved_over_baseline": false,
+    "production_model_modified": false
+  },
+  "stations": {
+    "NOAA_ISD_424790": {
+      "station_id": "NOAA_ISD_424790",
+      "station_name": "Lal Bahadur Shastri Varanasi Intl",
+      "dist_km": 0.8,
+      "latitude": 25.45,
+      "longitude": 82.867,
+      "elevation_m": 81.1,
+      "total_records": 1944,
+      "valid_records": 1944,
+      "missing_records": 0,
+      "invalid_records": 0,
+      "is_spatial_holdout": false,
+      "project_aws_mapping": "AWS_BABATPUR_002"
+    },
+    "NOAA_ISD_424830": {
+      "station_id": "NOAA_ISD_424830",
+      "station_name": "Varanasi Synoptic",
+      "dist_km": 24.1,
+      "latitude": 25.3,
+      "longitude": 83.017,
+      "elevation_m": 90.0,
+      "total_records": 434,
+      "valid_records": 434,
+      "missing_records": 0,
+      "invalid_records": 0,
+      "is_spatial_holdout": false,
+      "project_aws_mapping": "NONE"
+    },
+    "NOAA_ISD_424820": {
+      "station_id": "NOAA_ISD_424820",
+      "station_name": "Ghazipur",
+      "dist_km": 76.8,
+      "latitude": 25.4,
+      "longitude": 83.55,
+      "elevation_m": 80.0,
+      "total_records": 133,
+      "valid_records": 132,
+      "missing_records": 1,
+      "invalid_records": 0,
+      "is_spatial_holdout": true,
+      "project_aws_mapping": "NONE"
+    },
+    "NOAA_ISD_424750": {
+      "station_id": "NOAA_ISD_424750",
+      "station_name": "Allahabad Airport",
+      "dist_km": 125.0,
+      "latitude": 25.44,
+      "longitude": 81.734,
+      "elevation_m": 98.0,
+      "total_records": 125,
+      "valid_records": 125,
+      "missing_records": 0,
+      "invalid_records": 0,
+      "is_spatial_holdout": false,
+      "project_aws_mapping": "NONE"
+    }
+  },
+  "srtm": {
+    "status": "DOWNLOADED",
+    "source": "NASA SRTMGL1 v003 via AWS elevation-tiles-prod",
+    "tiles": {
+      "N25E082": "e4db6d8c1bc860cbd6a6cf0a1c6c2dfa823eaa88a700fff62bd72877d9a9cf33",
+      "N25E083": "77cd2d021919d848a994604d485f05375690c7931b08fd64c2200dd759b5df6a"
+    },
+    "resolution": "~30m",
+    "files": [
+      "N25E082.hgt.gz",
+      "N25E083.hgt.gz",
+      "srtm_varanasi_terrain.json"
+    ]
+  },
+  "candidate_model_v3": {
+    "version": "candidate_v3_20260916T213422Z",
+    "status": "TRAINED",
+    "timestamp_utc": "2026-09-16T21:34:22.418415+00:00",
+    "test_MAE": 1.0768,
+    "test_RMSE": 1.4043,
+    "test_R2": -0.0888,
+    "improved_over_baseline": false,
+    "production_model_modified": false
+  },
+  "phase_18_freeze": {
+    "experiment_id": "EXP_VARANASI_PILOT_PHASE18_FREEZE",
+    "freeze_status": "FROZEN",
+    "timestamp_utc": "2026-09-16T21:50:08.148874+00:00",
+    "model_decision": "RETAIN_FOR_RESEARCH / REJECT_FOR_PRODUCTION",
+    "operational_baseline": "RAW_ERA5",
+    "production_model_status": "ABSENT_UNCHANGED",
+    "tests_passing": 129
+  }
+}

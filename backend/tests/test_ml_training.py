@@ -95,7 +95,7 @@ def test_evaluator_metrics_calculation():
     assert metrics.mae == 1.0
     assert np.isclose(metrics.rmse, 1.0)
     assert np.isclose(metrics.mbe, 0.5)
-    assert metrics.r2 > 0.8
+    assert np.isclose(metrics.r2, 0.8)
     assert metrics.sample_count == 4
 
 

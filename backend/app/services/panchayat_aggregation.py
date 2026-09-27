@@ -8,7 +8,7 @@ boundaries using area-weighted spatial polygon intersection in metric projected 
 import uuid
 import math
 from datetime import datetime
-from typing import List, Dict, Any, Optional, Tuple
+from typing import List, Dict, Any, Optional, Tuple, Union
 import numpy as np
 from sqlalchemy.orm import Session
 from sqlalchemy import select, and_

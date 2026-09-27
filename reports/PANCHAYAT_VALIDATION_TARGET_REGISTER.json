@@ -1,0 +1,563 @@
+{
+  "register_version": "1.0.0",
+  "generated_at": "2026-09-26T12:22:00+00:00",
+  "task": "TASK_4_PANCHAYAT_VALIDATION_TARGET_REGISTER",
+  "description": "Scientific Target Register of Representative Gram Panchayats Across All 9 Indian Physiographic & Agro-Climatic Regimes (SIH Problem Statement 26074)",
+  "governance_note": "Target selection is strictly scientific (maximizing physiographic, terrain, and agricultural diversity). No target is upgraded based on forecast generation capability.",
+  "total_target_categories": 9,
+  "total_target_panchayats": 18,
+  "targets": [
+    {
+      "panchayat_id": "UP_VAR_001",
+      "panchayat_name": "Maya Bazar Gram Panchayat",
+      "block": "Maya Bazar Demonstration Block",
+      "district": "Varanasi",
+      "state": "Uttar Pradesh",
+      "centroid": {
+        "latitude": 25.35,
+        "longitude": 82.95
+      },
+      "elevation_m": 112.0,
+      "physiographic_class": "Gangetic Alluvial Plain",
+      "agricultural_context": "Paddy-Wheat / Intensively irrigated Gangetic alluvial belt; vulnerable to Kharif heat stress and lodging",
+      "nearest_existing_observation_station": {
+        "station_id": "424830-99999",
+        "station_name": "Varanasi Synoptic",
+        "distance_km": 8.78,
+        "site_type": "Synoptic / Urban Synoptic"
+      },
+      "secondary_station": {
+        "station_id": "424790-99999",
+        "station_name": "Varanasi Babatpur Airport",
+        "distance_km": 13.91,
+        "site_type": "Airport / Peri-Urban Agri"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_25.25N_83.00E",
+        "center_latitude": 25.25,
+        "center_longitude": 83.0,
+        "distance_to_center_km": 12.21
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "PARTIALLY_OBSERVED_AT_MESO_SCALE",
+      "required_observation_density": ">=2 independent in-situ agricultural stations within <= 5 km",
+      "primary_data_source_needed": "IMD Agro-AWS / KVK Varanasi Farm Observatory / UP Agromet Network"
+    },
+    {
+      "panchayat_id": "UP_VAR_004",
+      "panchayat_name": "Baragaon Gram Panchayat",
+      "block": "Baragaon Block",
+      "district": "Varanasi",
+      "state": "Uttar Pradesh",
+      "centroid": {
+        "latitude": 25.45,
+        "longitude": 82.82
+      },
+      "elevation_m": 92.0,
+      "physiographic_class": "Gangetic Alluvial Plain",
+      "agricultural_context": "Sugarcane and Kharif Rice agro-ecosystem; adjacent to riverine terrace",
+      "nearest_existing_observation_station": {
+        "station_id": "424790-99999",
+        "station_name": "Varanasi Babatpur Airport",
+        "distance_km": 4.02,
+        "site_type": "Airport / Peri-Urban Agri"
+      },
+      "secondary_station": {
+        "station_id": "424830-99999",
+        "station_name": "Varanasi Synoptic",
+        "distance_km": 25.68,
+        "site_type": "Synoptic / Urban Synoptic"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_25.50N_82.75E",
+        "center_latitude": 25.5,
+        "center_longitude": 82.75,
+        "distance_to_center_km": 8.94
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "PROXIMATE_TO_AIRPORT_SYNOPTIC",
+      "required_observation_density": ">=2 independent stations inside Baragaon Panchayat boundaries to verify airport vs canopy differential",
+      "primary_data_source_needed": "IMD Agro-AWS Babatpur Agriculture Extension Unit"
+    },
+    {
+      "panchayat_id": "KA_BLR_001",
+      "panchayat_name": "Hoskote Gram Panchayat",
+      "block": "Hoskote",
+      "district": "Bengaluru Rural",
+      "state": "Karnataka",
+      "centroid": {
+        "latitude": 13.07,
+        "longitude": 77.79
+      },
+      "elevation_m": 875.0,
+      "physiographic_class": "Deccan Plateau",
+      "agricultural_context": "Semi-arid horticultural and ragi (finger millet) cropping belt; undulating red soil terrain",
+      "nearest_existing_observation_station": {
+        "station_id": "432950-99999",
+        "station_name": "Bangalore / Bengaluru HAL",
+        "distance_km": 25.12,
+        "site_type": "Airport / Urban Plateau"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_13.00N_77.75E",
+        "center_latitude": 13.0,
+        "center_longitude": 77.75,
+        "distance_to_center_km": 8.87
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "REGIONAL_HOLD_OUT",
+      "required_observation_density": ">=2 physical agricultural stations within <= 5 km",
+      "primary_data_source_needed": "KSNDMC Gram Panchayat Telemetric Weather Station Network (Karnataka)"
+    },
+    {
+      "panchayat_id": "KA_DHW_001",
+      "panchayat_name": "Rayanal Gram Panchayat",
+      "block": "Hubballi",
+      "district": "Dharwad",
+      "state": "Karnataka",
+      "centroid": {
+        "latitude": 15.32,
+        "longitude": 75.12
+      },
+      "elevation_m": 650.0,
+      "physiographic_class": "Deccan Plateau",
+      "agricultural_context": "Black-cotton soil dryland agrarian belt (cotton, pulses, maize, jowar)",
+      "nearest_existing_observation_station": {
+        "station_id": "432011-99999",
+        "station_name": "Hubli / Hubballi Airport",
+        "distance_km": 5.14,
+        "site_type": "Airport / Deccan Agri"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_15.25N_75.00E",
+        "center_latitude": 15.25,
+        "center_longitude": 75.0,
+        "distance_to_center_km": 15.11
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "NEAR_AIRPORT_DECCAN",
+      "required_observation_density": ">=2 independent in-situ stations in cotton/pulse canopy",
+      "primary_data_source_needed": "KSNDMC Hubballi Taluka Mesonet / UAS Dharwad Agromet Observatory"
+    },
+    {
+      "panchayat_id": "MH_RGD_001",
+      "panchayat_name": "Alibag Rural Gram Panchayat",
+      "block": "Alibag",
+      "district": "Raigad",
+      "state": "Maharashtra",
+      "centroid": {
+        "latitude": 18.65,
+        "longitude": 72.88
+      },
+      "elevation_m": 8.0,
+      "physiographic_class": "Coastal Maritime",
+      "agricultural_context": "Coastal rice-paddy and coconut/betelnut plantations; extreme marine humidity and sea-breeze modulation",
+      "nearest_existing_observation_station": {
+        "station_id": "430030-99999",
+        "station_name": "Mumbai Santacruz",
+        "distance_km": 48.78,
+        "site_type": "Airport / Maritime Urban"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_18.75N_73.00E",
+        "center_latitude": 18.75,
+        "center_longitude": 73.0,
+        "distance_to_center_km": 16.92
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "MARITIME_EDGE_UNRESOLVED",
+      "required_observation_density": ">=2 independent stations at shoreline vs 3 km inland to validate coastal marine thermal gradient",
+      "primary_data_source_needed": "Mahavedh Raigad Circle AWS / Dr. BSKKV Dapoli Marine Station"
+    },
+    {
+      "panchayat_id": "KL_EKM_001",
+      "panchayat_name": "Cherai Gram Panchayat",
+      "block": "Vypin",
+      "district": "Ernakulam",
+      "state": "Kerala",
+      "centroid": {
+        "latitude": 10.14,
+        "longitude": 76.18
+      },
+      "elevation_m": 3.0,
+      "physiographic_class": "Coastal Maritime",
+      "agricultural_context": "Pokkali saltwater-resistant rice and integrated shrimp-paddy aquaculture; coastal lagoon fringe",
+      "nearest_existing_observation_station": {
+        "station_id": "433530-99999",
+        "station_name": "Cochin / Kochi Naval",
+        "distance_km": 23.55,
+        "site_type": "Naval / Lagoon Agri"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_10.25N_76.25E",
+        "center_latitude": 10.25,
+        "center_longitude": 76.25,
+        "distance_to_center_km": 14.43
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "MALABAR_COAST_OBSERVED_MACRO",
+      "required_observation_density": ">=2 independent sensors within coastal wetland microclimate",
+      "primary_data_source_needed": "IMD Agro-AWS Kerala / KAU Rice Research Station Vyttila"
+    },
+    {
+      "panchayat_id": "MH_SAT_001",
+      "panchayat_name": "Wai Gram Panchayat",
+      "block": "Wai",
+      "district": "Satara",
+      "state": "Maharashtra",
+      "centroid": {
+        "latitude": 17.95,
+        "longitude": 73.89
+      },
+      "elevation_m": 718.0,
+      "physiographic_class": "Western Ghats Transition",
+      "agricultural_context": "Krishna river valley strawberry and sugarcane belt; steep orographic transition from high Ghat ridge (1400m) to leeward valley (700m)",
+      "nearest_existing_observation_station": {
+        "station_id": "430630-99999",
+        "station_name": "Pune",
+        "distance_km": 65.11,
+        "site_type": "Airport / Leeward Plateau"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_18.00N_74.00E",
+        "center_latitude": 18.0,
+        "center_longitude": 74.0,
+        "distance_to_center_km": 12.87
+      },
+      "current_validation_level": "LEVEL_1",
+      "current_validation_status": "COMPLEX_OROGRAPHIC_VOID",
+      "required_observation_density": ">=3 stations across 5-km altitudinal transect (valley floor to ridge)",
+      "primary_data_source_needed": "Mahavedh Satara AWS / Mahabaleshwar High Altitude Cloud Physics Lab"
+    },
+    {
+      "panchayat_id": "KA_BLG_001",
+      "panchayat_name": "Khanapur Gram Panchayat",
+      "block": "Khanapur",
+      "district": "Belagavi",
+      "state": "Karnataka",
+      "centroid": {
+        "latitude": 15.63,
+        "longitude": 74.51
+      },
+      "elevation_m": 649.0,
+      "physiographic_class": "Western Ghats Transition",
+      "agricultural_context": "High-rainfall transitional paddy and spice agroforestry zone on the Ghats western rim",
+      "nearest_existing_observation_station": {
+        "station_id": "431971-99999",
+        "station_name": "Belgaum / Belagavi Sambra",
+        "distance_km": 27.03,
+        "site_type": "Airport / High Plateau Agri"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_15.50N_74.50E",
+        "center_latitude": 15.5,
+        "center_longitude": 74.5,
+        "distance_to_center_km": 14.51
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "GHATS_SCARP_EDGE",
+      "required_observation_density": ">=2 stations within 5 km to capture steep orographic lapse rate",
+      "primary_data_source_needed": "KSNDMC Khanapur Hobli Telemetric AWS"
+    },
+    {
+      "panchayat_id": "AS_KAM_001",
+      "panchayat_name": "Rani Gram Panchayat",
+      "block": "Rani",
+      "district": "Kamrup Metropolitan",
+      "state": "Assam",
+      "centroid": {
+        "latitude": 26.05,
+        "longitude": 91.62
+      },
+      "elevation_m": 58.0,
+      "physiographic_class": "Northeast Valley / Hills",
+      "agricultural_context": "Sub-tropical lowland alluvial tea and paddy gardens; bordered by Meghalaya plateau foothills",
+      "nearest_existing_observation_station": {
+        "station_id": "424100-99999",
+        "station_name": "Guwahati Borjhar",
+        "distance_km": 6.84,
+        "site_type": "Airport / Valley Agri"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_26.00N_91.50E",
+        "center_latitude": 26.0,
+        "center_longitude": 91.5,
+        "distance_to_center_km": 13.31
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "BRAHMAPUTRA_VALLEY_CLOSE",
+      "required_observation_density": ">=2 physical observations within <= 5 km",
+      "primary_data_source_needed": "AAU Jorhat / IMD Regional Meteorological Centre Borjhar Agromet Unit"
+    },
+    {
+      "panchayat_id": "ML_EKH_001",
+      "panchayat_name": "Sohra Gram Panchayat",
+      "block": "Shella Bholaganj",
+      "district": "East Khasi Hills",
+      "state": "Meghalaya",
+      "centroid": {
+        "latitude": 25.28,
+        "longitude": 91.72
+      },
+      "elevation_m": 1420.0,
+      "physiographic_class": "Northeast Valley / Hills",
+      "agricultural_context": "High-altitude orographic plateau; temperate fruits, betel nut, and terrace maize",
+      "nearest_existing_observation_station": {
+        "station_id": "425150-99999",
+        "station_name": "Cherrapunji",
+        "distance_km": 3.56,
+        "site_type": "Observatory / Orographic Plateau"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_25.25N_91.75E",
+        "center_latitude": 25.25,
+        "center_longitude": 91.75,
+        "distance_to_center_km": 4.54
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "HIGH_ALTITUDE_OROGRAPHIC_OBSERVED",
+      "required_observation_density": ">=2 stations separated by 2 km to validate plateau edge microclimates",
+      "primary_data_source_needed": "IMD Cherrapunji Meteorological Observatory / ICAR Barapani"
+    },
+    {
+      "panchayat_id": "UK_DDN_001",
+      "panchayat_name": "Sahaspur Gram Panchayat",
+      "block": "Sahaspur",
+      "district": "Dehradun",
+      "state": "Uttarakhand",
+      "centroid": {
+        "latitude": 30.38,
+        "longitude": 77.82
+      },
+      "elevation_m": 590.0,
+      "physiographic_class": "Himalayan Foothill",
+      "agricultural_context": "Intermontane Doon Valley basmati rice and litchi/mango horticulture; valley inversion effects",
+      "nearest_existing_observation_station": {
+        "station_id": "421110-99999",
+        "station_name": "Dehradun",
+        "distance_km": 21.32,
+        "site_type": "Synoptic / Valley Urban"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_30.50N_77.75E",
+        "center_latitude": 30.5,
+        "center_longitude": 77.75,
+        "distance_to_center_km": 14.94
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "DOON_VALLEY_MACRO_ONLY",
+      "required_observation_density": ">=2 stations within 5 km to quantify nocturnal valley cold-air pooling",
+      "primary_data_source_needed": "VCSG Uttarakhand University of Horticulture / FRI Dehradun Agromet Unit"
+    },
+    {
+      "panchayat_id": "HP_KLU_001",
+      "panchayat_name": "Naggar Gram Panchayat",
+      "block": "Naggar",
+      "district": "Kullu",
+      "state": "Himachal Pradesh",
+      "centroid": {
+        "latitude": 32.14,
+        "longitude": 77.16
+      },
+      "elevation_m": 1760.0,
+      "physiographic_class": "Himalayan Foothill",
+      "agricultural_context": "High-value apple orchard and temperate vegetable zone; extreme slope aspect solar radiation differentials",
+      "nearest_existing_observation_station": {
+        "station_id": "420830-99999",
+        "station_name": "Shimla",
+        "distance_km": 115.65,
+        "site_type": "Synoptic / Montane Ridge"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_32.25N_77.25E",
+        "center_latitude": 32.25,
+        "center_longitude": 77.25,
+        "distance_to_center_km": 14.88
+      },
+      "current_validation_level": "LEVEL_1",
+      "current_validation_status": "HIGH_HIMALAYAN_VALLEY_VOID",
+      "required_observation_density": ">=3 stations along north vs south-facing slope aspect transects",
+      "primary_data_source_needed": "Dr. YSP University of Horticulture (Nauni) / IARI Regional Station Amartara"
+    },
+    {
+      "panchayat_id": "MP_BHP_001",
+      "panchayat_name": "Phanda Gram Panchayat",
+      "block": "Phanda",
+      "district": "Bhopal",
+      "state": "Madhya Pradesh",
+      "centroid": {
+        "latitude": 23.22,
+        "longitude": 77.24
+      },
+      "elevation_m": 498.0,
+      "physiographic_class": "Central Plateau",
+      "agricultural_context": "Soybean-Wheat cropping system on vertisol (black cotton) soils; prone to monsoon dry spells",
+      "nearest_existing_observation_station": {
+        "station_id": "426670-99999",
+        "station_name": "Bhopal Bairagarh",
+        "distance_km": 13.12,
+        "site_type": "Airport / Plateau Agri"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_23.25N_77.25E",
+        "center_latitude": 23.25,
+        "center_longitude": 77.25,
+        "distance_to_center_km": 3.48
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "MALWA_PLATEAU_NEAR",
+      "required_observation_density": ">=2 stations in active soybean canopy within <= 5 km",
+      "primary_data_source_needed": "ICAR-Indian Institute of Soil Science (IISS) Bhopal AWS"
+    },
+    {
+      "panchayat_id": "JH_RNC_001",
+      "panchayat_name": "Namkum Gram Panchayat",
+      "block": "Namkum",
+      "district": "Ranchi",
+      "state": "Jharkhand",
+      "centroid": {
+        "latitude": 23.33,
+        "longitude": 85.38
+      },
+      "elevation_m": 635.0,
+      "physiographic_class": "Central Plateau",
+      "agricultural_context": "Chota Nagpur plateau rainfed upland rice, pulses, and off-season vegetables",
+      "nearest_existing_observation_station": {
+        "station_id": "427010-99999",
+        "station_name": "Ranchi Birsa Munda",
+        "distance_km": 6.18,
+        "site_type": "Airport / Plateau Agri"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_23.25N_85.50E",
+        "center_latitude": 23.25,
+        "center_longitude": 85.5,
+        "distance_to_center_km": 15.11
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "CHOTA_NAGPUR_PROXIMATE",
+      "required_observation_density": ">=2 stations within 5 km to capture plateau undulating micro-drainage",
+      "primary_data_source_needed": "Birsa Agricultural University (BAU) Kanke Agromet Unit"
+    },
+    {
+      "panchayat_id": "RJ_JAI_001",
+      "panchayat_name": "Bassi Gram Panchayat",
+      "block": "Bassi",
+      "district": "Jaipur",
+      "state": "Rajasthan",
+      "centroid": {
+        "latitude": 26.83,
+        "longitude": 76.04
+      },
+      "elevation_m": 372.0,
+      "physiographic_class": "Arid / Semi-Arid",
+      "agricultural_context": "Semi-arid pearl millet (bajra), mustard, and cluster bean agro-ecosystem; extreme diurnal temperature range",
+      "nearest_existing_observation_station": {
+        "station_id": "423480-99999",
+        "station_name": "Jaipur Sanganer",
+        "distance_km": 23.95,
+        "site_type": "Airport / Semi-Arid Urban"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_26.75N_76.00E",
+        "center_latitude": 26.75,
+        "center_longitude": 76.0,
+        "distance_to_center_km": 9.77
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "SEMI_ARID_EAST_RAJASTHAN",
+      "required_observation_density": ">=2 stations within 5 km to validate arid radiative cooling",
+      "primary_data_source_needed": "SKN Agriculture University Jobner / RARI Durgapura Agromet Unit"
+    },
+    {
+      "panchayat_id": "GJ_AHM_001",
+      "panchayat_name": "Sanand Gram Panchayat",
+      "block": "Sanand",
+      "district": "Ahmedabad",
+      "state": "Gujarat",
+      "centroid": {
+        "latitude": 22.99,
+        "longitude": 72.38
+      },
+      "elevation_m": 42.0,
+      "physiographic_class": "Arid / Semi-Arid",
+      "agricultural_context": "Semi-arid cotton, castor, and wheat cropping; high summertime heat index",
+      "nearest_existing_observation_station": {
+        "station_id": "426470-99999",
+        "station_name": "Ahmedabad",
+        "distance_km": 27.18,
+        "site_type": "Airport / Urban Plain"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_23.00N_72.50E",
+        "center_latitude": 23.0,
+        "center_longitude": 72.5,
+        "distance_to_center_km": 12.35
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "SABARMATI_PLAIN_PROXIMATE",
+      "required_observation_density": ">=2 stations within 5 km to verify peri-urban vs rural crop canopy",
+      "primary_data_source_needed": "Anand Agricultural University (AAU) / Gujarat State Agromet Network"
+    },
+    {
+      "panchayat_id": "AP_KRI_001",
+      "panchayat_name": "Guduru Gram Panchayat",
+      "block": "Guduru",
+      "district": "Krishna",
+      "state": "Andhra Pradesh",
+      "centroid": {
+        "latitude": 16.22,
+        "longitude": 81.08
+      },
+      "elevation_m": 4.0,
+      "physiographic_class": "Deltaic Agriculture",
+      "agricultural_context": "Krishna delta canal-irrigated paddy monoculture and aquaculture; high relative humidity and cyclonic maritime fringe",
+      "nearest_existing_observation_station": {
+        "station_id": "431850-99999",
+        "station_name": "Machilipatnam",
+        "distance_km": 7.82,
+        "site_type": "Synoptic / Delta Maritime"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_16.25N_81.00E",
+        "center_latitude": 16.25,
+        "center_longitude": 81.0,
+        "distance_to_center_km": 9.15
+      },
+      "current_validation_level": "LEVEL_2",
+      "current_validation_status": "KRISHNA_DELTA_SUB_10KM",
+      "required_observation_density": ">=2 stations within 5 km to separate water-surface vs crop-canopy heat flux",
+      "primary_data_source_needed": "ANGRAU Agricultural Research Station Machilipatnam"
+    },
+    {
+      "panchayat_id": "OD_KND_001",
+      "panchayat_name": "Rajnagar Gram Panchayat",
+      "block": "Rajnagar",
+      "district": "Kendrapara",
+      "state": "Odisha",
+      "centroid": {
+        "latitude": 20.58,
+        "longitude": 86.74
+      },
+      "elevation_m": 6.0,
+      "physiographic_class": "Deltaic Agriculture",
+      "agricultural_context": "Mahanadi-Brahmani delta coastal saline rice, mangrove buffer, and betel vine orchards",
+      "nearest_existing_observation_station": {
+        "station_id": "429710-99999",
+        "station_name": "Bhubaneswar",
+        "distance_km": 100.82,
+        "site_type": "Airport / Coastal Plain"
+      },
+      "era5_grid_cell": {
+        "cell_id": "ERA5_20.50N_86.75E",
+        "center_latitude": 20.5,
+        "center_longitude": 86.75,
+        "distance_to_center_km": 8.94
+      },
+      "current_validation_level": "LEVEL_1",
+      "current_validation_status": "EAST_COAST_DELTA_VOID",
+      "required_observation_density": ">=2 stations inside deltaic agro-ecosystem",
+      "primary_data_source_needed": "OUAT Regional Research Station / NRRI Cuttack Delta Unit"
+    }
+  ]
+}

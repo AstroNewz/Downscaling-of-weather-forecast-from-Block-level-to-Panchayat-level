@@ -15,6 +15,13 @@ router = APIRouter(prefix="/health", tags=["System Health"])
     summary="Liveness Health Check",
     description="Returns the operational status of the Agro-Meteorological Weather Intelligence API and connected components.",
 )
+@router.get(
+    "/liveness",
+    response_model=APIResponse[HealthCheckResponse],
+    status_code=status.HTTP_200_OK,
+    summary="Liveness Health Check Probe",
+    include_in_schema=False,
+)
 async def liveness_check() -> APIResponse[HealthCheckResponse]:
     """
     Basic liveness endpoint for container orchestrators and load balancers.
@@ -58,6 +65,13 @@ async def liveness_check() -> APIResponse[HealthCheckResponse]:
     status_code=status.HTTP_200_OK,
     summary="Readiness Probe",
     description="Validates that subsystem dependencies (PostgreSQL/PostGIS, ML model artifacts) are loaded.",
+)
+@router.get(
+    "/readiness",
+    response_model=APIResponse[HealthCheckResponse],
+    status_code=status.HTTP_200_OK,
+    summary="Readiness Probe",
+    include_in_schema=False,
 )
 async def readiness_check() -> APIResponse[HealthCheckResponse]:
     """

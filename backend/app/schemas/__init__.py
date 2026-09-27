@@ -41,7 +41,50 @@ from app.schemas.advisory import (
     AdvisoryGenerationResponse,
     PanchayatAdvisoryProfile,
     AdvisorySubsystemStatus,
+    NowcastAdvisoryState,
+    LocalizedPrecipitationAdvisoryEvidence,
+    NowcastAdvisoryExplanation,
 )
+from app.schemas.panchayat_boundary import (
+    BoundaryResolutionStatus,
+    PointLocationStatus,
+    PanchayatBoundaryRecord,
+    BoundaryResolutionResponse,
+    PanchayatBoundaryFeatureResponse,
+)
+from app.schemas.spatial_masking import (
+    VariableType,
+    CoverageQuality,
+    SourceResolutionProvenance,
+    SourceGridCell,
+    SourceWeatherGrid,
+    CellIntersectionResult,
+    ContinuousVariableFeatures,
+    PrecipitationVariableFeatures,
+    PanchayatSpatialExtractionResult,
+)
+from app.schemas.satellite import (
+    SatelliteProductType,
+    SatelliteObservationStatus,
+    SatelliteProvenance,
+    SatelliteCloudFeatures,
+    SatelliteTemporalDelta,
+    PanchayatSatelliteExtractionResult,
+)
+from app.schemas.precipitation_nowcast import (
+    PrecipitationSourceState,
+    NowcastConfidence,
+    EvidenceSignalType,
+    PrecipitationEvidenceComponent,
+    RadarObservationFeatures,
+    SurfaceObservationFeatures,
+    BaselinePrecipitationExpectation,
+    PrecipitationNowcastHorizonResult,
+    PrecipitationNowcastProvenance,
+    PanchayatPrecipitationNowcastResult,
+)
+
+
 
 __all__ = [
     "APIResponse",
@@ -56,7 +99,39 @@ __all__ = [
     "PanchayatBase",
     "PanchayatResponse",
     "LandUseComposition",
+    "BoundaryResolutionStatus",
+    "PointLocationStatus",
+    "PanchayatBoundaryRecord",
+    "BoundaryResolutionResponse",
+    "PanchayatBoundaryFeatureResponse",
+    "VariableType",
+    "CoverageQuality",
+    "SourceResolutionProvenance",
+    "SourceGridCell",
+    "SourceWeatherGrid",
+    "CellIntersectionResult",
+    "ContinuousVariableFeatures",
+    "PrecipitationVariableFeatures",
+    "PanchayatSpatialExtractionResult",
+    "SatelliteProductType",
+    "SatelliteObservationStatus",
+    "SatelliteProvenance",
+    "SatelliteCloudFeatures",
+    "SatelliteTemporalDelta",
+    "PanchayatSatelliteExtractionResult",
+    "PrecipitationSourceState",
+    "NowcastConfidence",
+    "EvidenceSignalType",
+    "PrecipitationEvidenceComponent",
+    "RadarObservationFeatures",
+    "SurfaceObservationFeatures",
+    "BaselinePrecipitationExpectation",
+    "PrecipitationNowcastHorizonResult",
+    "PrecipitationNowcastProvenance",
+    "PanchayatPrecipitationNowcastResult",
     "CropContext",
+
+
     "CropStageInfo",
     "SoilProfile",
     "CropStageContext",
@@ -92,4 +167,8 @@ __all__ = [
     "AdvisoryGenerationResponse",
     "PanchayatAdvisoryProfile",
     "AdvisorySubsystemStatus",
+    "NowcastAdvisoryState",
+    "LocalizedPrecipitationAdvisoryEvidence",
+    "NowcastAdvisoryExplanation",
 ]
+

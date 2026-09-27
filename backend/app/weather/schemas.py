@@ -114,3 +114,105 @@ class IngestionSummary(BaseModel):
 
     status: str = "SUCCESS"
     details: Optional[str] = None
+
+
+class LiveWeatherRecord(BaseModel):
+    """
+    Standardized live or canonical demo coarse weather retrieval record.
+    Preserves exact provenance, physical metrics, timestamps, and quality flags.
+    """
+    latitude: float
+    longitude: float
+    temperature_c: float
+    temp_min_c: Optional[float] = None
+    temp_max_c: Optional[float] = None
+    relative_humidity_pct: Optional[float] = None
+    wind_speed_kmh: Optional[float] = None
+    wind_direction_deg: Optional[float] = None
+    precipitation_mm: Optional[float] = None
+    cloud_cover_pct: Optional[float] = None
+    valid_time: str
+    retrieved_at: str
+    source: str
+    source_type: str = "FORECAST"  # FORECAST, OBSERVATION, REANALYSIS, PILOT_FIXTURE
+    mode: str = "LIVE"  # DEMO, LIVE, AUTO
+    effective_mode: str = "LIVE"
+    quality_status: str = "PASSED"  # PASSED, DEGRADED, REJECTED, INSUFFICIENT_DATA, NOT_CONFIGURED
+    quality_notes: Optional[str] = None
+    fallback_active: bool = False
+    fallback_reason: Optional[str] = None
+    live_request_id: Optional[str] = None
+    raw_payload: Dict[str, Any] = Field(default_factory=dict)
+
+    model_config = ConfigDict(extra="ignore")
+
+
+class DataStatusResponse(BaseModel):
+    """
+    System data-source status report.
+    Distinguishes API server health from real weather data availability.
+    """
+    mode: str = "DEMO"  # DEMO, LIVE, AUTO
+    effective_mode: str = "DEMO"
+    live_enabled: bool = False
+    provider: str = "CANONICAL_PILOT_FIXTURE"
+    source_type: str = "PILOT_FIXTURE"
+    latest_source_timestamp: Optional[str] = None
+    retrieved_at: str
+    age_minutes: Optional[float] = None
+    freshness_status: str = "FRESH"  # FRESH, STALE, UNKNOWN
+    quality_status: str = "PASSED"  # PASSED, DEGRADED, REJECTED, INSUFFICIENT_DATA, NOT_CONFIGURED
+    fallback_active: bool = False
+    fallback_reason: Optional[str] = None
+    calibrated_baseline: str = "T_calibrated = T_coarse + 0.7351°C"
+    model_status: str = "XGBoost: RESEARCH_ONLY"
+    message: str = "Deterministic canonical demo fixtures active."
+
+
+class ProviderStatus(str, Enum):
+    LIVE = "LIVE"
+    NOT_CONFIGURED = "NOT_CONFIGURED"
+    UNAVAILABLE = "UNAVAILABLE"
+    STALE = "STALE"
+    QC_FAILED = "QC_FAILED"
+    AUTH_FAILED = "AUTH_FAILED"
+
+
+class ProviderInfo(BaseModel):
+    name: str
+    code: str
+    status: ProviderStatus
+    source_type: str
+    configured: bool
+    requires_auth: bool
+    auth_configured: bool
+    endpoint: str
+    supported_products: List[str] = Field(default_factory=list)
+    description: str
+    coverage: str
+    geographic_coverage: str = "India"
+    licensing: str = "Open Access / Government Restricted"
+    configuration_instructions: Optional[str] = None
+
+
+class ProviderHealthResponse(BaseModel):
+    provider: str
+    status: ProviderStatus
+    source_type: str
+    configured: bool
+    latency_ms: Optional[float] = None
+    source_timestamp: Optional[str] = None
+    retrieved_at: str
+    data_age_minutes: Optional[float] = None
+    location: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    variables: List[str] = Field(default_factory=list)
+    qc_status: str = "PASSED"
+    freshness_status: str = "FRESH"
+    fallback_active: bool = False
+    fallback_reason: Optional[str] = None
+    request_id: Optional[str] = None
+    error_message: Optional[str] = None
+    required_configuration: Optional[Dict[str, str]] = None
+

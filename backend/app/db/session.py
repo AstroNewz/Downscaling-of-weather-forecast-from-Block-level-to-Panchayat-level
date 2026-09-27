@@ -45,10 +45,13 @@ def check_database_health() -> Tuple[bool, str]:
             conn.execute(text("SELECT 1;"))
             
             # Check if PostGIS extension is installed
-            result = conn.execute(text("SELECT PostGIS_Version();")).scalar()
-            if result:
-                return True, f"Connected to PostgreSQL with PostGIS version {result}"
-            return True, "Connected to PostgreSQL (PostGIS extension not enabled)"
+            try:
+                result = conn.execute(text("SELECT PostGIS_Version();")).scalar()
+                if result:
+                    return True, f"Connected to PostgreSQL with PostGIS version {result}"
+            except Exception:
+                pass
+            return True, "Connected to Database (PostGIS extension not enabled)"
     except SQLAlchemyError as err:
         logger.warning(f"Database health check failed: {err}")
         return False, f"Database connection unavailable: {str(err.__cause__ or err)}"

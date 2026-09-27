@@ -1,0 +1,798 @@
+{
+  "manifest_version": "1.0.0",
+  "generated_at": "2026-09-26T11:57:16.548572+00:00",
+  "task": "TASK_2_TEMPORAL_VALIDATION_EXPANSION",
+  "provenance": {
+    "source": "NOAA Integrated Surface Database (ISD Lite)",
+    "nwp_source": "ECMWF ERA5 via Open-Meteo Historical Archive",
+    "temporal_span": "2024-03-01 to 2025-08-31 (18 months)",
+    "total_stations_evaluated": 42,
+    "total_aligned_observations": 313754,
+    "new_temporal_observations": 260163,
+    "qc_accepted_rate_pct": 99.37
+  },
+  "windows": [
+    {
+      "code": "WINDOW_A",
+      "name": "Pre-Kharif / Summer 2024",
+      "period": "2024-03-01 to 2024-05-31",
+      "season": "Summer",
+      "observations": 51261,
+      "stations_reporting": 42,
+      "baseline_mae": 1.5111,
+      "dynamic_v2_mae": 1.3833,
+      "delta_mae": 0.1278
+    },
+    {
+      "code": "WINDOW_B",
+      "name": "Kharif 2024 (Original)",
+      "period": "2024-06-01 to 2024-08-31",
+      "season": "Monsoon / Kharif",
+      "observations": 53591,
+      "stations_reporting": 42,
+      "baseline_mae": 1.2919,
+      "dynamic_v2_mae": 1.1981,
+      "delta_mae": 0.0938
+    },
+    {
+      "code": "WINDOW_C",
+      "name": "Post-Kharif / Autumn 2024",
+      "period": "2024-09-01 to 2024-11-30",
+      "season": "Autumn / Post-Monsoon",
+      "observations": 51269,
+      "stations_reporting": 42,
+      "baseline_mae": 1.2202,
+      "dynamic_v2_mae": 1.2787,
+      "delta_mae": -0.0585
+    },
+    {
+      "code": "WINDOW_D",
+      "name": "Winter 2024\u20132025",
+      "period": "2024-12-01 to 2025-02-28",
+      "season": "Winter",
+      "observations": 52006,
+      "stations_reporting": 42,
+      "baseline_mae": 1.2803,
+      "dynamic_v2_mae": 1.4578,
+      "delta_mae": -0.1775
+    },
+    {
+      "code": "WINDOW_E",
+      "name": "Rabi / Summer 2025",
+      "period": "2025-03-01 to 2025-05-31",
+      "season": "Rabi / Summer",
+      "observations": 54297,
+      "stations_reporting": 42,
+      "baseline_mae": 1.5002,
+      "dynamic_v2_mae": 1.4244,
+      "delta_mae": 0.0758
+    },
+    {
+      "code": "WINDOW_F",
+      "name": "Kharif 2025 (Repeat Validation)",
+      "period": "2025-06-01 to 2025-08-31",
+      "season": "Monsoon / Kharif Repeat",
+      "observations": 51330,
+      "stations_reporting": 42,
+      "baseline_mae": 1.2202,
+      "dynamic_v2_mae": 1.2565,
+      "delta_mae": -0.0363
+    }
+  ],
+  "stations": [
+    {
+      "station_id": "421470-99999",
+      "station_name": "Mukteshwar Kumaon",
+      "state": "Uttarakhand",
+      "region": "North / Himalayan",
+      "regime": "High-relief Montane Ridge",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 322,
+        "WINDOW_B": 361,
+        "WINDOW_C": 348,
+        "WINDOW_D": 333,
+        "WINDOW_E": 367,
+        "WINDOW_F": 336
+      },
+      "total_observations": 2067
+    },
+    {
+      "station_id": "420830-99999",
+      "station_name": "Shimla",
+      "state": "Himachal Pradesh",
+      "region": "North / Himalayan",
+      "regime": "High-relief Montane Ridge",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 310,
+        "WINDOW_B": 351,
+        "WINDOW_C": 334,
+        "WINDOW_D": 317,
+        "WINDOW_E": 365,
+        "WINDOW_F": 329
+      },
+      "total_observations": 2006
+    },
+    {
+      "station_id": "420270-99999",
+      "station_name": "Srinagar",
+      "state": "Jammu & Kashmir",
+      "region": "North / Himalayan",
+      "regime": "Intermontane Himalayan Valley",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 597,
+        "WINDOW_B": 715,
+        "WINDOW_C": 652,
+        "WINDOW_D": 240,
+        "WINDOW_E": 699,
+        "WINDOW_F": 665
+      },
+      "total_observations": 3568
+    },
+    {
+      "station_id": "421110-99999",
+      "station_name": "Dehradun",
+      "state": "Uttarakhand",
+      "region": "North / Himalayan",
+      "regime": "Sub-Himalayan Doon Valley",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 642,
+        "WINDOW_B": 721,
+        "WINDOW_C": 685,
+        "WINDOW_D": 697,
+        "WINDOW_E": 730,
+        "WINDOW_F": 672
+      },
+      "total_observations": 4147
+    },
+    {
+      "station_id": "421820-99999",
+      "station_name": "New Delhi Safdarjung",
+      "state": "Delhi",
+      "region": "Indo-Gangetic Plain",
+      "regime": "Upper Gangetic Alluvial Plain",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 644,
+        "WINDOW_B": 727,
+        "WINDOW_C": 700,
+        "WINDOW_D": 700,
+        "WINDOW_E": 730,
+        "WINDOW_F": 671
+      },
+      "total_observations": 4172
+    },
+    {
+      "station_id": "423690-99999",
+      "station_name": "Lucknow Amausi",
+      "state": "Uttar Pradesh",
+      "region": "Indo-Gangetic Plain",
+      "regime": "Central Gangetic Plain",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1993,
+        "WINDOW_B": 1996,
+        "WINDOW_C": 1330,
+        "WINDOW_D": 1199,
+        "WINDOW_E": 2114,
+        "WINDOW_F": 1969
+      },
+      "total_observations": 10601
+    },
+    {
+      "station_id": "424790-99999",
+      "station_name": "Varanasi Babatpur",
+      "state": "Uttar Pradesh",
+      "region": "Indo-Gangetic Plain",
+      "regime": "Middle Gangetic Plain",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1946,
+        "WINDOW_B": 1940,
+        "WINDOW_C": 1973,
+        "WINDOW_D": 1998,
+        "WINDOW_E": 1817,
+        "WINDOW_F": 1453
+      },
+      "total_observations": 11127
+    },
+    {
+      "station_id": "424920-99999",
+      "station_name": "Patna Airport",
+      "state": "Bihar",
+      "region": "Indo-Gangetic Plain",
+      "regime": "Lower Middle Gangetic Plain",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 2008,
+        "WINDOW_B": 2125,
+        "WINDOW_C": 2052,
+        "WINDOW_D": 2081,
+        "WINDOW_E": 2029,
+        "WINDOW_F": 1966
+      },
+      "total_observations": 12261
+    },
+    {
+      "station_id": "423480-99999",
+      "station_name": "Jaipur Sanganer",
+      "state": "Rajasthan",
+      "region": "West / Arid-SemiArid",
+      "regime": "Semi-Arid Eastern Rajasthan",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 2024,
+        "WINDOW_B": 2143,
+        "WINDOW_C": 2026,
+        "WINDOW_D": 2013,
+        "WINDOW_E": 1870,
+        "WINDOW_F": 1845
+      },
+      "total_observations": 11921
+    },
+    {
+      "station_id": "423390-99999",
+      "station_name": "Jodhpur",
+      "state": "Rajasthan",
+      "region": "West / Arid-SemiArid",
+      "regime": "Arid Thar Desert Fringe",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 835,
+        "WINDOW_B": 812,
+        "WINDOW_C": 732,
+        "WINDOW_D": 719,
+        "WINDOW_E": 736,
+        "WINDOW_F": 671
+      },
+      "total_observations": 4505
+    },
+    {
+      "station_id": "426470-99999",
+      "station_name": "Ahmedabad",
+      "state": "Gujarat",
+      "region": "West / Arid-SemiArid",
+      "regime": "Semi-Arid Sabarmati Plain",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 2014,
+        "WINDOW_B": 2140,
+        "WINDOW_C": 2064,
+        "WINDOW_D": 2082,
+        "WINDOW_E": 1926,
+        "WINDOW_F": 1960
+      },
+      "total_observations": 12186
+    },
+    {
+      "station_id": "426670-99999",
+      "station_name": "Bhopal Bairagarh",
+      "state": "Madhya Pradesh",
+      "region": "Central Plateau",
+      "regime": "Undulating Malwa Lava Plateau",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1442,
+        "WINDOW_B": 795,
+        "WINDOW_C": 691,
+        "WINDOW_D": 703,
+        "WINDOW_E": 1391,
+        "WINDOW_F": 1644
+      },
+      "total_observations": 6666
+    },
+    {
+      "station_id": "427790-99999",
+      "station_name": "Jabalpur",
+      "state": "Madhya Pradesh",
+      "region": "Central Plateau",
+      "regime": "Upper Narmada / Satpura Plateau",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 646,
+        "WINDOW_B": 712,
+        "WINDOW_C": 684,
+        "WINDOW_D": 700,
+        "WINDOW_E": 734,
+        "WINDOW_F": 671
+      },
+      "total_observations": 4147
+    },
+    {
+      "station_id": "428670-99999",
+      "station_name": "Nagpur Sonegaon",
+      "state": "Maharashtra",
+      "region": "Central Plateau",
+      "regime": "Vidarbha Agrarian Plain",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 2009,
+        "WINDOW_B": 2132,
+        "WINDOW_C": 2052,
+        "WINDOW_D": 2097,
+        "WINDOW_E": 1923,
+        "WINDOW_F": 1986
+      },
+      "total_observations": 12199
+    },
+    {
+      "station_id": "429710-99999",
+      "station_name": "Bhubaneswar",
+      "state": "Odisha",
+      "region": "East Delta-Plain",
+      "regime": "Mahanadi Coastal Delta Plain",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1911,
+        "WINDOW_B": 1984,
+        "WINDOW_C": 2055,
+        "WINDOW_D": 2067,
+        "WINDOW_E": 2006,
+        "WINDOW_F": 1947
+      },
+      "total_observations": 11970
+    },
+    {
+      "station_id": "428090-99999",
+      "station_name": "Kolkata Dum Dum",
+      "state": "West Bengal",
+      "region": "East Delta-Plain",
+      "regime": "Lower Gangetic Delta Maritime",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 2021,
+        "WINDOW_B": 2147,
+        "WINDOW_C": 2064,
+        "WINDOW_D": 2102,
+        "WINDOW_E": 2179,
+        "WINDOW_F": 1989
+      },
+      "total_observations": 12502
+    },
+    {
+      "station_id": "424100-99999",
+      "station_name": "Guwahati Borjhar",
+      "state": "Assam",
+      "region": "Northeast Hills",
+      "regime": "Lower Brahmaputra Valley Floor",
+      "is_training_station": true,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1936,
+        "WINDOW_B": 2052,
+        "WINDOW_C": 1955,
+        "WINDOW_D": 2083,
+        "WINDOW_E": 2027,
+        "WINDOW_F": 1968
+      },
+      "total_observations": 12021
+    },
+    {
+      "station_id": "432950-99999",
+      "station_name": "Bangalore / Bengaluru HAL",
+      "state": "Karnataka",
+      "region": "South / Peninsular India",
+      "regime": "Southern Deccan Semi-Arid Plateau",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 645,
+        "WINDOW_B": 716,
+        "WINDOW_C": 683,
+        "WINDOW_D": 689,
+        "WINDOW_E": 721,
+        "WINDOW_F": 654
+      },
+      "total_observations": 4108
+    },
+    {
+      "station_id": "432840-99999",
+      "station_name": "Mangalore Airport / Bajpe",
+      "state": "Karnataka",
+      "region": "South / Peninsular India",
+      "regime": "West Coast Maritime Lowland",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1973,
+        "WINDOW_B": 2058,
+        "WINDOW_C": 2024,
+        "WINDOW_D": 2081,
+        "WINDOW_E": 2140,
+        "WINDOW_F": 1970
+      },
+      "total_observations": 12246
+    },
+    {
+      "station_id": "431971-99999",
+      "station_name": "Belgaum / Belagavi Sambra",
+      "state": "Karnataka",
+      "region": "South / Peninsular India",
+      "regime": "Western Ghats High Transitional Margin",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1200,
+        "WINDOW_B": 1292,
+        "WINDOW_C": 1283,
+        "WINDOW_D": 1273,
+        "WINDOW_E": 1273,
+        "WINDOW_F": 1066
+      },
+      "total_observations": 7387
+    },
+    {
+      "station_id": "432011-99999",
+      "station_name": "Hubli / Hubballi Airport",
+      "state": "Karnataka",
+      "region": "South / Peninsular India",
+      "regime": "Central Karnataka Deccan Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1161,
+        "WINDOW_B": 1203,
+        "WINDOW_C": 1218,
+        "WINDOW_D": 1298,
+        "WINDOW_E": 1294,
+        "WINDOW_F": 1145
+      },
+      "total_observations": 7319
+    },
+    {
+      "station_id": "432790-99999",
+      "station_name": "Chennai Meenambakkam",
+      "state": "Tamil Nadu",
+      "region": "South / Peninsular India",
+      "regime": "East Coast Maritime Lowland",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 2022,
+        "WINDOW_B": 2150,
+        "WINDOW_C": 2062,
+        "WINDOW_D": 2099,
+        "WINDOW_E": 2188,
+        "WINDOW_F": 2004
+      },
+      "total_observations": 12525
+    },
+    {
+      "station_id": "433210-99999",
+      "station_name": "Coimbatore Peelamedu",
+      "state": "Tamil Nadu",
+      "region": "South / Peninsular India",
+      "regime": "Palghat Gap / Kongu Plateau",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1957,
+        "WINDOW_B": 1980,
+        "WINDOW_C": 1967,
+        "WINDOW_D": 1991,
+        "WINDOW_E": 2080,
+        "WINDOW_F": 1883
+      },
+      "total_observations": 11858
+    },
+    {
+      "station_id": "433600-99999",
+      "station_name": "Madurai Airport",
+      "state": "Tamil Nadu",
+      "region": "South / Peninsular India",
+      "regime": "South Peninsular Alluvial Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1813,
+        "WINDOW_B": 1863,
+        "WINDOW_C": 1962,
+        "WINDOW_D": 2031,
+        "WINDOW_E": 2090,
+        "WINDOW_F": 1949
+      },
+      "total_observations": 11708
+    },
+    {
+      "station_id": "433710-99999",
+      "station_name": "Thiruvananthapuram Observatory",
+      "state": "Kerala",
+      "region": "South / Peninsular India",
+      "regime": "South Malabar Maritime Coast",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 647,
+        "WINDOW_B": 709,
+        "WINDOW_C": 683,
+        "WINDOW_D": 694,
+        "WINDOW_E": 734,
+        "WINDOW_F": 673
+      },
+      "total_observations": 4140
+    },
+    {
+      "station_id": "433530-99999",
+      "station_name": "Cochin / Kochi Naval",
+      "state": "Kerala",
+      "region": "South / Peninsular India",
+      "regime": "Central Malabar Lagoon / Wetland",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 588,
+        "WINDOW_B": 677,
+        "WINDOW_C": 589,
+        "WINDOW_D": 827,
+        "WINDOW_E": 1006,
+        "WINDOW_F": 755
+      },
+      "total_observations": 4442
+    },
+    {
+      "station_id": "433140-99999",
+      "station_name": "Kozhikode / Calicut",
+      "state": "Kerala",
+      "region": "South / Peninsular India",
+      "regime": "North Malabar Maritime Coast",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 651,
+        "WINDOW_B": 719,
+        "WINDOW_C": 684,
+        "WINDOW_D": 692,
+        "WINDOW_E": 733,
+        "WINDOW_F": 671
+      },
+      "total_observations": 4150
+    },
+    {
+      "station_id": "431280-99999",
+      "station_name": "Hyderabad Begumpet",
+      "state": "Telangana",
+      "region": "South / Peninsular India",
+      "regime": "Northern Deccan Plateau",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1452,
+        "WINDOW_B": 1486,
+        "WINDOW_C": 1316,
+        "WINDOW_D": 1436,
+        "WINDOW_E": 1506,
+        "WINDOW_F": 1429
+      },
+      "total_observations": 8625
+    },
+    {
+      "station_id": "431850-99999",
+      "station_name": "Machilipatnam",
+      "state": "Andhra Pradesh",
+      "region": "South / Peninsular India",
+      "regime": "Krishna Delta Maritime Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 644,
+        "WINDOW_B": 700,
+        "WINDOW_C": 686,
+        "WINDOW_D": 693,
+        "WINDOW_E": 731,
+        "WINDOW_F": 668
+      },
+      "total_observations": 4122
+    },
+    {
+      "station_id": "432450-99999",
+      "station_name": "Nellore",
+      "state": "Andhra Pradesh",
+      "region": "South / Peninsular India",
+      "regime": "Pennar Delta Coastal Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 639,
+        "WINDOW_B": 710,
+        "WINDOW_C": 673,
+        "WINDOW_D": 684,
+        "WINDOW_E": 725,
+        "WINDOW_F": 666
+      },
+      "total_observations": 4097
+    },
+    {
+      "station_id": "432130-99999",
+      "station_name": "Kurnool",
+      "state": "Andhra Pradesh",
+      "region": "South / Peninsular India",
+      "regime": "Rayalaseema Semi-Arid Plateau",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 650,
+        "WINDOW_B": 703,
+        "WINDOW_C": 673,
+        "WINDOW_D": 684,
+        "WINDOW_E": 726,
+        "WINDOW_F": 662
+      },
+      "total_observations": 4098
+    },
+    {
+      "station_id": "431920-99999",
+      "station_name": "Goa / Panjim",
+      "state": "Goa",
+      "region": "Western Ghats-Peninsular",
+      "regime": "Central Konkan Maritime Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 622,
+        "WINDOW_B": 719,
+        "WINDOW_C": 687,
+        "WINDOW_D": 699,
+        "WINDOW_E": 410,
+        "WINDOW_F": 670
+      },
+      "total_observations": 3807
+    },
+    {
+      "station_id": "430030-99999",
+      "station_name": "Mumbai Santacruz",
+      "state": "Maharashtra",
+      "region": "Western Ghats-Peninsular",
+      "regime": "North Konkan Maritime Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1982,
+        "WINDOW_B": 2137,
+        "WINDOW_C": 2052,
+        "WINDOW_D": 2056,
+        "WINDOW_E": 1964,
+        "WINDOW_F": 1979
+      },
+      "total_observations": 12170
+    },
+    {
+      "station_id": "430630-99999",
+      "station_name": "Pune",
+      "state": "Maharashtra",
+      "region": "Western Ghats-Peninsular",
+      "regime": "Western Ghats Leeward Rainshadow",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 652,
+        "WINDOW_B": 719,
+        "WINDOW_C": 686,
+        "WINDOW_D": 698,
+        "WINDOW_E": 733,
+        "WINDOW_F": 671
+      },
+      "total_observations": 4159
+    },
+    {
+      "station_id": "431100-99999",
+      "station_name": "Ratnagiri",
+      "state": "Maharashtra",
+      "region": "Western Ghats-Peninsular",
+      "regime": "Central Konkan Coastal Ridge",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 641,
+        "WINDOW_B": 706,
+        "WINDOW_C": 685,
+        "WINDOW_D": 682,
+        "WINDOW_E": 723,
+        "WINDOW_F": 671
+      },
+      "total_observations": 4108
+    },
+    {
+      "station_id": "427240-99999",
+      "station_name": "Agartala Airport",
+      "state": "Tripura",
+      "region": "Northeast Hills",
+      "regime": "Tripura Sub-Himalayan Valley Basin",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1462,
+        "WINDOW_B": 1531,
+        "WINDOW_C": 1533,
+        "WINDOW_D": 1566,
+        "WINDOW_E": 1523,
+        "WINDOW_F": 1491
+      },
+      "total_observations": 9106
+    },
+    {
+      "station_id": "425150-99999",
+      "station_name": "Cherrapunji",
+      "state": "Meghalaya",
+      "region": "Northeast Hills",
+      "regime": "Khasi Hills High Orographic Plateau",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 240,
+        "WINDOW_B": 264,
+        "WINDOW_C": 258,
+        "WINDOW_D": 366,
+        "WINDOW_E": 545,
+        "WINDOW_F": 491
+      },
+      "total_observations": 2164
+    },
+    {
+      "station_id": "424150-99999",
+      "station_name": "Tezpur",
+      "state": "Assam",
+      "region": "Northeast Hills",
+      "regime": "Upper Brahmaputra Alluvial Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 645,
+        "WINDOW_B": 722,
+        "WINDOW_C": 683,
+        "WINDOW_D": 702,
+        "WINDOW_E": 732,
+        "WINDOW_F": 666
+      },
+      "total_observations": 4150
+    },
+    {
+      "station_id": "427010-99999",
+      "station_name": "Ranchi Birsa Munda",
+      "state": "Jharkhand",
+      "region": "Central Plateau",
+      "regime": "Chota Nagpur Undulating Plateau",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1928,
+        "WINDOW_B": 2065,
+        "WINDOW_C": 2051,
+        "WINDOW_D": 2087,
+        "WINDOW_E": 2019,
+        "WINDOW_F": 1949
+      },
+      "total_observations": 12099
+    },
+    {
+      "station_id": "430410-99999",
+      "station_name": "Jagdalpur",
+      "state": "Chhattisgarh",
+      "region": "Central Plateau",
+      "regime": "Bastar Dandakaranya High Plateau",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1107,
+        "WINDOW_B": 1194,
+        "WINDOW_C": 1174,
+        "WINDOW_D": 1208,
+        "WINDOW_E": 1210,
+        "WINDOW_F": 1159
+      },
+      "total_observations": 7052
+    },
+    {
+      "station_id": "420710-99999",
+      "station_name": "Amritsar Rajasansi",
+      "state": "Punjab",
+      "region": "Indo-Gangetic Plain",
+      "regime": "Upper Bari Doab Alluvial Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 1997,
+        "WINDOW_B": 1997,
+        "WINDOW_C": 1878,
+        "WINDOW_D": 1937,
+        "WINDOW_E": 2118,
+        "WINDOW_F": 1974
+      },
+      "total_observations": 11901
+    },
+    {
+      "station_id": "421010-99999",
+      "station_name": "Patiala",
+      "state": "Punjab",
+      "region": "Indo-Gangetic Plain",
+      "regime": "Malwa Alluvial Plain",
+      "is_training_station": false,
+      "seasonal_observation_counts": {
+        "WINDOW_A": 643,
+        "WINDOW_B": 718,
+        "WINDOW_C": 682,
+        "WINDOW_D": 702,
+        "WINDOW_E": 730,
+        "WINDOW_F": 672
+      },
+      "total_observations": 4147
+    }
+  ]
+}

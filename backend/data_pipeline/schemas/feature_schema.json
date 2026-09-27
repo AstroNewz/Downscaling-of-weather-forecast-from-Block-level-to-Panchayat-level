@@ -1,0 +1,350 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "schema_version": "v1.1.0",
+  "description": "Feature schema for Phase 6 temperature downscaling ML model \u2014 SIH 26074 Varanasi pilot",
+  "note": "Reproduces exactly the EngineeredFeatureRecord from backend/app/ml/schemas.py. No new features invented.",
+  "features": [
+    {
+      "feature_name": "forecast_temp_min",
+      "datatype": "float",
+      "unit": "degC",
+      "source": "ERA5 or IMD NWP coarse forecast \u2014 minimum 2m temperature",
+      "source_type": "REANALYSIS or NWP_FORECAST",
+      "transformation": "none \u2014 raw coarse model output in degC",
+      "missing_value_policy": "NULL \u2014 do not impute; exclude record from training if missing"
+    },
+    {
+      "feature_name": "forecast_temp_max",
+      "datatype": "float",
+      "unit": "degC",
+      "source": "ERA5 or IMD NWP coarse forecast \u2014 maximum 2m temperature",
+      "source_type": "REANALYSIS or NWP_FORECAST",
+      "transformation": "none",
+      "missing_value_policy": "NULL \u2014 exclude record if missing"
+    },
+    {
+      "feature_name": "forecast_temp_mean",
+      "datatype": "float",
+      "unit": "degC",
+      "source": "Derived: (temp_min + temp_max) / 2",
+      "source_type": "DERIVED",
+      "transformation": "arithmetic mean of min and max",
+      "missing_value_policy": "NULL if either temp_min or temp_max is NULL"
+    },
+    {
+      "feature_name": "forecast_rainfall_mm",
+      "datatype": "float",
+      "unit": "mm",
+      "source": "ERA5 total precipitation converted to mm",
+      "source_type": "REANALYSIS or NWP_FORECAST",
+      "transformation": "ERA5 units are m \u2014 multiply by 1000 to get mm",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "forecast_humidity_pct",
+      "datatype": "float",
+      "unit": "percent",
+      "source": "ERA5 relative humidity or NWP forecast humidity",
+      "source_type": "REANALYSIS or NWP_FORECAST",
+      "transformation": "none; range 0\u2013100",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "forecast_wind_speed_mps",
+      "datatype": "float",
+      "unit": "m/s",
+      "source": "ERA5 wind speed or NWP forecast; derived from u10 and v10 components",
+      "source_type": "REANALYSIS or NWP_FORECAST",
+      "transformation": "sqrt(u10^2 + v10^2) for ERA5; or direct if available",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "forecast_wind_direction_deg",
+      "datatype": "float",
+      "unit": "degrees",
+      "source": "ERA5 wind direction derived from u10/v10",
+      "source_type": "REANALYSIS or NWP_FORECAST",
+      "transformation": "atan2(u10, v10) in degrees [0, 360]",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "forecast_cloud_cover_pct",
+      "datatype": "float",
+      "unit": "percent",
+      "source": "ERA5 total cloud cover (tcc) as percentage",
+      "source_type": "REANALYSIS or NWP_FORECAST",
+      "transformation": "ERA5 tcc in fraction [0,1]; multiply by 100 for percent",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "forecast_lead_hours",
+      "datatype": "float",
+      "unit": "hours",
+      "source": "Computed from forecast_valid_time minus forecast_issue_time",
+      "source_type": "DERIVED",
+      "transformation": "timedelta.total_seconds() / 3600",
+      "missing_value_policy": "Exclude record \u2014 lead hours must be non-negative"
+    },
+    {
+      "feature_name": "time_diff_minutes",
+      "datatype": "float",
+      "unit": "minutes",
+      "source": "Absolute temporal gap between observation and forecast valid time",
+      "source_type": "DERIVED",
+      "transformation": "abs(obs_time - forecast_valid_time).total_seconds() / 60",
+      "missing_value_policy": "Exclude if > temporal_tolerance_minutes"
+    },
+    {
+      "feature_name": "hour_of_day",
+      "datatype": "int",
+      "unit": "hours (0\u201323)",
+      "source": "Observation timestamp UTC hour",
+      "source_type": "DERIVED",
+      "transformation": "datetime.hour",
+      "missing_value_policy": "Always available from timestamp"
+    },
+    {
+      "feature_name": "sin_hour",
+      "datatype": "float",
+      "unit": "dimensionless",
+      "source": "Cyclic encoding of hour of day",
+      "source_type": "DERIVED",
+      "transformation": "sin(2*pi*hour/24)",
+      "missing_value_policy": "Always computable from timestamp"
+    },
+    {
+      "feature_name": "cos_hour",
+      "datatype": "float",
+      "unit": "dimensionless",
+      "source": "Cyclic encoding of hour of day",
+      "source_type": "DERIVED",
+      "transformation": "cos(2*pi*hour/24)",
+      "missing_value_policy": "Always computable from timestamp"
+    },
+    {
+      "feature_name": "day_of_year",
+      "datatype": "int",
+      "unit": "days (1\u2013366)",
+      "source": "Observation timestamp",
+      "source_type": "DERIVED",
+      "transformation": "datetime.timetuple().tm_yday",
+      "missing_value_policy": "Always computable from timestamp"
+    },
+    {
+      "feature_name": "sin_day_of_year",
+      "datatype": "float",
+      "unit": "dimensionless",
+      "source": "Cyclic encoding of day of year",
+      "source_type": "DERIVED",
+      "transformation": "sin(2*pi*doy/365.25)",
+      "missing_value_policy": "Always computable from timestamp"
+    },
+    {
+      "feature_name": "cos_day_of_year",
+      "datatype": "float",
+      "unit": "dimensionless",
+      "source": "Cyclic encoding of day of year",
+      "source_type": "DERIVED",
+      "transformation": "cos(2*pi*doy/365.25)",
+      "missing_value_policy": "Always computable from timestamp"
+    },
+    {
+      "feature_name": "month",
+      "datatype": "int",
+      "unit": "months (1\u201312)",
+      "source": "Observation timestamp",
+      "source_type": "DERIVED",
+      "transformation": "datetime.month",
+      "missing_value_policy": "Always computable from timestamp"
+    },
+    {
+      "feature_name": "sin_month",
+      "datatype": "float",
+      "unit": "dimensionless",
+      "source": "Cyclic encoding of month",
+      "source_type": "DERIVED",
+      "transformation": "sin(2*pi*month/12)",
+      "missing_value_policy": "Always computable from timestamp"
+    },
+    {
+      "feature_name": "cos_month",
+      "datatype": "float",
+      "unit": "dimensionless",
+      "source": "Cyclic encoding of month",
+      "source_type": "DERIVED",
+      "transformation": "cos(2*pi*month/12)",
+      "missing_value_policy": "Always computable from timestamp"
+    },
+    {
+      "feature_name": "obs_latitude",
+      "datatype": "float",
+      "unit": "degrees (EPSG:4326)",
+      "source": "Station/grid-point WGS84 latitude",
+      "source_type": "OBSERVATION or REANALYSIS",
+      "transformation": "none",
+      "missing_value_policy": "Exclude record \u2014 latitude is required for spatial features"
+    },
+    {
+      "feature_name": "obs_longitude",
+      "datatype": "float",
+      "unit": "degrees (EPSG:4326)",
+      "source": "Station/grid-point WGS84 longitude",
+      "source_type": "OBSERVATION or REANALYSIS",
+      "transformation": "none",
+      "missing_value_policy": "Exclude record \u2014 longitude is required for spatial features"
+    },
+    {
+      "feature_name": "obs_elevation_m",
+      "datatype": "float",
+      "unit": "metres",
+      "source": "SRTM 30m DEM sampled at station/grid-point location",
+      "source_type": "REMOTE_SENSING",
+      "transformation": "Bilinear interpolation from SRTM raster",
+      "missing_value_policy": "NULL \u2014 exclude from lapse rate correction if missing"
+    },
+    {
+      "feature_name": "block_elevation_m",
+      "datatype": "float",
+      "unit": "metres",
+      "source": "Mean elevation of block from SRTM DEM",
+      "source_type": "DERIVED",
+      "transformation": "Area-weighted mean of SRTM cells within block polygon",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "elevation_diff_m",
+      "datatype": "float",
+      "unit": "metres",
+      "source": "Derived: obs_elevation_m minus block_elevation_m",
+      "source_type": "DERIVED",
+      "transformation": "arithmetic difference; positive = above block mean",
+      "missing_value_policy": "NULL if either elevation unavailable"
+    },
+    {
+      "feature_name": "slope_deg",
+      "datatype": "float",
+      "unit": "degrees",
+      "source": "SRTM-derived slope at station/grid-point location",
+      "source_type": "DERIVED",
+      "transformation": "Computed from SRTM gradient using GDAL/richDEM",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "aspect_deg",
+      "datatype": "float",
+      "unit": "degrees (0\u2013360)",
+      "source": "SRTM-derived aspect at station/grid-point location",
+      "source_type": "DERIVED",
+      "transformation": "Computed from SRTM gradient using GDAL/richDEM",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "sin_aspect",
+      "datatype": "float",
+      "unit": "dimensionless",
+      "source": "Cyclic encoding of terrain aspect",
+      "source_type": "DERIVED",
+      "transformation": "sin(aspect_radians)",
+      "missing_value_policy": "NULL if aspect unavailable"
+    },
+    {
+      "feature_name": "cos_aspect",
+      "datatype": "float",
+      "unit": "dimensionless",
+      "source": "Cyclic encoding of terrain aspect",
+      "source_type": "DERIVED",
+      "transformation": "cos(aspect_radians)",
+      "missing_value_policy": "NULL if aspect unavailable"
+    },
+    {
+      "feature_name": "terrain_roughness",
+      "datatype": "float",
+      "unit": "metres",
+      "source": "SRTM-derived terrain roughness index",
+      "source_type": "DERIVED",
+      "transformation": "Standard deviation of elevation in neighbourhood",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "lapse_rate_temp_adjustment_c",
+      "datatype": "float",
+      "unit": "degC",
+      "source": "Elevation-based lapse rate correction",
+      "source_type": "DERIVED",
+      "transformation": "elevation_diff_m * (-0.0065 degC/m) environmental lapse rate",
+      "missing_value_policy": "NULL if elevation unavailable"
+    },
+    {
+      "feature_name": "cropland_fraction",
+      "datatype": "float",
+      "unit": "fraction (0\u20131)",
+      "source": "LULC (Bhuvan LULC 50K or ESA WorldCover 10m)",
+      "source_type": "REMOTE_SENSING",
+      "transformation": "Fraction of 1-km grid cell classified as cropland",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "forest_fraction",
+      "datatype": "float",
+      "unit": "fraction (0\u20131)",
+      "source": "LULC (Bhuvan LULC 50K or ESA WorldCover 10m)",
+      "source_type": "REMOTE_SENSING",
+      "transformation": "Fraction of 1-km grid cell classified as forest/tree cover",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "urban_fraction",
+      "datatype": "float",
+      "unit": "fraction (0\u20131)",
+      "source": "LULC (Bhuvan LULC 50K or ESA WorldCover 10m)",
+      "source_type": "REMOTE_SENSING",
+      "transformation": "Fraction classified as built-up/urban",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "water_fraction",
+      "datatype": "float",
+      "unit": "fraction (0\u20131)",
+      "source": "LULC (Bhuvan LULC 50K or ESA WorldCover 10m)",
+      "source_type": "REMOTE_SENSING",
+      "transformation": "Fraction classified as water bodies",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "barren_fraction",
+      "datatype": "float",
+      "unit": "fraction (0\u20131)",
+      "source": "LULC (Bhuvan LULC 50K or ESA WorldCover 10m)",
+      "source_type": "REMOTE_SENSING",
+      "transformation": "Fraction classified as barren/bare soil",
+      "missing_value_policy": "NULL"
+    },
+    {
+      "feature_name": "is_agricultural_cropland",
+      "datatype": "bool",
+      "unit": "boolean",
+      "source": "LULC cropland mask \u2014 True if grid cell cropland fraction > threshold",
+      "source_type": "DERIVED",
+      "transformation": "cropland_fraction > 0.3 (configurable)",
+      "missing_value_policy": "NULL if LULC unavailable"
+    }
+  ],
+  "targets": [
+    {
+      "feature_name": "temperature_residual_c",
+      "datatype": "float",
+      "unit": "degC",
+      "description": "PRIMARY TRAINING TARGET \u2014 Phase 6 formulation",
+      "formula": "observed_temp_c - coarse_forecast_temp_c",
+      "source_type_reference": "OBSERVATION (or ERA5-Land if no station data, clearly labelled)",
+      "source_type_coarse": "REANALYSIS (ERA5) or NWP_FORECAST",
+      "leakage_rule": "The reference source and the coarse source MUST be different datasets. ERA5 CANNOT be used as both the coarse input and the reference temperature.",
+      "auditable_columns": [
+        "observed_temp_c",
+        "coarse_forecast_temp_c",
+        "temperature_residual_c"
+      ],
+      "missing_value_policy": "Do NOT manufacture the target. Exclude the record."
+    }
+  ]
+}

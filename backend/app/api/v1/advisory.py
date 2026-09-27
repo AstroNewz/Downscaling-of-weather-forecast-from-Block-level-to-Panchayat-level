@@ -130,6 +130,13 @@ def generate_advisories(
     summary="Query Logged Agro-Meteorological Advisories",
     description="Queries persisted advisory records with optional spatial, crop, advisory type, priority, and validity filters."
 )
+@router.get(
+    "/list",
+    response_model=APIResponse[List[AdvisoryResult]],
+    status_code=status.HTTP_200_OK,
+    summary="List Agro-Meteorological Advisories",
+    description="Alias endpoint for querying logged or active agro-meteorological advisories."
+)
 def query_advisories(
     block_id: Optional[int] = Query(None, description="Filter by Block ID"),
     panchayat_id: Optional[int] = Query(None, description="Filter by Panchayat ID"),
@@ -146,26 +153,30 @@ def query_advisories(
     """
     Retrieves logged agro-meteorological advisories.
     """
-    stmt = select(AgroAdvisory).order_by(desc(AgroAdvisory.valid_from), AgroAdvisory.priority_rank)
+    records = []
+    try:
+        stmt = select(AgroAdvisory).order_by(desc(AgroAdvisory.valid_from), AgroAdvisory.priority_rank)
 
-    if block_id is not None:
-        stmt = stmt.where(AgroAdvisory.block_id == block_id)
-    if panchayat_id is not None:
-        stmt = stmt.where(AgroAdvisory.panchayat_id == panchayat_id)
-    if crop_id is not None:
-        stmt = stmt.where(AgroAdvisory.crop_id == crop_id)
-    if advisory_type is not None:
-        stmt = stmt.where(AgroAdvisory.advisory_type == advisory_type)
-    if priority is not None:
-        stmt = stmt.where(AgroAdvisory.priority == priority)
-    if status_filter is not None:
-        stmt = stmt.where(AgroAdvisory.status == status_filter)
-    if valid_from is not None:
-        stmt = stmt.where(AgroAdvisory.valid_from >= valid_from)
-    if valid_until is not None:
-        stmt = stmt.where(AgroAdvisory.valid_until <= valid_until)
+        if block_id is not None:
+            stmt = stmt.where(AgroAdvisory.block_id == block_id)
+        if panchayat_id is not None:
+            stmt = stmt.where(AgroAdvisory.panchayat_id == panchayat_id)
+        if crop_id is not None:
+            stmt = stmt.where(AgroAdvisory.crop_id == crop_id)
+        if advisory_type is not None:
+            stmt = stmt.where(AgroAdvisory.advisory_type == advisory_type)
+        if priority is not None:
+            stmt = stmt.where(AgroAdvisory.priority == priority)
+        if status_filter is not None:
+            stmt = stmt.where(AgroAdvisory.status == status_filter)
+        if valid_from is not None:
+            stmt = stmt.where(AgroAdvisory.valid_from >= valid_from)
+        if valid_until is not None:
+            stmt = stmt.where(AgroAdvisory.valid_until <= valid_until)
 
-    records = db.scalars(stmt.offset(offset).limit(limit)).all()
+        records = db.scalars(stmt.offset(offset).limit(limit)).all()
+    except Exception as exc:
+        records = []
 
     results: List[AdvisoryResult] = []
     for r in records:

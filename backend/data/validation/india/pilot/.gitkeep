@@ -1,0 +1,4 @@
+# REAL_DATA_ONLY
+# This directory is reserved exclusively for real-world data.
+# Do NOT place synthetic, demo, or DEMO_/SYNTHETIC_ marked records here.
+# See backend/data_pipeline/config/india_pilot.yaml for AOI configuration.

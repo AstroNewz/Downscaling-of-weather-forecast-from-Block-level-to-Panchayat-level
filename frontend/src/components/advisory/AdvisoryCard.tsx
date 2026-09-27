@@ -9,7 +9,8 @@ import {
   AlertCircle, 
   Sprout, 
   ShieldAlert, 
-  ArrowRight 
+  ArrowRight,
+  CloudRain
 } from 'lucide-react';
 
 interface AdvisoryCardProps {
@@ -81,6 +82,64 @@ export const AdvisoryCard: React.FC<AdvisoryCardProps> = ({
               </ul>
             </div>
           )}
+
+          {/* Localized Precipitation Evidence Context (Task 5 / Task 6 Integration) */}
+          {advisory.localized_nowcast_context && (
+            <div className="my-2.5 p-2.5 rounded-lg bg-blue-950/20 border border-blue-500/30 text-xs space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-blue-300 flex items-center gap-1.5 text-[11px]">
+                  <CloudRain className="w-3.5 h-3.5 text-blue-400" />
+                  Localized Nowcast Evidence ({advisory.localized_nowcast_context.horizon_minutes}m)
+                </span>
+                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-blue-900/40 text-blue-300 border border-blue-700/50">
+                  Confidence: {advisory.localized_nowcast_context.confidence}
+                </span>
+              </div>
+              <div className="text-[11px] text-slate-300 flex items-center justify-between font-mono">
+                <span>
+                  Rain risk: {Math.round(advisory.localized_nowcast_context.rain_probability * 100)}%
+                  {advisory.localized_nowcast_context.expected_amount_mm !== null
+                    ? ` (~${advisory.localized_nowcast_context.expected_amount_mm.toFixed(1)} mm)`
+                    : ' (Amount: —)'}
+                </span>
+                <span className="text-slate-400 text-[10px]">
+                  Sources: {advisory.localized_nowcast_context.source_state}
+                </span>
+              </div>
+              {advisory.localized_nowcast_context.evidence_disagreement && (
+                <div className="text-[10px] text-amber-300 flex items-center gap-1 mt-1">
+                  <AlertCircle className="w-3 h-3 text-amber-400 flex-shrink-0" />
+                  <span>Forecast and local observations differ (cautious guidance applied).</span>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Advisory Provenance Strip (Requirement 10) */}
+        <div className="my-2.5 p-2 rounded-lg bg-slate-950/40 border border-slate-800/70 text-[10px] font-mono text-slate-400 grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+          <div>
+            <span className="text-slate-500">Model:</span>{' '}
+            <span className="text-purple-300 font-semibold">{advisory.model_used || 'DYNAMIC_V2'}</span>
+          </div>
+          <div>
+            <span className="text-slate-500">Provider:</span>{' '}
+            <span className="text-emerald-300 font-semibold">{advisory.source_provider || 'CANONICAL_PILOT_FIXTURE'}</span>
+          </div>
+          <div>
+            <span className="text-slate-500">Fallback:</span>{' '}
+            <span className={advisory.fallback_active ? 'text-amber-300 font-semibold' : 'text-slate-300'}>
+              {advisory.fallback_active ? 'ACTIVE' : 'INACTIVE'}
+            </span>
+          </div>
+          <div className="col-span-2 truncate">
+            <span className="text-slate-500">Forecast Time:</span>{' '}
+            <span className="text-slate-300">{advisory.forecast_timestamp || advisory.valid_from?.substring(0, 16)}</span>
+          </div>
+          <div className="truncate">
+            <span className="text-slate-500">Loc:</span>{' '}
+            <span className="text-slate-300">Panchayat {advisory.panchayat_id}</span>
+          </div>
         </div>
 
         {/* Bottom Metadata & Explainability Action */}

@@ -1,0 +1,48 @@
+{
+  "audit_version": "1.0.0",
+  "experiment": "TASK_1B_GEOGRAPHIC_VALIDATION_EXPANSION",
+  "status": "GEOGRAPHIC VALIDATION COVERAGE \u2014 SUBSTANTIALLY IMPROVED",
+  "certified_baseline_invariant": "T_downscaled = T_coarse + 0.7351\u00b0C",
+  "total_new_stations": 25,
+  "total_new_observations": 29738,
+  "new_states_represented": [
+    "Andhra Pradesh",
+    "Assam",
+    "Chhattisgarh",
+    "Goa",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Maharashtra",
+    "Meghalaya",
+    "Punjab",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura"
+  ],
+  "new_regions_represented": [
+    "Central Plateau",
+    "Indo-Gangetic Plain",
+    "Northeast Hills",
+    "South / Peninsular India",
+    "Western Ghats-Peninsular"
+  ],
+  "rural_agricultural_stations": 18,
+  "independent_external_stations": 25,
+  "external_dataset_metrics": {
+    "n": 29738,
+    "baseline_mae": 1.2414,
+    "baseline_rmse": 1.6371,
+    "baseline_bias": -0.3965,
+    "dynamic_v2_mae": 1.3246,
+    "dynamic_v2_rmse": 1.7269,
+    "dynamic_v2_bias": -0.174
+  },
+  "south_peninsular_metrics": {
+    "n_stations": 14,
+    "n_observations": 16966,
+    "raw_era5_mae": 1.5853,
+    "baseline_mae": 1.243,
+    "dynamic_v2_mae": 1.3679
+  }
+}

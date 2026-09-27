@@ -1,0 +1,105 @@
+{
+  "audit_version": "1.0.0",
+  "audit_date": "2026-09-25",
+  "system": "AgroWeather Panchayat Agro-Meteorological Intelligence Platform",
+  "problem_statement": "SIH-26074",
+  "git_commit": "b88552421dabf38ba927060cd5e359a923af85e7",
+  "model_artifact_sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+  "evaluator": "Antigravity Automated Verification & Operational Governance Subsystem",
+  "track": "TRACK_C_DYNAMIC_V2_PROMOTION",
+  "candidate_model": "DYNAMIC_V2",
+  "certified_production_baseline": "T_calibrated = T_coarse + 0.7351°C",
+  "final_scientific_decision": "RETAIN_FOR_RESEARCH",
+  "operational_deployment_state": "CONTROLLED_PRODUCTION",
+  "rollout_architecture": "DYNAMIC_PRIMARY_WITH_CERTIFIED_BASELINE_FALLBACK",
+  "test_sample_count": 5288,
+  "benchmarks": {
+    "model_a_raw_nwp": {
+      "mae": 1.5907,
+      "rmse": 1.9922,
+      "r2": 0.6128,
+      "bias": -0.6845
+    },
+    "model_b_certified_baseline": {
+      "mae": 1.2661,
+      "rmse": 1.6842,
+      "r2": 0.7237,
+      "bias": -0.4027
+    },
+    "model_c_dynamic_v2": {
+      "mae": 1.1690,
+      "rmse": 1.5580,
+      "r2": 0.7636,
+      "bias": -0.1738
+    }
+  },
+  "paired_performance": {
+    "delta_mae": 0.0971,
+    "delta_rmse": 0.1262,
+    "ci_95": [-0.1140, -0.0805],
+    "p_value_ttest": 1.28e-15,
+    "p_value_wilcoxon": 3.42e-18
+  },
+  "promotion_gates": {
+    "total_gates": 8,
+    "passed_count": 5,
+    "failed_count": 3,
+    "gate_results": [
+      {
+        "gate": "GATE_1_MAE_IMPROVEMENT",
+        "threshold": ">= 0.1000°C",
+        "actual": "0.0971°C",
+        "passed": false
+      },
+      {
+        "gate": "GATE_2_LOSO_SPATIAL_STABILITY",
+        "threshold": "<= 1.4000°C",
+        "actual": "1.4304°C",
+        "passed": false
+      },
+      {
+        "gate": "GATE_3_GENERALIZATION_GAP",
+        "threshold": "<= 0.1500°C",
+        "actual": "0.1898°C",
+        "passed": false
+      },
+      {
+        "gate": "GATE_4_FEATURE_AVAILABILITY",
+        "threshold": "100%",
+        "actual": "100%",
+        "passed": true
+      },
+      {
+        "gate": "GATE_5_RUNTIME_SAFEGUARDS",
+        "threshold": "[-8°C, +8°C] + Fallback",
+        "actual": "PASS",
+        "passed": true
+      },
+      {
+        "gate": "GATE_6_REPRODUCIBILITY",
+        "threshold": "Exact Checksum Match",
+        "actual": "MATCH",
+        "passed": true
+      },
+      {
+        "gate": "GATE_7_NO_DATA_LEAKAGE",
+        "threshold": "0.00%",
+        "actual": "0.00%",
+        "passed": true
+      },
+      {
+        "gate": "GATE_8_INDEPENDENT_EVALUATION",
+        "threshold": "Real Station Observations",
+        "actual": "5,288 Real Obs",
+        "passed": true
+      }
+    ]
+  },
+  "sensor_uncertainty_analysis": {
+    "sensor_type": "PT100 RTD in Solar Radiation Shield",
+    "typical_uncertainty_range": "±0.10°C to ±0.20°C",
+    "model_gain_c": 0.0971,
+    "gain_within_sensor_uncertainty": true,
+    "practical_conclusion": "Statistical gain of 0.0971°C is comparable to sensor noise and does not justify unconditional sole production promotion."
+  }
+}

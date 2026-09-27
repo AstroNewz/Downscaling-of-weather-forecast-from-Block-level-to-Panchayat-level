@@ -1,0 +1,311 @@
+{
+  "report_version": "1.0.0",
+  "generated_at": "2026-09-26T12:13:22.952610+00:00",
+  "task": "TASK_3_PANCHAYAT_DENSITY_FINE_SCALE_FORENSIC_VALIDATION",
+  "final_status": "PANCHAYAT-SCALE VALIDATION \u2014 PARTIALLY IMPROVED",
+  "summary": {
+    "total_candidate_sources_audited": 10,
+    "accessible_open_sources_count": 1,
+    "access_restricted_sources_count": 5,
+    "partially_connected_sources_count": 3,
+    "unavailable_sources_count": 1,
+    "total_stations_cataloged": 45,
+    "total_station_pairs_evaluated": 990,
+    "pairs_0_to_1km": 0,
+    "pairs_1_to_2km": 0,
+    "pairs_2_to_5km": 0,
+    "pairs_5_to_10km": 0,
+    "pairs_10_to_25km": 1,
+    "pairs_25_to_50km": 0,
+    "pairs_50_to_100km": 5,
+    "pairs_gt_100km": 984,
+    "same_era5_cell_pairs_count": 0,
+    "minimum_station_separation_km": 22.96,
+    "minimum_station_separation_pair": "Varanasi Babatpur <-> Varanasi Synoptic"
+  },
+  "pilot_cluster": {
+    "name": "Varanasi Regional Dual-Station Pilot Cluster",
+    "station_1": "424790-99999 (Varanasi Babatpur Airport)",
+    "station_2": "424830-99999 (Varanasi Synoptic)",
+    "distance_km": 22.13,
+    "elevation_diff_m": 14.0,
+    "simultaneous_obs_count": 434,
+    "observed_delta_t": {
+      "mean_c": -0.3926,
+      "std_c": 1.1776,
+      "min_c": -6.0,
+      "max_c": 3.8,
+      "mae_c": 0.9203
+    },
+    "certified_baseline_same_cell": {
+      "spatial_variance_c2": 0.0,
+      "spatial_range_c": 0.0,
+      "predicted_delta_t_c": 0.0,
+      "pairwise_gradient_mae_c": 0.9203,
+      "mathematical_property": "Zero within-cell spatial variance (T_downscaled = T_coarse + 0.7351\u00b0C is spatially uniform across coarse cell)"
+    },
+    "certified_baseline_nearest_cells": {
+      "predicted_delta_t_mean_c": 0.2007,
+      "pairwise_gradient_mae_c": 1.0906
+    },
+    "dynamic_v2": {
+      "predicted_delta_t_mean_c": -0.3107,
+      "predicted_delta_t_std_c": 0.465,
+      "pairwise_gradient_mae_c": 1.0082
+    }
+  },
+  "elevation_gradients": [
+    {
+      "pair_name": "High Montane Ridge vs Alluvial Plain",
+      "transition": "Himalayan Ridge / Punjab Plains",
+      "station_high": "Shimla",
+      "elev_high_m": 2202.0,
+      "station_low": "Patiala",
+      "elev_low_m": 251.0,
+      "delta_elevation_m": 1951.0,
+      "separation_km": 108.58,
+      "simultaneous_obs_count": 1329,
+      "mean_observed_delta_t_c": 9.451,
+      "std_observed_delta_t_c": 4.532,
+      "effective_lapse_rate_c_per_km": 4.84,
+      "theoretical_dry_lapse_rate_delta_c": 12.681
+    },
+    {
+      "pair_name": "High Montane Ridge vs Sub-Himalayan Valley",
+      "transition": "Kumaon Montane / Doon Valley",
+      "station_high": "Mukteshwar Kumaon",
+      "elev_high_m": 2311.0,
+      "station_low": "Dehradun",
+      "elev_low_m": 682.0,
+      "delta_elevation_m": 1629.0,
+      "separation_km": 182.54,
+      "simultaneous_obs_count": 1389,
+      "mean_observed_delta_t_c": 9.385,
+      "std_observed_delta_t_c": 3.689,
+      "effective_lapse_rate_c_per_km": 5.76,
+      "theoretical_dry_lapse_rate_delta_c": 10.588
+    },
+    {
+      "pair_name": "Orographic High Plateau vs Valley Floor",
+      "transition": "Khasi Hills / Brahmaputra Valley",
+      "station_high": "Cherrapunji",
+      "elev_high_m": 1313.0,
+      "station_low": "Guwahati Borjhar",
+      "elev_low_m": 54.0,
+      "delta_elevation_m": 1259.0,
+      "separation_km": 95.75,
+      "simultaneous_obs_count": 1018,
+      "mean_observed_delta_t_c": 7.053,
+      "std_observed_delta_t_c": 2.608,
+      "effective_lapse_rate_c_per_km": 5.6,
+      "theoretical_dry_lapse_rate_delta_c": 8.184
+    },
+    {
+      "pair_name": "Western Ghats High Margin vs Coastal Plain",
+      "transition": "Western Ghats Scarp / Konkan Coast",
+      "station_high": "Belgaum / Belagavi Sambra",
+      "elev_high_m": 747.0,
+      "station_low": "Goa / Panjim",
+      "elev_low_m": 58.4,
+      "delta_elevation_m": 688.6,
+      "separation_km": 94.88,
+      "simultaneous_obs_count": 1600,
+      "mean_observed_delta_t_c": 2.099,
+      "std_observed_delta_t_c": 2.551,
+      "effective_lapse_rate_c_per_km": 3.05,
+      "theoretical_dry_lapse_rate_delta_c": 4.476
+    },
+    {
+      "pair_name": "Leeward Rainshadow Plateau vs Coastal Plain",
+      "transition": "Deccan Leeward / North Konkan Coast",
+      "station_high": "Pune",
+      "elev_high_m": 558.0,
+      "station_low": "Mumbai Santacruz",
+      "elev_low_m": 11.3,
+      "delta_elevation_m": 546.7,
+      "separation_km": 120.44,
+      "simultaneous_obs_count": 2763,
+      "mean_observed_delta_t_c": 2.882,
+      "std_observed_delta_t_c": 2.769,
+      "effective_lapse_rate_c_per_km": 5.27,
+      "theoretical_dry_lapse_rate_delta_c": 3.554
+    },
+    {
+      "pair_name": "Plateau Margin Agrarian Pair",
+      "transition": "Belagavi / Hubballi Deccan Agrarian Belt",
+      "station_high": "Belgaum / Belagavi Sambra",
+      "elev_high_m": 747.0,
+      "station_low": "Hubli / Hubballi Airport",
+      "elev_low_m": 661.3,
+      "delta_elevation_m": 85.7,
+      "separation_km": 74.71,
+      "simultaneous_obs_count": 4733,
+      "mean_observed_delta_t_c": 0.45,
+      "std_observed_delta_t_c": 1.572,
+      "effective_lapse_rate_c_per_km": 5.25,
+      "theoretical_dry_lapse_rate_delta_c": 0.557
+    }
+  ],
+  "coastal_inland_gradients": [
+    {
+      "pair_name": "Central Konkan Coastal Plain vs Western Ghats Plateau",
+      "station_coastal": "Goa / Panjim",
+      "coastal_elev_m": 58.4,
+      "station_inland": "Belgaum / Belagavi Sambra",
+      "inland_elev_m": 747.0,
+      "separation_km": 94.88,
+      "elevation_diff_m": 688.6,
+      "simultaneous_obs_count": 1600,
+      "mean_delta_t_coastal_minus_inland_c": 2.099,
+      "std_delta_t_c": 2.551
+    },
+    {
+      "pair_name": "North Konkan Maritime Coast vs Deccan Rainshadow Plateau",
+      "station_coastal": "Mumbai Santacruz",
+      "coastal_elev_m": 11.3,
+      "station_inland": "Pune",
+      "inland_elev_m": 558.0,
+      "separation_km": 120.44,
+      "elevation_diff_m": 546.7,
+      "simultaneous_obs_count": 2763,
+      "mean_delta_t_coastal_minus_inland_c": 2.882,
+      "std_delta_t_c": 2.769
+    },
+    {
+      "pair_name": "Central Malabar Coastal Lagoon vs Palghat Gap Plateau",
+      "station_coastal": "Cochin / Kochi Naval",
+      "coastal_elev_m": 2.4,
+      "station_inland": "Coimbatore Peelamedu",
+      "inland_elev_m": 403.6,
+      "separation_km": 147.24,
+      "elevation_diff_m": 401.2,
+      "simultaneous_obs_count": 2493,
+      "mean_delta_t_coastal_minus_inland_c": 0.701,
+      "std_delta_t_c": 2.293
+    },
+    {
+      "pair_name": "North Malabar Maritime Coast vs Palghat Gap Plateau",
+      "station_coastal": "Kozhikode / Calicut",
+      "coastal_elev_m": 5.0,
+      "station_inland": "Coimbatore Peelamedu",
+      "inland_elev_m": 403.6,
+      "separation_km": 139.71,
+      "elevation_diff_m": 398.6,
+      "simultaneous_obs_count": 2751,
+      "mean_delta_t_coastal_minus_inland_c": 1.903,
+      "std_delta_t_c": 1.997
+    }
+  ],
+  "readiness_levels": {
+    "LEVEL_1": {
+      "name": "Level 1: No Independent Fine-Scale Observation",
+      "description": "Geographic regions with zero accessible in-situ stations within a 50-km radius.",
+      "accessible_stations_count": 0,
+      "cluster_count": 0,
+      "geographic_coverage_share_pct": 88.5,
+      "validation_capability": "NO_VALIDATION_POSSIBLE"
+    },
+    "LEVEL_2": {
+      "name": "Level 2: Single Station Only (Isolated Regional Representative)",
+      "description": "Regions with exactly one active synoptic weather station within 25\u2013150 km. Can validate regional macro-trends, but cannot validate spatial gradients or intra-block microclimates.",
+      "accessible_stations_count": 42,
+      "cluster_count": 42,
+      "geographic_coverage_share_pct": 11.5,
+      "validation_capability": "MACRO_STATION_VALIDATION_ONLY"
+    },
+    "LEVEL_3": {
+      "name": "Level 3: Multiple Stations Within 10 km",
+      "description": "Clusters with at least two independent physical stations separated by <= 10 km. Can resolve block-level meso-scale gradients.",
+      "accessible_stations_count": 0,
+      "cluster_count": 0,
+      "geographic_coverage_share_pct": 0.0,
+      "validation_capability": "SUB_10KM_SPATIAL_GRADIENT_VALIDATION",
+      "notes": "Varanasi Pilot pair (Babatpur Airport to Varanasi Synoptic) separated by 22.13 km constitutes sub-25 km proximity, but falls outside the strict 10-km boundary."
+    },
+    "LEVEL_4": {
+      "name": "Level 4: Multiple Stations Within 5 km",
+      "description": "Clusters with at least two independent physical stations separated by <= 5 km. Can resolve Panchayat-scale spatial boundary differences.",
+      "accessible_stations_count": 0,
+      "cluster_count": 0,
+      "geographic_coverage_share_pct": 0.0,
+      "validation_capability": "SUB_5KM_PANCHAYAT_BOUNDARY_VALIDATION",
+      "notes": "Zero independent station pairs within 5 km exist in the accessible public open database."
+    },
+    "LEVEL_5": {
+      "name": "Level 5: Multiple Independent Agricultural Stations Within 5 km",
+      "description": "Clusters with multiple physical stations located inside active agricultural cropping fields within <= 5 km.",
+      "accessible_stations_count": 0,
+      "cluster_count": 0,
+      "geographic_coverage_share_pct": 0.0,
+      "validation_capability": "AGRICULTURAL_CANOPY_MICROCLIMATE_VALIDATION",
+      "institutional_blocker": "Requires official data-sharing MoU with State Agricultural Mesonets (KSNDMC, Mahavedh) or IMD Agro-AWS."
+    },
+    "LEVEL_6": {
+      "name": "Level 6: Multiple Agricultural Stations Within Same / Adjacent Panchayats",
+      "description": "Micro-sensor networks with multiple independent observational points within the same Gram Panchayat boundary.",
+      "accessible_stations_count": 0,
+      "cluster_count": 0,
+      "geographic_coverage_share_pct": 0.0,
+      "validation_capability": "INTRA_PANCHAYAT_MICRO_ZONE_VALIDATION",
+      "institutional_blocker": "Requires dedicated agro-meteorological field experiment deployment."
+    }
+  },
+  "claim_support_matrix": [
+    {
+      "claim": "National station-level validation",
+      "status": "SUPPORTED",
+      "evidence": "42 genuine external stations across 21 States/UTs, 6 physiographic zones, verified with 313,754 multi-season observations (March 2024 - August 2025)."
+    },
+    {
+      "claim": "Multi-season validation",
+      "status": "SUPPORTED",
+      "evidence": "6 independent temporal windows evaluated (Pre-Kharif 2024, Kharif 2024, Post-Monsoon 2024, Rabi 2024-25, Zaid 2025, Kharif 2025) with 0% data leakage."
+    },
+    {
+      "claim": "Sub-10 km validation",
+      "status": "NOT SUPPORTED",
+      "evidence": "Minimum pairwise distance across national network is 74.71 km (Belgaum - Hubli); closest regional pair in pilot is 22.13 km (Varanasi Babatpur - Varanasi Synoptic). Zero pairs <= 10 km."
+    },
+    {
+      "claim": "Sub-5 km validation",
+      "status": "NOT SUPPORTED",
+      "evidence": "Zero independent physical observation station pairs separated by <= 5 km exist in the accessible ground truth network."
+    },
+    {
+      "claim": "Panchayat-scale agricultural validation",
+      "status": "NOT SUPPORTED",
+      "evidence": "While forecast pipeline produces downscaled predictions at Panchayat coordinates, empirical validation at Panchayat density requires State Agricultural Mesonet data (KSNDMC / Mahavedh / IMD Agro-AWS) which are currently ACCESS_RESTRICTED."
+    },
+    {
+      "claim": "Field/plot-scale validation",
+      "status": "NOT SUPPORTED",
+      "evidence": "No in-situ agricultural micro-sensor arrays or flux towers exist in the repository; aerodrome synoptic thermometers cannot be substituted for plot-scale ground truth."
+    }
+  ],
+  "institutional_access_requirements": [
+    {
+      "agency": "KSNDMC",
+      "jurisdiction": "Karnataka",
+      "scale": "Gram Panchayat (~3-5 km)",
+      "action": "State Government Data Sharing MoU & VPN Whitelisting"
+    },
+    {
+      "agency": "Mahavedh",
+      "jurisdiction": "Maharashtra",
+      "scale": "Revenue Circle (~8-12 km)",
+      "action": "Dept of Agriculture API Access Clearance"
+    },
+    {
+      "agency": "IMD Agro-AWS",
+      "jurisdiction": "National",
+      "scale": "District / Block Agromet Units",
+      "action": "MoES/IMD Formal Academic / Research Agreement"
+    },
+    {
+      "agency": "ICAR KVKs",
+      "jurisdiction": "National",
+      "scale": "KVK Experimental Farms",
+      "action": "ICAR Extension Division Data Sharing Protocol"
+    }
+  ]
+}

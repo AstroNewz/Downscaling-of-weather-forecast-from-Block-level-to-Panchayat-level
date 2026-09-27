@@ -1,0 +1,65 @@
+{
+  "manifest_version": "2.1.0",
+  "cutover_id": "EXP_INDIA_CONTROLLED_PRODUCTION_CUTOVER_V2",
+  "generated_at": "2026-09-18T02:04:30Z",
+  "operational_architecture": "DYNAMIC_PRIMARY_WITH_CERTIFIED_FALLBACK",
+  "active_model": {
+    "identifier": "DYNAMIC_V2",
+    "name": "Dynamic Residual Downscaling Model v2",
+    "candidate_variant": "Candidate_C",
+    "status": "CONTROLLED_PRODUCTION",
+    "algorithm": "XGBoost Regressor (reg:squarederror)",
+    "feature_count": 20,
+    "model_path": "backend/models/candidates/temperature_residual/dynamic_temperature_residual_v2/xgboost_model.json",
+    "model_sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+    "historical_validation_result": {
+      "verdict": "RETAIN_FOR_RESEARCH",
+      "test_mae_improvement_c": 0.0971,
+      "gate_threshold_c": 0.1000,
+      "notes": "Historical benchmark verdict preserved. Controlled deployment operated with runtime safeguards."
+    }
+  },
+  "fallback_model": {
+    "identifier": "CERTIFIED_BASELINE_V1",
+    "name": "Phase 23/24 Certified National Scalar Calibration",
+    "offset_c": 0.7351,
+    "status": "CERTIFIED_PRODUCTION_BASELINE",
+    "formula": "T_calibrated = T_coarse + 0.7351°C",
+    "artifact_sha256": "4b0b14b2d5d852a46c3b6f001be339d33b3a6ea259ae65fa108a3d5ea72cb820"
+  },
+  "operational_safeguards": {
+    "rollout_mode": "DYNAMIC_PRIMARY",
+    "rollback_switch": "BASELINE_PRIMARY",
+    "residual_safety_bounds_c": [-8.0, 8.0],
+    "silent_clipping_permitted": false,
+    "freshness_threshold_minutes": 180,
+    "qc_policy": "STRICT_METEOROLOGICAL_PHYSICAL_LIMITS",
+    "ood_policy": {
+      "training_domain": "17 WMO Synoptic Stations Kharif 2024 (23,949 records)",
+      "temperature_bounds_c": [5.0, 52.0],
+      "relative_humidity_bounds_pct": [10.0, 100.0],
+      "wind_speed_max_mps": 28.0,
+      "elevation_max_m": 2800.0,
+      "slope_max_deg": 35.0
+    }
+  },
+  "live_data_feed": {
+    "provider": "OpenMeteoLiveWeatherProvider",
+    "source_type": "FORECAST",
+    "ssl_verification": "certifi_bundle_verified",
+    "timeout_seconds": 6.0,
+    "max_retries": 2
+  },
+  "spatial_and_agronomic_pipeline": {
+    "target_resolution_km": 1.0,
+    "conformal_metric_crs": "Dynamic Local UTM (EPSG:32644 for Varanasi)",
+    "display_crs": "EPSG:3857 (Web Mercator — UI only)",
+    "aggregation_method": "AREA_WEIGHTED_POLYGON_INTERSECTION",
+    "single_operational_temperature": true
+  },
+  "immutability": {
+    "online_retraining_permitted": false,
+    "model_weights_frozen": true,
+    "git_commit": "b88552421dabf38ba927060cd5e359a923af85e7"
+  }
+}

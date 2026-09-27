@@ -32,6 +32,9 @@ class BlockWeatherForecastResponse(WeatherBase):
     model_config = ConfigDict(from_attributes=True)
 
 
+BlockWeatherForecast = BlockWeatherForecastResponse
+
+
 class WeatherObservationResponse(WeatherBase):
     """Station / AWS Ground-Truth Weather Observation record."""
     id: int

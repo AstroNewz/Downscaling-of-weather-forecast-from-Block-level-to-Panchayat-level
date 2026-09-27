@@ -1,0 +1,231 @@
+# ==============================================================================
+# INDIA PILOT AOI CONFIGURATION
+# Project: Agroweather-Downscaling (SIH Problem Statement 26074)
+# ==============================================================================
+#
+# PILOT PRINCIPLE: Validate the complete pipeline over ONE specific Indian AOI
+# before scaling to multi-region or India-wide operation.
+#
+# Do NOT modify aoi_geometry values without also updating:
+#   - backend/data_pipeline/validation/india_data_validator.py (AOI_BBOX)
+#   - All acquisition scripts (bounding-box clip parameters)
+# ==============================================================================
+
+country: India
+
+state: Uttar Pradesh
+district: Varanasi
+block: Varanasi Sadar
+pilot_blocks:
+  - Varanasi Sadar
+  - Pindra
+  - Arajiline
+  - Cholapur
+  - Kashi Vidyapeeth
+  - Badagaon
+  - Sevapuri
+  - Harahua
+  - Chiraigaon
+
+# Existing AWS stations from project sample data
+# Classification: OBSERVATION (if real IMD data obtained) — NOT reanalysis
+known_aws_stations:
+  - station_id: AWS_BHU_001
+    name: BHU Automatic Weather Station
+    organization: "Banaras Hindu University / IMD"
+    latitude: 25.2677
+    longitude: 82.9913
+    elevation_m: null
+    data_status: SOURCE_ACCESS_REQUIRED
+
+  - station_id: AWS_BABATPUR_002
+    name: Babatpur Airport AWS
+    organization: "IMD / AAI"
+    latitude: 25.4520
+    longitude: 82.8590
+    elevation_m: null
+    data_status: SOURCE_ACCESS_REQUIRED
+
+panchayats: []
+
+# AOI Bounding Box (EPSG:4326, WGS84)
+aoi_source: "Project established geometry — Varanasi district, Uttar Pradesh, India"
+aoi_geometry: POLYGON_FROM_BOUNDARY_DOWNLOAD
+
+latitude_min: 25.10
+latitude_max: 25.60
+longitude_min: 82.70
+longitude_max: 83.20
+
+# Coordinate Reference Systems
+timezone: Asia/Kolkata
+crs_geographic: EPSG:4326
+
+metric_crs:
+  note: "Dynamically calculated per SpatialGridGenerator.get_optimal_utm_epsg(lon, lat)"
+  expected_epsg: 32644
+  expected_zone: "44N"
+
+grid_resolution_km: 1.0
+grid_resolution_m: 1000.0
+
+# Pilot Time Period
+# Kharif season 2024 — ERA5 data available; manageable volume for validation
+weather_start_date: "2024-06-01"
+weather_end_date:   "2024-08-31"
+
+# Chronological splits (no temporal leakage)
+splits:
+  train:
+    start: "2024-06-01"
+    end:   "2024-07-15"
+  validation:
+    start: "2024-07-16"
+    end:   "2024-07-31"
+  test:
+    start: "2024-08-01"
+    end:   "2024-08-31"
+
+# Data Source Priority — India-First
+# source_type must be one of:
+#   OBSERVATION / REANALYSIS / NWP_FORECAST / REMOTE_SENSING / DERIVED
+data_sources:
+  weather_observation:
+    priority_1:
+      source_name: IMD_AWS_STATION
+      organization: India Meteorological Department
+      country: India
+      dataset_name: "IMD Automatic Weather Station Network"
+      source_type: OBSERVATION
+      spatial_resolution: "point station"
+      temporal_resolution: "sub-hourly to hourly"
+      coverage: "Pan-India AWS network"
+      access_method: "FTP/API — restricted, requires IMD data sharing agreement"
+      download_url: "https://www.imd.gov.in/pages/services_data.php"
+      license: "Government of India Open Data License (GODL) — data sharing agreement required"
+      citation: "India Meteorological Department, Government of India"
+      version: "Real-time / historical archive"
+      limitations: "Station data not freely accessible without formal agreement"
+      status: SOURCE_ACCESS_REQUIRED
+
+  weather_reanalysis_coarse:
+    priority_1:
+      source_name: ERA5
+      organization: "European Centre for Medium-Range Weather Forecasts (ECMWF)"
+      country: "European (global coverage)"
+      dataset_name: "ERA5 Hourly Reanalysis on Single Levels"
+      source_type: REANALYSIS
+      spatial_resolution: "31 km (0.25 degrees)"
+      temporal_resolution: hourly
+      coverage: "Global 1940-present"
+      access_method: "CDS API — requires free ~/.cdsapirc configuration"
+      download_url: "https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-single-levels"
+      license: "Copernicus Climate Change Service (C3S) License"
+      citation: "Hersbach, H. et al. (2020). The ERA5 global reanalysis. Q.J.R. Meteorol. Soc. 146, 1999-2049."
+      version: "5th generation (ERA5)"
+      limitations: "Reanalysis — NOT a station observation. Must not be used as both coarse input and independent reference."
+
+    priority_2:
+      source_name: ERA5_LAND
+      organization: "ECMWF / Copernicus"
+      country: "European (global coverage)"
+      dataset_name: "ERA5-Land Hourly Reanalysis"
+      source_type: REANALYSIS
+      spatial_resolution: "9 km (0.1 degrees)"
+      temporal_resolution: hourly
+      coverage: "Global land 1950-present"
+      access_method: "CDS API — requires free ~/.cdsapirc configuration"
+      download_url: "https://cds.climate.copernicus.eu/cdsapp#!/dataset/reanalysis-era5-land"
+      license: "Copernicus Climate Change Service (C3S) License"
+      citation: "Munoz-Sabater, J. et al. (2021). ERA5-Land: a state-of-the-art global reanalysis dataset. ESSD 13, 4349-4383."
+      limitations: "Reanalysis — NOT a station observation."
+
+  dem:
+    priority_1:
+      source_name: SRTM_30M
+      organization: "NASA / USGS"
+      country: "USA (global coverage)"
+      dataset_name: "SRTM 1 Arc-Second Global (SRTMGL1)"
+      source_type: REMOTE_SENSING
+      spatial_resolution: "30 m (1 arc-second)"
+      temporal_resolution: "static (acquired Feb 2000)"
+      coverage: "Global 56S-60N"
+      access_method: "NASA Earthdata HTTP (open access with free account)"
+      download_url: "https://lpdaac.usgs.gov/products/srtmgl1v003/"
+      license: "NASA/USGS — free for scientific use, no redistribution restriction"
+      citation: "Farr, T.G. et al. (2007). The Shuttle Radar Topography Mission. Rev. Geophys. 45."
+      variables: [elevation_m]
+      version: "v003"
+
+  lulc:
+    priority_1:
+      source_name: BHUVAN_LULC_50K
+      organization: "NRSC / ISRO"
+      country: India
+      dataset_name: "National Land Use Land Cover Map (1:50,000 scale)"
+      source_type: REMOTE_SENSING
+      spatial_resolution: "50K scale (~56 m)"
+      temporal_resolution: "biennial"
+      coverage: "Pan-India"
+      access_method: "Bhuvan WMS/WFS — requires free Bhuvan account registration"
+      download_url: "https://bhuvan.nrsc.gov.in/bhuvan_links.php"
+      license: "NRSC Open Data Archive — non-commercial use permitted"
+      citation: "NRSC/ISRO, National Remote Sensing Centre, Hyderabad"
+      status: SOURCE_ACCESS_REQUIRED
+
+    priority_2:
+      source_name: ESA_WORLDCOVER_10M
+      organization: "ESA / VITO"
+      country: "European (global coverage)"
+      dataset_name: "ESA WorldCover 10m v200"
+      source_type: REMOTE_SENSING
+      spatial_resolution: "10 m"
+      temporal_resolution: "annual"
+      coverage: "Global"
+      access_method: "Open HTTP download"
+      download_url: "https://esa-worldcover.org/en"
+      license: "CC BY 4.0"
+      citation: "Zanaga, D. et al. (2022). ESA WorldCover 10m 2021 v200. Zenodo."
+      variables: [lulc_class]
+      version: "v200 (2021)"
+
+  soil:
+    priority_1:
+      source_name: SOILGRIDS_250M
+      organization: "ISRIC — World Soil Information"
+      country: "Netherlands (global coverage)"
+      dataset_name: "SoilGrids 2.0"
+      source_type: DERIVED
+      spatial_resolution: "250 m"
+      temporal_resolution: "static"
+      coverage: "Global"
+      access_method: "Open REST API (no credentials required)"
+      download_url: "https://www.isric.org/explore/soilgrids"
+      license: "CC BY 4.0"
+      citation: "Poggio, L. et al. (2021). SoilGrids 2.0. SOIL, 7, 217-240."
+      variables: [soc, ph, clay_pct, sand_pct, silt_pct, bdod]
+      version: "2.0"
+
+  boundaries:
+    priority_1:
+      source_name: LGD_BOUNDARIES
+      organization: "Ministry of Panchayati Raj / MoRD, GoI"
+      country: India
+      dataset_name: "Local Government Directory (LGD) Administrative Boundaries"
+      source_type: DERIVED
+      spatial_resolution: "cadastral-level"
+      access_method: "LGD open portal"
+      download_url: "https://lgdirectory.gov.in/"
+      license: "Government of India Open Data License (GODL)"
+
+  crop_data:
+    priority_1:
+      source_name: ICRISAT_VDSA
+      organization: ICRISAT
+      country: India
+      dataset_name: "Village Dynamics in South Asia — Crop Calendar"
+      source_type: DERIVED
+      access_method: "Open data portal — registration may be required"
+      download_url: "https://vdsa.icrisat.org/"
+      license: "Creative Commons"
+      status: SOURCE_ACCESS_REQUIRED_VERIFY

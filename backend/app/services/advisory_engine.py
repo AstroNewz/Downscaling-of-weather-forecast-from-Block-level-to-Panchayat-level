@@ -50,6 +50,11 @@ from app.services.advisory_rules import (
 )
 from app.services.agricultural_risk import AgriculturalRiskEngine
 from app.services.agricultural_context import AgriculturalContextService
+from app.schemas.precipitation_nowcast import PanchayatPrecipitationNowcastResult
+from app.services.advisory_nowcast_service import (
+    PanchayatAdvisoryNowcastService,
+    panchayat_advisory_nowcast_service,
+)
 
 
 class AdvisoryEngine:
@@ -75,10 +80,12 @@ class AdvisoryEngine:
         risk_type_filter: Optional[str] = None,
         persist_to_db: bool = True,
         language: str = "en",
+        nowcast_result: Optional[PanchayatPrecipitationNowcastResult] = None,
     ) -> List[AdvisoryResult]:
         """
         Generates crop-specific, stage-aware advisories for all active crops in a Panchayat.
-        Transforms Phase 10 DETECTED agricultural risks into actionable advisories.
+        Transforms Phase 10 DETECTED agricultural risks into actionable advisories, and optionally
+        integrates Phase 5 / Task 4 localized precipitation nowcast evidence.
         """
         # 1. Evaluate or retrieve Phase 10 risks
         risks: List[RiskResult] = self.risk_engine.evaluate_panchayat_crop_risks(
@@ -142,6 +149,43 @@ class AdvisoryEngine:
                     adv.id = db_id
 
             all_advisories.extend(crop_advisories)
+
+        # Task 5 Extension: Enrich baseline advisories with localized precipitation nowcast
+        all_advisories = panchayat_advisory_nowcast_service.enrich_advisories_with_nowcast(
+            advisories=all_advisories,
+            nowcast=nowcast_result,
+        )
+
+        # Generate dedicated short-horizon operational advisories if nowcast provided
+        if nowcast_result:
+            crops_to_evaluate = []
+            if crop_risks_map:
+                for c_id, c_risks in crop_risks_map.items():
+                    c_name = c_risks[0].crop_name if c_risks else "Crop"
+                    s_name = c_risks[0].stage_name if c_risks else None
+                    crops_to_evaluate.append((c_id, c_name, s_name))
+            else:
+                # If no detected risks, check if crop was filtered or default
+                crops_to_evaluate.append((crop_id or 1, "Field Crop", None))
+
+            for c_id, c_name, s_name in crops_to_evaluate:
+                nowcast_ops = panchayat_advisory_nowcast_service.generate_panchayat_nowcast_advisories(
+                    panchayat_id=panchayat.id,
+                    panchayat_name=panchayat.name,
+                    block_id=panchayat.block_id,
+                    block_name=block_name,
+                    crop_id=c_id,
+                    crop_name=c_name,
+                    forecast_date=forecast_date,
+                    nowcast=nowcast_result,
+                    stage_name=s_name,
+                    language=language,
+                )
+                if persist_to_db:
+                    for adv in nowcast_ops:
+                        db_id = self._persist_advisory(adv=adv, forecast_date=forecast_date)
+                        adv.id = db_id
+                all_advisories.extend(nowcast_ops)
 
         return all_advisories
 
@@ -554,17 +598,21 @@ class AdvisoryEngine:
         v_from = datetime.fromisoformat(adv.valid_from)
         v_until = datetime.fromisoformat(adv.valid_until)
 
+        where_conditions = [
+            AgroAdvisory.panchayat_id == adv.panchayat_id,
+            AgroAdvisory.crop_id == adv.crop_id,
+            AgroAdvisory.advisory_rule_version == rule_ver,
+            AgroAdvisory.valid_from == v_from,
+            AgroAdvisory.source_model == source_model,
+        ]
+        if adv.risk_log_id is not None:
+            where_conditions.append(AgroAdvisory.risk_log_id == adv.risk_log_id)
+        else:
+            where_conditions.append(AgroAdvisory.advisory_type == adv.advisory_type)
+            where_conditions.append(AgroAdvisory.title == adv.title)
+
         existing = self.db.scalar(
-            select(AgroAdvisory).where(
-                and_(
-                    AgroAdvisory.panchayat_id == adv.panchayat_id,
-                    AgroAdvisory.crop_id == adv.crop_id,
-                    AgroAdvisory.risk_log_id == adv.risk_log_id,
-                    AgroAdvisory.advisory_rule_version == rule_ver,
-                    AgroAdvisory.valid_from == v_from,
-                    AgroAdvisory.source_model == source_model,
-                )
-            )
+            select(AgroAdvisory).where(and_(*where_conditions))
         )
 
         raw_payload_dict = {
@@ -579,6 +627,10 @@ class AdvisoryEngine:
             "valid_until": adv.valid_until,
             "evidence": adv.evidence,
             "provenance": adv.provenance,
+            "localized_nowcast_context": adv.localized_nowcast_context.model_dump() if adv.localized_nowcast_context else None,
+            "baseline_precipitation_context": adv.baseline_precipitation_context,
+            "nowcast_advisory_state": adv.nowcast_advisory_state.value if adv.nowcast_advisory_state else None,
+            "nowcast_explanation": adv.nowcast_explanation.model_dump() if adv.nowcast_explanation else None,
         }
 
         if existing:
@@ -659,3 +711,6 @@ class AdvisoryEngine:
             self.db.flush()
             self.db.commit()
             return new_adv.id
+
+
+AgroAdvisoryEngine = AdvisoryEngine

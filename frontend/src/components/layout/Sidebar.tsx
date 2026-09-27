@@ -1,86 +1,79 @@
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
-  LayoutDashboard,
+  Home,
+  CloudRain,
   Building2,
-  MapPin,
-  CloudSun,
   ShieldAlert,
-  FileCheck2,
-  Award,
+  MapPin,
+  TrendingUp,
+  Settings,
   ChevronRight,
-  Info
+  Info,
 } from 'lucide-react';
 import { useApp } from '../../context/AppContext';
 
 export const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { selectedPanchayat } = useApp();
+  const { forecast, selectedLocation } = useApp();
 
   const navItems = [
     {
       to: '/',
-      label: 'Executive Command',
-      icon: LayoutDashboard,
-      badge: 'Live',
-      badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-800/40',
-      id: 'nav-dashboard',
+      label: 'HOME',
+      icon: Home,
+      id: 'nav-home',
+    },
+    {
+      to: '/forecast',
+      label: 'FORECAST',
+      icon: CloudRain,
+      id: 'nav-forecast',
     },
     {
       to: '/panchayats',
-      label: 'Panchayat Explorer',
+      label: 'PANCHAYATS',
       icon: Building2,
-      badge: undefined,
       id: 'nav-panchayats',
     },
     {
-      to: '/map',
-      label: 'GIS Intelligence',
-      icon: MapPin,
-      badge: '1-km Grid',
-      badgeColor: 'text-sky-400 bg-sky-950/60 border-sky-800/40',
-      id: 'nav-gis',
-    },
-    {
-      to: '/weather-analysis',
-      label: 'Weather & Downscaling',
-      icon: CloudSun,
-      badge: '+0.7351°C',
-      badgeColor: 'text-emerald-400 bg-emerald-950/60 border-emerald-800/40',
-      id: 'nav-weather',
-    },
-    {
       to: '/advisories',
-      label: 'Agro-Advisories',
+      label: 'AGRO ADVISORY',
       icon: ShieldAlert,
-      badge: selectedPanchayat?.active_risks_count ? `${selectedPanchayat.active_risks_count} Risks` : undefined,
-      badgeColor: 'text-rose-400 bg-rose-950/60 border-rose-800/40',
+      badge: forecast?.agricultural_risks?.length ? `${forecast.agricultural_risks.length} Risks` : undefined,
+      badgeColor: 'text-amber-700 bg-amber-50 border-amber-200',
       id: 'nav-advisories',
     },
     {
-      to: '/system-status',
-      label: 'Scientific Governance',
-      icon: FileCheck2,
-      badge: 'Phase 24',
-      badgeColor: 'text-indigo-400 bg-indigo-950/60 border-indigo-800/40',
-      id: 'nav-governance',
+      to: '/map',
+      label: 'MAP',
+      icon: MapPin,
+      badge: '1-km Grid',
+      badgeColor: 'text-blue-700 bg-blue-50 border-blue-200',
+      id: 'nav-map',
     },
     {
-      to: '/judge',
-      label: 'SIH Judge Mode',
-      icon: Award,
-      badge: '12 Steps',
-      badgeColor: 'text-amber-400 bg-amber-950/60 border-amber-800/40',
-      id: 'nav-judge',
+      to: '/insights',
+      label: 'INSIGHTS',
+      icon: TrendingUp,
+      id: 'nav-insights',
+    },
+    {
+      to: '/system-status',
+      label: 'SYSTEM',
+      icon: Settings,
+      badge: 'Certified',
+      badgeColor: 'text-emerald-700 bg-emerald-50 border-emerald-200',
+      id: 'nav-system',
     },
   ];
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-[#070a12] border-r border-slate-800/80 flex flex-col justify-between hidden md:flex min-h-[calc(100vh-53px)]">
-      {/* Top navigation links */}
+    <aside className="w-60 flex-shrink-0 bg-white border-r border-slate-200 flex flex-col justify-between hidden md:flex min-h-[calc(100vh-57px)]">
+      {/* Navigation links */}
       <div className="p-3 space-y-1">
-        <div className="px-3 py-2 text-[10px] font-mono tracking-wider text-slate-400 uppercase">
-          Navigation Architecture
+        <div className="px-3 py-2 text-[11px] font-semibold tracking-wider text-slate-400 uppercase">
+          Navigation
         </div>
         <nav className="space-y-1">
           {navItems.map((item) => {
@@ -90,25 +83,24 @@ export const Sidebar: React.FC = () => {
                 ? location.pathname === '/'
                 : location.pathname.startsWith(item.to) ||
                   (item.to === '/map' && location.pathname === '/gis') ||
-                  (item.to === '/weather-analysis' && location.pathname === '/weather') ||
                   (item.to === '/advisories' && location.pathname === '/advisory') ||
-                  (item.to === '/system-status' && location.pathname === '/governance');
+                  (item.to === '/system-status' && (location.pathname === '/governance' || location.pathname.startsWith('/system')));
 
             return (
               <NavLink
                 key={item.to}
                 id={item.id}
                 to={item.to}
-                className={`flex items-center justify-between px-3 py-2.5 rounded-lg text-xs font-medium transition-all group ${
+                className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium transition-all group ${
                   isActive
-                    ? 'bg-emerald-500/10 text-white font-semibold border border-emerald-500/30 shadow-[0_0_15px_rgba(16,185,129,0.05)]'
-                    : 'text-slate-300 hover:text-white hover:bg-slate-900/60 border border-transparent'
+                    ? 'bg-blue-50 text-blue-700 font-bold border-l-4 border-blue-600 rounded-l-none shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50 border-l-4 border-transparent'
                 }`}
               >
                 <div className="flex items-center gap-2.5">
                   <Icon
                     className={`w-4 h-4 transition-colors ${
-                      isActive ? 'text-emerald-400' : 'text-slate-400 group-hover:text-slate-200'
+                      isActive ? 'text-blue-600' : 'text-slate-400 group-hover:text-slate-600'
                     }`}
                   />
                   <span>{item.label}</span>
@@ -117,14 +109,14 @@ export const Sidebar: React.FC = () => {
                 <div className="flex items-center gap-1.5">
                   {item.badge && (
                     <span
-                      className={`text-[10px] font-mono font-medium px-1.5 py-0.5 rounded border ${
-                        item.badgeColor || 'text-slate-400 bg-slate-800 border-slate-700'
+                      className={`text-[10px] font-medium px-1.5 py-0.5 rounded border ${
+                        item.badgeColor || 'text-slate-500 bg-slate-100 border-slate-200'
                       }`}
                     >
                       {item.badge}
                     </span>
                   )}
-                  {isActive && <ChevronRight className="w-3.5 h-3.5 text-emerald-400" />}
+                  {isActive && <ChevronRight className="w-3.5 h-3.5 text-blue-600" />}
                 </div>
               </NavLink>
             );
@@ -133,26 +125,25 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Bottom Context Card */}
-      <div className="p-3 border-t border-slate-800/80">
-        <div className="glass-panel p-3 rounded-lg border border-slate-800 bg-slate-900/40 text-[11px] space-y-2">
-          <div className="flex items-center gap-1.5 text-slate-300 font-medium">
-            <Info className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Active Pilot Frame</span>
+      <div className="p-3 border-t border-slate-200 bg-slate-50/50">
+        <div className="p-3 rounded-lg border border-slate-200 bg-white text-xs space-y-2 shadow-xs">
+          <div className="flex items-center gap-1.5 text-slate-700 font-semibold text-[11px]">
+            <Info className="w-3.5 h-3.5 text-blue-600" />
+            <span>Target Location</span>
           </div>
-          <div className="font-mono text-slate-400 text-[10px] space-y-0.5">
-            <div className="flex justify-between">
-              <span className="text-slate-500">Panchayat:</span>
-              <span className="text-slate-300 font-semibold truncate max-w-[110px]">
-                {selectedPanchayat?.name || 'Loading...'}
+          <div className="text-[11px] text-slate-600 space-y-1">
+            <div className="font-bold text-slate-900 truncate">
+              {selectedLocation?.name || forecast?.location?.name || 'Maya Bazar Panchayat'}
+            </div>
+            <div className="flex justify-between text-[10px] text-slate-500">
+              <span>District:</span>
+              <span className="font-medium text-slate-700">{selectedLocation?.district_name || 'Varanasi'}</span>
+            </div>
+            <div className="flex justify-between text-[10px] text-slate-500">
+              <span>Current Temp:</span>
+              <span className="font-bold text-blue-600">
+                {forecast?.current?.temperature_c !== undefined ? `${forecast.current.temperature_c}°C` : '--'}
               </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Area Basis:</span>
-              <span className="text-slate-300">Local UTM (EPSG:32644)</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Calibration:</span>
-              <span className="text-emerald-400">+0.7351°C Scalar</span>
             </div>
           </div>
         </div>

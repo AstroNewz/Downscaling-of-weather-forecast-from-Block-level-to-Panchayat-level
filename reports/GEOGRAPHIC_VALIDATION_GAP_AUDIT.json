@@ -1,0 +1,479 @@
+{
+  "audit_metadata": {
+    "audit_id": "EXP_GEOGRAPHIC_VALIDATION_GAP_AUDIT_2026",
+    "timestamp_utc": "2026-09-26T07:45:00Z",
+    "problem_statement": "SIH PS 26074 (Agro-Meteorological Downscaling)",
+    "audit_status": "GEOGRAPHIC_VALIDATION_GAP \u2014 AUDITED",
+    "certified_baseline_preserved": "T_downscaled = T_coarse + 0.7351\u00b0C",
+    "model_modified": false,
+    "frontend_modified": false,
+    "mobile_modified": false,
+    "synthetic_data_added": false
+  },
+  "current_inventory_summary": {
+    "total_stations": 17,
+    "total_observations": 23949,
+    "temporal_period": "2024-06-01 to 2024-08-31",
+    "season": "Kharif 2024",
+    "states_represented_count": 13,
+    "regions_represented_count": 6,
+    "split_distribution": {
+      "train_observations": 14418,
+      "train_period": "2024-06-01 to 2024-07-25",
+      "validation_observations": 4243,
+      "validation_period": "2024-07-26 to 2024-08-10",
+      "test_observations": 5288,
+      "test_period": "2024-08-11 to 2024-08-31"
+    },
+    "variables_measured": [
+      "2m Dry-Bulb Air Temperature (\u00b0C)",
+      "Dewpoint Temperature (\u00b0C)",
+      "10m Wind Speed (m/s)",
+      "Relative Humidity (%) [Magnus-Tetens derived]",
+      "Station Elevation (m)",
+      "Geographic Coordinates (WGS84)"
+    ],
+    "primary_source": "NOAA Integrated Surface Database (ISD) / WMO Global Telecommunication System (GTS)"
+  },
+  "stations_inventory": [
+    {
+      "station_id": "421470-99999",
+      "station_name": "Mukteshwar Kumaon",
+      "state": "Uttarakhand",
+      "region": "North / Himalayan",
+      "latitude": 29.47,
+      "longitude": 79.65,
+      "elevation": 2311.0,
+      "train_count": 218,
+      "validation_count": 64,
+      "test_count": 79,
+      "total_count": 361,
+      "first_timestamp": "2024-06-01T03:00:00Z",
+      "last_timestamp": "2024-08-31T12:00:00Z",
+      "missing_hours": 1847,
+      "coverage_percent": 16.35
+    },
+    {
+      "station_id": "420830-99999",
+      "station_name": "Shimla",
+      "state": "Himachal Pradesh",
+      "region": "North / Himalayan",
+      "latitude": 31.1,
+      "longitude": 77.17,
+      "elevation": 2202.0,
+      "train_count": 215,
+      "validation_count": 64,
+      "test_count": 72,
+      "total_count": 351,
+      "first_timestamp": "2024-06-01T03:00:00Z",
+      "last_timestamp": "2024-08-31T12:00:00Z",
+      "missing_hours": 1857,
+      "coverage_percent": 15.9
+    },
+    {
+      "station_id": "420270-99999",
+      "station_name": "Srinagar",
+      "state": "Jammu & Kashmir",
+      "region": "North / Himalayan",
+      "latitude": 34.08,
+      "longitude": 74.83,
+      "elevation": 1587.0,
+      "train_count": 432,
+      "validation_count": 125,
+      "test_count": 158,
+      "total_count": 715,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T21:00:00Z",
+      "missing_hours": 1493,
+      "coverage_percent": 32.38
+    },
+    {
+      "station_id": "421110-99999",
+      "station_name": "Dehradun",
+      "state": "Uttarakhand",
+      "region": "North / Himalayan",
+      "latitude": 30.32,
+      "longitude": 78.03,
+      "elevation": 682.0,
+      "train_count": 435,
+      "validation_count": 127,
+      "test_count": 159,
+      "total_count": 721,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T21:00:00Z",
+      "missing_hours": 1487,
+      "coverage_percent": 32.65
+    },
+    {
+      "station_id": "421820-99999",
+      "station_name": "New Delhi Safdarjung",
+      "state": "Delhi",
+      "region": "Indo-Gangetic Plain",
+      "latitude": 28.58,
+      "longitude": 77.2,
+      "elevation": 216.0,
+      "train_count": 434,
+      "validation_count": 129,
+      "test_count": 164,
+      "total_count": 727,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T21:00:00Z",
+      "missing_hours": 1481,
+      "coverage_percent": 32.93
+    },
+    {
+      "station_id": "423690-99999",
+      "station_name": "Lucknow Amausi",
+      "state": "Uttar Pradesh",
+      "region": "Indo-Gangetic Plain",
+      "latitude": 26.76,
+      "longitude": 80.88,
+      "elevation": 128.0,
+      "train_count": 1189,
+      "validation_count": 375,
+      "test_count": 442,
+      "total_count": 2006,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 202,
+      "coverage_percent": 90.85
+    },
+    {
+      "station_id": "424790-99999",
+      "station_name": "Varanasi Babatpur",
+      "state": "Uttar Pradesh",
+      "region": "Indo-Gangetic Plain",
+      "latitude": 25.45,
+      "longitude": 82.86,
+      "elevation": 76.0,
+      "train_count": 1173,
+      "validation_count": 338,
+      "test_count": 433,
+      "total_count": 1944,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 264,
+      "coverage_percent": 88.04
+    },
+    {
+      "station_id": "424920-99999",
+      "station_name": "Patna Airport",
+      "state": "Bihar",
+      "region": "Indo-Gangetic Plain",
+      "latitude": 25.59,
+      "longitude": 85.08,
+      "elevation": 53.0,
+      "train_count": 1274,
+      "validation_count": 381,
+      "test_count": 472,
+      "total_count": 2127,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 81,
+      "coverage_percent": 96.33
+    },
+    {
+      "station_id": "423480-99999",
+      "station_name": "Jaipur Sanganer",
+      "state": "Rajasthan",
+      "region": "West / Arid-SemiArid",
+      "latitude": 26.82,
+      "longitude": 75.8,
+      "elevation": 390.0,
+      "train_count": 1293,
+      "validation_count": 381,
+      "test_count": 484,
+      "total_count": 2158,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 50,
+      "coverage_percent": 97.74
+    },
+    {
+      "station_id": "423390-99999",
+      "station_name": "Jodhpur",
+      "state": "Rajasthan",
+      "region": "West / Arid-SemiArid",
+      "latitude": 26.25,
+      "longitude": 73.05,
+      "elevation": 224.0,
+      "train_count": 492,
+      "validation_count": 138,
+      "test_count": 182,
+      "total_count": 812,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T21:00:00Z",
+      "missing_hours": 1396,
+      "coverage_percent": 36.78
+    },
+    {
+      "station_id": "426470-99999",
+      "station_name": "Ahmedabad",
+      "state": "Gujarat",
+      "region": "West / Arid-SemiArid",
+      "latitude": 23.07,
+      "longitude": 72.63,
+      "elevation": 55.0,
+      "train_count": 1286,
+      "validation_count": 381,
+      "test_count": 478,
+      "total_count": 2145,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 63,
+      "coverage_percent": 97.15
+    },
+    {
+      "station_id": "426670-99999",
+      "station_name": "Bhopal Bairagarh",
+      "state": "Madhya Pradesh",
+      "region": "Central Plateau",
+      "latitude": 23.28,
+      "longitude": 77.35,
+      "elevation": 523.0,
+      "train_count": 510,
+      "validation_count": 126,
+      "test_count": 159,
+      "total_count": 795,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T21:00:00Z",
+      "missing_hours": 1413,
+      "coverage_percent": 36.01
+    },
+    {
+      "station_id": "427790-99999",
+      "station_name": "Jabalpur",
+      "state": "Madhya Pradesh",
+      "region": "Central Plateau",
+      "latitude": 23.18,
+      "longitude": 79.95,
+      "elevation": 393.0,
+      "train_count": 428,
+      "validation_count": 125,
+      "test_count": 159,
+      "total_count": 712,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T21:00:00Z",
+      "missing_hours": 1496,
+      "coverage_percent": 32.25
+    },
+    {
+      "station_id": "428670-99999",
+      "station_name": "Nagpur Sonegaon",
+      "state": "Maharashtra",
+      "region": "Central Plateau",
+      "latitude": 21.09,
+      "longitude": 79.05,
+      "elevation": 310.0,
+      "train_count": 1294,
+      "validation_count": 382,
+      "test_count": 476,
+      "total_count": 2152,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 56,
+      "coverage_percent": 97.46
+    },
+    {
+      "station_id": "429710-99999",
+      "station_name": "Bhubaneswar",
+      "state": "Odisha",
+      "region": "East Delta-Plain",
+      "latitude": 20.25,
+      "longitude": 85.83,
+      "elevation": 46.0,
+      "train_count": 1189,
+      "validation_count": 366,
+      "test_count": 447,
+      "total_count": 2002,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 206,
+      "coverage_percent": 90.67
+    },
+    {
+      "station_id": "428090-99999",
+      "station_name": "Kolkata Dum Dum",
+      "state": "West Bengal",
+      "region": "East Delta-Plain",
+      "latitude": 22.65,
+      "longitude": 88.45,
+      "elevation": 6.0,
+      "train_count": 1301,
+      "validation_count": 381,
+      "test_count": 475,
+      "total_count": 2157,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 51,
+      "coverage_percent": 97.69
+    },
+    {
+      "station_id": "424100-99999",
+      "station_name": "Guwahati Borjhar",
+      "state": "Assam",
+      "region": "Northeast Hills",
+      "latitude": 26.1,
+      "longitude": 91.58,
+      "elevation": 54.0,
+      "train_count": 1255,
+      "validation_count": 360,
+      "test_count": 449,
+      "total_count": 2064,
+      "first_timestamp": "2024-06-01T00:00:00Z",
+      "last_timestamp": "2024-08-31T23:00:00Z",
+      "missing_hours": 144,
+      "coverage_percent": 93.48
+    }
+  ],
+  "regional_aggregations": {
+    "Indo-Gangetic Plain": {
+      "stations_count": 4,
+      "observations": 6804,
+      "pct_of_total": 28.41,
+      "states": [
+        "Delhi",
+        "Uttar Pradesh",
+        "Bihar"
+      ]
+    },
+    "West / Arid-SemiArid": {
+      "stations_count": 3,
+      "observations": 5115,
+      "pct_of_total": 21.36,
+      "states": [
+        "Rajasthan",
+        "Gujarat"
+      ]
+    },
+    "East Delta-Plain": {
+      "stations_count": 2,
+      "observations": 4159,
+      "pct_of_total": 17.37,
+      "states": [
+        "Odisha",
+        "West Bengal"
+      ]
+    },
+    "Central Plateau": {
+      "stations_count": 3,
+      "observations": 3659,
+      "pct_of_total": 15.28,
+      "states": [
+        "Madhya Pradesh",
+        "Maharashtra"
+      ]
+    },
+    "North / Himalayan": {
+      "stations_count": 4,
+      "observations": 2148,
+      "pct_of_total": 8.97,
+      "states": [
+        "Uttarakhand",
+        "Himachal Pradesh",
+        "Jammu & Kashmir"
+      ]
+    },
+    "Northeast Hills": {
+      "stations_count": 1,
+      "observations": 2064,
+      "pct_of_total": 8.62,
+      "states": [
+        "Assam"
+      ]
+    },
+    "South / Peninsular": {
+      "stations_count": 0,
+      "observations": 0,
+      "pct_of_total": 0.0,
+      "states": []
+    }
+  },
+  "coverage_gaps_identified": {
+    "states_with_zero_coverage": [
+      "Tamil Nadu",
+      "Karnataka",
+      "Kerala",
+      "Andhra Pradesh",
+      "Telangana",
+      "Chhattisgarh",
+      "Jharkhand",
+      "Goa",
+      "Punjab",
+      "Haryana",
+      "Meghalaya",
+      "Arunachal Pradesh",
+      "Nagaland",
+      "Manipur",
+      "Mizoram",
+      "Tripura",
+      "Sikkim",
+      "Ladakh",
+      "Puducherry",
+      "Chandigarh",
+      "Andaman & Nicobar",
+      "Dadra & Nagar Haveli and Daman & Diu",
+      "Lakshadweep"
+    ],
+    "unrepresented_states_count": 23,
+    "unrepresented_states_pct": 63.89,
+    "critical_geographic_gaps": [
+      {
+        "gap_id": "GAP_1_SOUTH_PENINSULAR",
+        "name": "Peninsular & South India Complete Void",
+        "description": "Zero validated stations across Karnataka, Tamil Nadu, Kerala, Andhra Pradesh, and Telangana.",
+        "impact": "Model cannot be certified for southern agro-climatic zones, Deccan rain-shadow microclimates, or Kaveri/Krishna irrigation belts."
+      },
+      {
+        "gap_id": "GAP_2_WESTERN_GHATS_MARITIME",
+        "name": "Western Ghats Orographic Crest & Arabian Sea Coast",
+        "description": "Attempted stations (Mumbai, Panjim, Pune, Mahabaleshwar, Thiruvananthapuram) yielded 0 valid records in public ISD archive.",
+        "impact": "Extreme precipitation lapse rates, coastal marine boundary layer, and sharp elevation gradients (0 to 1,400m within 40 km) are completely unvalidated."
+      },
+      {
+        "gap_id": "GAP_3_NORTHEAST_COMPLEX_TERRAIN",
+        "name": "Northeast Mountain & High-Rainfall Regimes",
+        "description": "Only 1 valley-floor station (Guwahati Borjhar at 54m elevation). Cherrapunji (1,313m) lacked continuous temperature records.",
+        "impact": "Hyper-humidity and complex sub-Himalayan montane wind corridors lack validation."
+      },
+      {
+        "gap_id": "GAP_4_HIMALAYAN_SPARSITY",
+        "name": "Himalayan Temporal Sparsity & High-Altitude Relief",
+        "description": "Mukteshwar (16.35% completeness) and Shimla (15.90% completeness) suffered severe temporal gaps due to 3-hourly synoptic reporting.",
+        "impact": "Valley-floor cold pools and diurnal freeze-thaw cycles under-sampled."
+      },
+      {
+        "gap_id": "GAP_5_AIRPORT_RUNWAY_BIAS",
+        "name": "Airport Environment vs Agricultural Canopy Microclimate",
+        "description": "All 17 current stations are situated at civil or military airfields (concrete runway proximity).",
+        "impact": "Artificial sensible heat flux and absence of crop evapotranspiration cooling."
+      }
+    ]
+  },
+  "station_independence_analysis": {
+    "chronological_split_spatial_independence": false,
+    "loso_cross_validation_spatial_independence": true,
+    "completely_external_stations_evaluated": 0,
+    "note": "In the primary 2024 benchmark, all 17 stations contribute training points prior to July 25. True spatial generalization is audited via LOSO (MAE=1.4304\u00b0C)."
+  },
+  "recommended_validation_expansion_target": {
+    "target_stations_to_add": 13,
+    "target_total_network": 30,
+    "target_regions": [
+      "South / Peninsular",
+      "Western Ghats / Coastal",
+      "Northeast Hills",
+      "Central / Eastern Plains",
+      "Northwest Plain"
+    ],
+    "min_observations_per_station": 1750,
+    "min_completeness_pct": 80.0,
+    "candidate_sources": [
+      "NOAA ISD Surface Network (Query alternative secondary WMO station IDs)",
+      "IMD Automated Weather Station (AWS) District Network (~1,200 stations)",
+      "IMD Agro-AWS (DAMU / KVK / ICAR Network, ~200 agromet stations)",
+      "State Disaster Management AWS (Maharashtra Mahavedh, Karnataka KSNDMC)",
+      "ICAR / State Agricultural University Agromet Observatories"
+    ]
+  }
+}

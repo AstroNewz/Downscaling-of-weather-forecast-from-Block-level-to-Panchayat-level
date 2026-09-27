@@ -1,0 +1,1112 @@
+{
+  "metadata": {
+    "task": "TASK 5 \u2014 FORENSIC AUDIT OF PANCHAYAT VALIDATION READINESS + INSTITUTIONAL DATA ACCESS PIPELINE",
+    "problem_statement": "SIH Problem Statement 26074",
+    "audit_timestamp_utc": "2026-09-26T14:45:39.065969+00:00",
+    "final_status": "PASS_WITH_LIMITATIONS",
+    "final_verdict": "PANCHAYAT VALIDATION READINESS \u2014 VERIFIED WITH LIMITATIONS"
+  },
+  "model_immutability_audit": {
+    "status": "PASS",
+    "verified": true,
+    "certified_baseline_offset_c": 0.7351,
+    "expected_offset_c": 0.7351,
+    "offset_invariant_preserved": true,
+    "details": [
+      {
+        "artifact": "baseline_calibration.json",
+        "path": "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/models/production_baseline/baseline_calibration.json",
+        "sha256": "dad1b693277a3be98b90bc49f1a4fda5ee7d509cce3164a2e5798bfd78457650",
+        "expected_sha256": "dad1b693277a3be98b90bc49f1a4fda5ee7d509cce3164a2e5798bfd78457650",
+        "match": true
+      },
+      {
+        "artifact": "dynamic_v2_xgboost_model.json",
+        "path": "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/models/candidates/temperature_residual/dynamic_temperature_residual_v2/xgboost_model.json",
+        "sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+        "expected_sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+        "match": true
+      },
+      {
+        "artifact": "dynamic_v2_feature_schema.json",
+        "path": "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/models/candidates/temperature_residual/dynamic_temperature_residual_v2/feature_schema.json",
+        "sha256": "e361b68258775231276f204593f2fdc7525b364b3caaa88f8e0ac2b7d3703f11",
+        "expected_sha256": "e361b68258775231276f204593f2fdc7525b364b3caaa88f8e0ac2b7d3703f11",
+        "match": true
+      },
+      {
+        "artifact": "dynamic_v2_metadata.json",
+        "path": "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/models/candidates/temperature_residual/dynamic_temperature_residual_v2/metadata.json",
+        "sha256": "193212a33f44fa20f60e250e9a24ad16bccc8ed1b71837f4c5502215249e1bdb",
+        "expected_sha256": "193212a33f44fa20f60e250e9a24ad16bccc8ed1b71837f4c5502215249e1bdb",
+        "match": true
+      }
+    ]
+  },
+  "target_register_audit": {
+    "status": "PASS_WITH_LIMITATIONS",
+    "total_audited": 18,
+    "level_distribution": {
+      "LEVEL_2": 15,
+      "LEVEL_1": 3
+    },
+    "training_station_contamination_count": 8,
+    "independent_station_count": 10,
+    "discrepancies_found": [
+      "ERA5_CELL_MISMATCH: KA_BLG_001 calculated=ERA5_15.75N_74.50E vs registered=ERA5_15.50N_74.50E"
+    ],
+    "panchayats": [
+      {
+        "panchayat_id": "UP_VAR_001",
+        "panchayat_name": "Maya Bazar Gram Panchayat",
+        "district": "Varanasi",
+        "state": "Uttar Pradesh",
+        "physiographic_class": "Gangetic Alluvial Plain",
+        "centroid": [
+          25.35,
+          82.95
+        ],
+        "elevation_m": 112.0,
+        "era5_cell_id_calculated": "ERA5_25.25N_83.00E",
+        "era5_cell_id_registered": "ERA5_25.25N_83.00E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 12.203,
+        "nearest_station_id": "424830-99999",
+        "nearest_station_name": "Varanasi Synoptic",
+        "nearest_station_coords": [
+          25.3,
+          83.017
+        ],
+        "nearest_station_elevation_m": 90.0,
+        "distance_haversine_km": 8.733,
+        "distance_vincenty_km": 8.728,
+        "registered_distance_km": 8.78,
+        "distance_delta_km": 0.047,
+        "stations_within_50km": 2,
+        "stations_within_10km": 1,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "UP_VAR_004",
+        "panchayat_name": "Baragaon Gram Panchayat",
+        "district": "Varanasi",
+        "state": "Uttar Pradesh",
+        "physiographic_class": "Gangetic Alluvial Plain",
+        "centroid": [
+          25.45,
+          82.82
+        ],
+        "elevation_m": 92.0,
+        "era5_cell_id_calculated": "ERA5_25.50N_82.75E",
+        "era5_cell_id_registered": "ERA5_25.50N_82.75E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 8.96,
+        "nearest_station_id": "424790-99999",
+        "nearest_station_name": "Varanasi Babatpur",
+        "nearest_station_coords": [
+          25.45,
+          82.86
+        ],
+        "nearest_station_elevation_m": 76.0,
+        "distance_haversine_km": 4.016,
+        "distance_vincenty_km": 4.023,
+        "registered_distance_km": 4.02,
+        "distance_delta_km": 0.004,
+        "stations_within_50km": 2,
+        "stations_within_10km": 1,
+        "stations_within_5km": 1,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": true,
+        "is_independent_holdout": false,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "KA_BLR_001",
+        "panchayat_name": "Hoskote Gram Panchayat",
+        "district": "Bengaluru Rural",
+        "state": "Karnataka",
+        "physiographic_class": "Deccan Plateau",
+        "centroid": [
+          13.07,
+          77.79
+        ],
+        "elevation_m": 875.0,
+        "era5_cell_id_calculated": "ERA5_13.00N_77.75E",
+        "era5_cell_id_registered": "ERA5_13.00N_77.75E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 8.909,
+        "nearest_station_id": "432950-99999",
+        "nearest_station_name": "Bangalore / Bengaluru HAL",
+        "nearest_station_coords": [
+          12.967,
+          77.583
+        ],
+        "nearest_station_elevation_m": 921.0,
+        "distance_haversine_km": 25.181,
+        "distance_vincenty_km": 25.18,
+        "registered_distance_km": 25.12,
+        "distance_delta_km": 0.061,
+        "stations_within_50km": 1,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "KA_DHW_001",
+        "panchayat_name": "Rayanal Gram Panchayat",
+        "district": "Dharwad",
+        "state": "Karnataka",
+        "physiographic_class": "Deccan Plateau",
+        "centroid": [
+          15.32,
+          75.12
+        ],
+        "elevation_m": 650.0,
+        "era5_cell_id_calculated": "ERA5_15.25N_75.00E",
+        "era5_cell_id_registered": "ERA5_15.25N_75.00E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 15.042,
+        "nearest_station_id": "432011-99999",
+        "nearest_station_name": "Hubli / Hubballi Airport",
+        "nearest_station_coords": [
+          15.35,
+          75.083
+        ],
+        "nearest_station_elevation_m": 661.3,
+        "distance_haversine_km": 5.184,
+        "distance_vincenty_km": 5.177,
+        "registered_distance_km": 5.14,
+        "distance_delta_km": 0.044,
+        "stations_within_50km": 1,
+        "stations_within_10km": 1,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "MH_RGD_001",
+        "panchayat_name": "Alibag Rural Gram Panchayat",
+        "district": "Raigad",
+        "state": "Maharashtra",
+        "physiographic_class": "Coastal Maritime",
+        "centroid": [
+          18.65,
+          72.88
+        ],
+        "elevation_m": 8.0,
+        "era5_cell_id_calculated": "ERA5_18.75N_73.00E",
+        "era5_cell_id_registered": "ERA5_18.75N_73.00E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 16.834,
+        "nearest_station_id": "430030-99999",
+        "nearest_station_name": "Mumbai Santacruz",
+        "nearest_station_coords": [
+          19.089,
+          72.868
+        ],
+        "nearest_station_elevation_m": 11.3,
+        "distance_haversine_km": 48.831,
+        "distance_vincenty_km": 48.61,
+        "registered_distance_km": 48.78,
+        "distance_delta_km": 0.051,
+        "stations_within_50km": 1,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "KL_EKM_001",
+        "panchayat_name": "Cherai Gram Panchayat",
+        "district": "Ernakulam",
+        "state": "Kerala",
+        "physiographic_class": "Coastal Maritime",
+        "centroid": [
+          10.14,
+          76.18
+        ],
+        "elevation_m": 3.0,
+        "era5_cell_id_calculated": "ERA5_10.25N_76.25E",
+        "era5_cell_id_registered": "ERA5_10.25N_76.25E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 14.432,
+        "nearest_station_id": "433530-99999",
+        "nearest_station_name": "Cochin / Kochi Naval",
+        "nearest_station_coords": [
+          9.946,
+          76.272
+        ],
+        "nearest_station_elevation_m": 2.4,
+        "distance_haversine_km": 23.808,
+        "distance_vincenty_km": 23.71,
+        "registered_distance_km": 23.55,
+        "distance_delta_km": 0.258,
+        "stations_within_50km": 1,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "MH_SAT_001",
+        "panchayat_name": "Wai Gram Panchayat",
+        "district": "Satara",
+        "state": "Maharashtra",
+        "physiographic_class": "Western Ghats Transition",
+        "centroid": [
+          17.95,
+          73.89
+        ],
+        "elevation_m": 718.0,
+        "era5_cell_id_calculated": "ERA5_18.00N_74.00E",
+        "era5_cell_id_registered": "ERA5_18.00N_74.00E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 12.895,
+        "nearest_station_id": "430630-99999",
+        "nearest_station_name": "Pune",
+        "nearest_station_coords": [
+          18.533,
+          73.85
+        ],
+        "nearest_station_elevation_m": 558.0,
+        "distance_haversine_km": 64.964,
+        "distance_vincenty_km": 64.667,
+        "registered_distance_km": 65.11,
+        "distance_delta_km": 0.146,
+        "stations_within_50km": 0,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_1",
+        "readiness_level_registered": "LEVEL_1",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "KA_BLG_001",
+        "panchayat_name": "Khanapur Gram Panchayat",
+        "district": "Belagavi",
+        "state": "Karnataka",
+        "physiographic_class": "Western Ghats Transition",
+        "centroid": [
+          15.63,
+          74.51
+        ],
+        "elevation_m": 649.0,
+        "era5_cell_id_calculated": "ERA5_15.75N_74.50E",
+        "era5_cell_id_registered": "ERA5_15.50N_74.50E",
+        "era5_cell_match": false,
+        "dist_to_era5_center_km": 13.386,
+        "nearest_station_id": "431971-99999",
+        "nearest_station_name": "Belgaum / Belagavi Sambra",
+        "nearest_station_coords": [
+          15.85,
+          74.617
+        ],
+        "nearest_station_elevation_m": 747.0,
+        "distance_haversine_km": 27.011,
+        "distance_vincenty_km": 26.91,
+        "registered_distance_km": 27.03,
+        "distance_delta_km": 0.019,
+        "stations_within_50km": 1,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "AS_KAM_001",
+        "panchayat_name": "Rani Gram Panchayat",
+        "district": "Kamrup Metropolitan",
+        "state": "Assam",
+        "physiographic_class": "Northeast Valley / Hills",
+        "centroid": [
+          26.05,
+          91.62
+        ],
+        "elevation_m": 58.0,
+        "era5_cell_id_calculated": "ERA5_26.00N_91.50E",
+        "era5_cell_id_registered": "ERA5_26.00N_91.50E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 13.217,
+        "nearest_station_id": "424100-99999",
+        "nearest_station_name": "Guwahati Borjhar",
+        "nearest_station_coords": [
+          26.1,
+          91.58
+        ],
+        "nearest_station_elevation_m": 54.0,
+        "distance_haversine_km": 6.846,
+        "distance_vincenty_km": 6.834,
+        "registered_distance_km": 6.84,
+        "distance_delta_km": 0.006,
+        "stations_within_50km": 1,
+        "stations_within_10km": 1,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": true,
+        "is_independent_holdout": false,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "ML_EKH_001",
+        "panchayat_name": "Sohra Gram Panchayat",
+        "district": "East Khasi Hills",
+        "state": "Meghalaya",
+        "physiographic_class": "Northeast Valley / Hills",
+        "centroid": [
+          25.28,
+          91.72
+        ],
+        "elevation_m": 1420.0,
+        "era5_cell_id_calculated": "ERA5_25.25N_91.75E",
+        "era5_cell_id_registered": "ERA5_25.25N_91.75E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 4.498,
+        "nearest_station_id": "425150-99999",
+        "nearest_station_name": "Cherrapunji",
+        "nearest_station_coords": [
+          25.25,
+          91.733
+        ],
+        "nearest_station_elevation_m": 1313.0,
+        "distance_haversine_km": 3.583,
+        "distance_vincenty_km": 3.572,
+        "registered_distance_km": 3.56,
+        "distance_delta_km": 0.023,
+        "stations_within_50km": 1,
+        "stations_within_10km": 1,
+        "stations_within_5km": 1,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "UK_DDN_001",
+        "panchayat_name": "Sahaspur Gram Panchayat",
+        "district": "Dehradun",
+        "state": "Uttarakhand",
+        "physiographic_class": "Himalayan Foothill",
+        "centroid": [
+          30.38,
+          77.82
+        ],
+        "elevation_m": 590.0,
+        "era5_cell_id_calculated": "ERA5_30.50N_77.75E",
+        "era5_cell_id_registered": "ERA5_30.50N_77.75E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 14.936,
+        "nearest_station_id": "421110-99999",
+        "nearest_station_name": "Dehradun",
+        "nearest_station_coords": [
+          30.32,
+          78.03
+        ],
+        "nearest_station_elevation_m": 682.0,
+        "distance_haversine_km": 21.227,
+        "distance_vincenty_km": 21.258,
+        "registered_distance_km": 21.32,
+        "distance_delta_km": 0.093,
+        "stations_within_50km": 1,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": true,
+        "is_independent_holdout": false,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "HP_KLU_001",
+        "panchayat_name": "Naggar Gram Panchayat",
+        "district": "Kullu",
+        "state": "Himachal Pradesh",
+        "physiographic_class": "Himalayan Foothill",
+        "centroid": [
+          32.14,
+          77.16
+        ],
+        "elevation_m": 1760.0,
+        "era5_cell_id_calculated": "ERA5_32.25N_77.25E",
+        "era5_cell_id_registered": "ERA5_32.25N_77.25E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 14.877,
+        "nearest_station_id": "420830-99999",
+        "nearest_station_name": "Shimla",
+        "nearest_station_coords": [
+          31.1,
+          77.17
+        ],
+        "nearest_station_elevation_m": 2202.0,
+        "distance_haversine_km": 115.647,
+        "distance_vincenty_km": 115.319,
+        "registered_distance_km": 115.65,
+        "distance_delta_km": 0.003,
+        "stations_within_50km": 0,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_1",
+        "readiness_level_registered": "LEVEL_1",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": true,
+        "is_independent_holdout": false,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "MP_BHP_001",
+        "panchayat_name": "Phanda Gram Panchayat",
+        "district": "Bhopal",
+        "state": "Madhya Pradesh",
+        "physiographic_class": "Central Plateau",
+        "centroid": [
+          23.22,
+          77.24
+        ],
+        "elevation_m": 498.0,
+        "era5_cell_id_calculated": "ERA5_23.25N_77.25E",
+        "era5_cell_id_registered": "ERA5_23.25N_77.25E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 3.489,
+        "nearest_station_id": "426670-99999",
+        "nearest_station_name": "Bhopal Bairagarh",
+        "nearest_station_coords": [
+          23.28,
+          77.35
+        ],
+        "nearest_station_elevation_m": 523.0,
+        "distance_haversine_km": 13.069,
+        "distance_vincenty_km": 13.072,
+        "registered_distance_km": 13.12,
+        "distance_delta_km": 0.051,
+        "stations_within_50km": 1,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": true,
+        "is_independent_holdout": false,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "JH_RNC_001",
+        "panchayat_name": "Namkum Gram Panchayat",
+        "district": "Ranchi",
+        "state": "Jharkhand",
+        "physiographic_class": "Central Plateau",
+        "centroid": [
+          23.33,
+          85.38
+        ],
+        "elevation_m": 635.0,
+        "era5_cell_id_calculated": "ERA5_23.25N_85.50E",
+        "era5_cell_id_registered": "ERA5_23.25N_85.50E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 15.144,
+        "nearest_station_id": "427010-99999",
+        "nearest_station_name": "Ranchi Birsa Munda",
+        "nearest_station_coords": [
+          23.314,
+          85.322
+        ],
+        "nearest_station_elevation_m": 654.7,
+        "distance_haversine_km": 6.184,
+        "distance_vincenty_km": 6.191,
+        "registered_distance_km": 6.18,
+        "distance_delta_km": 0.004,
+        "stations_within_50km": 1,
+        "stations_within_10km": 1,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "RJ_JAI_001",
+        "panchayat_name": "Bassi Gram Panchayat",
+        "district": "Jaipur",
+        "state": "Rajasthan",
+        "physiographic_class": "Arid / Semi-Arid",
+        "centroid": [
+          26.83,
+          76.04
+        ],
+        "elevation_m": 372.0,
+        "era5_cell_id_calculated": "ERA5_26.75N_76.00E",
+        "era5_cell_id_registered": "ERA5_26.75N_76.00E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 9.741,
+        "nearest_station_id": "423480-99999",
+        "nearest_station_name": "Jaipur Sanganer",
+        "nearest_station_coords": [
+          26.82,
+          75.8
+        ],
+        "nearest_station_elevation_m": 390.0,
+        "distance_haversine_km": 23.841,
+        "distance_vincenty_km": 23.884,
+        "registered_distance_km": 23.95,
+        "distance_delta_km": 0.109,
+        "stations_within_50km": 1,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": true,
+        "is_independent_holdout": false,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "GJ_AHM_001",
+        "panchayat_name": "Sanand Gram Panchayat",
+        "district": "Ahmedabad",
+        "state": "Gujarat",
+        "physiographic_class": "Arid / Semi-Arid",
+        "centroid": [
+          22.99,
+          72.38
+        ],
+        "elevation_m": 42.0,
+        "era5_cell_id_calculated": "ERA5_23.00N_72.50E",
+        "era5_cell_id_registered": "ERA5_23.00N_72.50E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 12.333,
+        "nearest_station_id": "426470-99999",
+        "nearest_station_name": "Ahmedabad",
+        "nearest_station_coords": [
+          23.07,
+          72.63
+        ],
+        "nearest_station_elevation_m": 55.0,
+        "distance_haversine_km": 27.086,
+        "distance_vincenty_km": 27.113,
+        "registered_distance_km": 27.18,
+        "distance_delta_km": 0.094,
+        "stations_within_50km": 1,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": true,
+        "is_independent_holdout": false,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "AP_KRI_001",
+        "panchayat_name": "Guduru Gram Panchayat",
+        "district": "Krishna",
+        "state": "Andhra Pradesh",
+        "physiographic_class": "Deltaic Agriculture",
+        "centroid": [
+          16.22,
+          81.08
+        ],
+        "elevation_m": 4.0,
+        "era5_cell_id_calculated": "ERA5_16.25N_81.00E",
+        "era5_cell_id_registered": "ERA5_16.25N_81.00E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 9.169,
+        "nearest_station_id": "431850-99999",
+        "nearest_station_name": "Machilipatnam",
+        "nearest_station_coords": [
+          16.2,
+          81.15
+        ],
+        "nearest_station_elevation_m": 3.0,
+        "distance_haversine_km": 7.798,
+        "distance_vincenty_km": 7.805,
+        "registered_distance_km": 7.82,
+        "distance_delta_km": 0.022,
+        "stations_within_50km": 1,
+        "stations_within_10km": 1,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_2",
+        "readiness_level_registered": "LEVEL_2",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": false,
+        "is_independent_holdout": true,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      },
+      {
+        "panchayat_id": "OD_KND_001",
+        "panchayat_name": "Rajnagar Gram Panchayat",
+        "district": "Kendrapara",
+        "state": "Odisha",
+        "physiographic_class": "Deltaic Agriculture",
+        "centroid": [
+          20.58,
+          86.74
+        ],
+        "elevation_m": 6.0,
+        "era5_cell_id_calculated": "ERA5_20.50N_86.75E",
+        "era5_cell_id_registered": "ERA5_20.50N_86.75E",
+        "era5_cell_match": true,
+        "dist_to_era5_center_km": 8.956,
+        "nearest_station_id": "429710-99999",
+        "nearest_station_name": "Bhubaneswar",
+        "nearest_station_coords": [
+          20.25,
+          85.83
+        ],
+        "nearest_station_elevation_m": 46.0,
+        "distance_haversine_km": 101.683,
+        "distance_vincenty_km": 101.761,
+        "registered_distance_km": 100.82,
+        "distance_delta_km": 0.863,
+        "stations_within_50km": 0,
+        "stations_within_10km": 0,
+        "stations_within_5km": 0,
+        "readiness_level_calculated": "LEVEL_1",
+        "readiness_level_registered": "LEVEL_1",
+        "readiness_level_match": true,
+        "nearest_station_in_training_set": true,
+        "is_independent_holdout": false,
+        "observational_validity": "REGIONAL_MACRO_ONLY (Distance > 3.5 km, airport/synoptic siting)",
+        "boundary_polygon_status": "PANCHAYAT_MAPPING_UNAVAILABLE"
+      }
+    ]
+  },
+  "institutional_registry_audit": {
+    "status": "PASS_WITH_LIMITATIONS",
+    "total_networks_evaluated": 10,
+    "total_physical_station_networks": 9,
+    "status_distribution": {
+      "ACCESS_REQUEST_REQUIRED": 4,
+      "UNAVAILABLE": 1,
+      "NOT_IMPLEMENTED": 1,
+      "PARTIALLY_ACCESSIBLE": 3,
+      "OPEN": 1
+    },
+    "networks_with_data_present": 1,
+    "semantic_discrepancies": [
+      "NON_STANDARD_STATUS: NET_SAU_AGROMET_OBS has status 'NOT_IMPLEMENTED' (expected one of {'ACCESS_REQUEST_REQUIRED', 'OPEN', 'PARTIALLY_ACCESSIBLE', 'UNAVAILABLE'})",
+      "RASTER_COVARIATE_PLATFORM_IN_STATION_REGISTRY: NET_ISRO_BHUVAN_GEOSPATIAL (approximate_station_count=0) is a raster geospatial platform, not an observational station network."
+    ],
+    "networks": [
+      {
+        "network_id": "NET_KSNDMC_GP_MESONET",
+        "network_name": "Karnataka State Natural Disaster Monitoring Centre (KSNDMC) Telemetric Weather Stations",
+        "institution": "Karnataka State Natural Disaster Monitoring Centre (KSNDMC), Department of Revenue, Government of Karnataka",
+        "geographic_scope": "Karnataka",
+        "station_count": 6000,
+        "spatial_scale": "Gram Panchayat Level (~3 to 5 km grid spacing)",
+        "cadence": "15-minute / Hourly",
+        "variables": [
+          "Air Temperature (2m)",
+          "Relative Humidity",
+          "Rainfall (Tipping Bucket 0.5mm)",
+          "Wind Speed (10m)",
+          "Wind Direction"
+        ],
+        "current_status": "ACCESS_REQUEST_REQUIRED",
+        "status_semantic_valid": true,
+        "access_route": "Formal research collaboration agreement / MoU with Director, KSNDMC, Major Sandeep Unnikrishnan Road, Bengaluru.",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": true,
+        "agricultural_context": "CRITICAL / GOLD STANDARD \u2014 Purpose-built at Gram Panchayat administrative density for drought monitoring and crop insurance (PMFBY). Sited in rural/agrarian Panchayat office or village school compounds.",
+        "validation_value": "HIGHEST POSSIBLE \u2014 Enables genuine Level 5 and Level 6 Panchayat-density observational validation across Peninsular Deccan agro-ecosystems."
+      },
+      {
+        "network_id": "NET_MAHAVEDH_AWS",
+        "network_name": "Maharashtra Agriculture Weather Information Network (Mahavedh)",
+        "institution": "Department of Agriculture, Government of Maharashtra (MahaAgri / Skymet PPP)",
+        "geographic_scope": "Maharashtra",
+        "station_count": 2065,
+        "spatial_scale": "Revenue Circle Level (~8 to 12 km grid spacing)",
+        "cadence": "Hourly",
+        "variables": [
+          "Air Temperature (2m)",
+          "Relative Humidity",
+          "Precipitation",
+          "Wind Speed",
+          "Solar Radiation"
+        ],
+        "current_status": "ACCESS_REQUEST_REQUIRED",
+        "status_semantic_valid": true,
+        "access_route": "Formal data request to Commissionerate of Agriculture, Central Building, Pune, Government of Maharashtra.",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": true,
+        "agricultural_context": "CRITICAL \u2014 Designed specifically for agro-advisories and weather-based crop insurance scheme (WBCIS). Sited in agricultural revenue circles.",
+        "validation_value": "VERY HIGH \u2014 Enables validation across Vidarbha dryland, Marathwada rainshadow, and Western Ghats transitional escarpments."
+      },
+      {
+        "network_id": "NET_IMD_AGRO_AWS",
+        "network_name": "IMD Agro-AWS & District Agromet Observatories",
+        "institution": "India Meteorological Department (IMD), Ministry of Earth Sciences (MoES), Government of India",
+        "geographic_scope": "National (Pan-India)",
+        "station_count": 750,
+        "spatial_scale": "District / Agricultural Research Station Level (~25 to 50 km)",
+        "cadence": "Hourly",
+        "variables": [
+          "Dry-Bulb Air Temperature (2m)",
+          "Dewpoint Temperature",
+          "Relative Humidity",
+          "Atmospheric Pressure",
+          "Wind Speed & Direction",
+          "Soil Temperature (5cm, 10cm, 20cm)",
+          "Precipitation"
+        ],
+        "current_status": "ACCESS_REQUEST_REQUIRED",
+        "status_semantic_valid": true,
+        "access_route": "Formal research data request through IMD National Data Centre (NDC), Shivajinagar, Pune, under MoES Data Policy (NDSAP).",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": true,
+        "agricultural_context": "HIGH \u2014 Sited within ICAR institutes, Krishi Vigyan Kendras, and State Agricultural University campuses; includes sub-surface soil thermometers.",
+        "validation_value": "HIGH \u2014 Provides high-accuracy WMO-standard physical ground truth across all major agro-climatic zones of India."
+      },
+      {
+        "network_id": "NET_IMD_DAMU_KVK",
+        "network_name": "District Agricultural Meteorology Units (DAMU) at Krishi Vigyan Kendras",
+        "institution": "Joint IMD / ICAR National Krishi Vigyan Kendra Network",
+        "geographic_scope": "National (Pan-India)",
+        "station_count": 530,
+        "spatial_scale": "Sub-District / KVK Experimental Farm Level (~30 to 60 km)",
+        "cadence": "Twice Daily (08:30 & 17:30 IST) / Hourly AWS where automated",
+        "variables": [
+          "Maximum Daily Temperature",
+          "Minimum Daily Temperature",
+          "Morning & Evening Relative Humidity",
+          "Rainfall",
+          "Sunshine Duration",
+          "Wind Speed"
+        ],
+        "current_status": "ACCESS_REQUEST_REQUIRED",
+        "status_semantic_valid": true,
+        "access_route": "Joint MoES-ICAR Agromet Coordination Committee application.",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": true,
+        "agricultural_context": "HIGH \u2014 Directly aligned with the Gramin Krishi Mausam Sewa (GKMS) bulletin dissemination units; situated in active crop research plots.",
+        "validation_value": "HIGH \u2014 Direct ground calibration for farmer-facing agromet risk thresholds."
+      },
+      {
+        "network_id": "NET_ICAR_KVK_PORTAL",
+        "network_name": "ICAR Krishi Vigyan Kendra National Portal Observatories",
+        "institution": "Indian Council of Agricultural Research (ICAR), Ministry of Agriculture & Farmers Welfare",
+        "geographic_scope": "National (Pan-India)",
+        "station_count": 731,
+        "spatial_scale": "KVK Farm Point Stations (~40 to 80 km)",
+        "cadence": "Daily Summaries",
+        "variables": [
+          "Max Temperature",
+          "Min Temperature",
+          "Rainfall",
+          "Local Pest/Crop Phenology Stage"
+        ],
+        "current_status": "UNAVAILABLE",
+        "status_semantic_valid": true,
+        "access_route": "Deputy Director General (Agricultural Extension), ICAR, Krishi Anusandhan Bhawan, New Delhi.",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": true,
+        "agricultural_context": "VERY HIGH for crop stage; MODERATE for hourly diurnal downscaling.",
+        "validation_value": "MODERATE \u2014 Essential for crop phenological alignment, but lacks sub-hourly diurnal resolution."
+      },
+      {
+        "network_id": "NET_SAU_AGROMET_OBS",
+        "network_name": "State Agricultural University (SAU) Departmental Observatories",
+        "institution": "All India Coordinated Research Project on Agrometeorology (AICRPAM / 25 State Agricultural Universities)",
+        "geographic_scope": "National (25 State Ag Universities)",
+        "station_count": 120,
+        "spatial_scale": "University Research Farm Enclosures",
+        "cadence": "Manual Standard Times (08:30 & 17:30 IST)",
+        "variables": [
+          "Dry-Bulb Temperature",
+          "Wet-Bulb Temperature",
+          "Soil Temperature Profiles (5, 10, 15, 20, 30 cm)",
+          "Bright Sunshine Hours (Campbell-Stokes)",
+          "Pan Evaporation"
+        ],
+        "current_status": "NOT_IMPLEMENTED",
+        "status_semantic_valid": false,
+        "access_route": "AICRPAM Coordinating Unit, ICAR-CRIDA, Santoshnagar, Hyderabad.",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": true,
+        "agricultural_context": "HIGH for microclimatic physics and soil thermal inertia; LOW for rapid automated spatial downscaling verification.",
+        "validation_value": "MODERATE \u2014 Benchmarks microclimatic soil temperature physics."
+      },
+      {
+        "network_id": "NET_ISRO_MOSDAC_AWS",
+        "network_name": "ISRO MOSDAC In-Situ Automatic Weather Station Network",
+        "institution": "Space Applications Centre (SAC), Indian Space Research Organisation (ISRO)",
+        "geographic_scope": "National (Pan-India)",
+        "station_count": 1100,
+        "spatial_scale": "Meso-Scale Remote & Agricultural (~25 to 50 km)",
+        "cadence": "Hourly",
+        "variables": [
+          "Air Temperature (2m)",
+          "Atmospheric Pressure",
+          "Relative Humidity",
+          "Wind Speed",
+          "Precipitation"
+        ],
+        "current_status": "PARTIALLY_ACCESSIBLE",
+        "status_semantic_valid": true,
+        "access_route": "Online registration at www.mosdac.gov.in followed by formal research justification submitted to SAC Ahmedabad.",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": true,
+        "agricultural_context": "MODERATE to HIGH \u2014 Dense siting in remote and agricultural zones complementing IMD.",
+        "validation_value": "HIGH \u2014 Independent physical ground truth outside IMD network."
+      },
+      {
+        "network_id": "NET_ISRO_BHUVAN_GEOSPATIAL",
+        "network_name": "ISRO Bhuvan Spatial Covariate Platform",
+        "institution": "National Remote Sensing Centre (NRSC), ISRO",
+        "geographic_scope": "National (Pan-India)",
+        "station_count": 0,
+        "spatial_scale": "Continuous Raster (30m CartoDEM, 56m AWiFS LULC)",
+        "cadence": "Static / Biennial",
+        "variables": [
+          "Digital Elevation Model (CartoDEM)",
+          "Slope",
+          "Aspect",
+          "Land Use / Land Cover (LULC)",
+          "Normalised Difference Vegetation Index (NDVI)"
+        ],
+        "current_status": "PARTIALLY_ACCESSIBLE",
+        "status_semantic_valid": true,
+        "access_route": "Bhuvan Open Geoportal (bhuvan.nrsc.gov.in).",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": false,
+        "agricultural_context": "ESSENTIAL COVARIATE \u2014 Provides topographic and surface feature inputs for Dynamic Residual V2 model.",
+        "validation_value": "SUPPORTING_ONLY \u2014 Provides geographic covariates, not physical validation ground truth."
+      },
+      {
+        "network_id": "NET_CPCB_CAAQMS",
+        "network_name": "Central Pollution Control Board Continuous Ambient Air Quality Monitoring Stations",
+        "institution": "Central Pollution Control Board (CPCB), Ministry of Environment, Forest and Climate Change",
+        "geographic_scope": "National (Urban/Industrial)",
+        "station_count": 480,
+        "spatial_scale": "Urban Micro-Scale (~2 to 5 km within Tier-1/2 cities)",
+        "cadence": "15-minute / Hourly",
+        "variables": [
+          "Ambient Temperature (2m)",
+          "Relative Humidity",
+          "Wind Speed & Direction",
+          "Solar Radiation",
+          "Atmospheric Pressure",
+          "Air Quality Parameters (PM2.5, PM10, NOx, SO2, CO)"
+        ],
+        "current_status": "PARTIALLY_ACCESSIBLE",
+        "status_semantic_valid": true,
+        "access_route": "Open portal export from app.cpcbccr.com.",
+        "access_granted": false,
+        "current_repo_contains_actual_observations": false,
+        "usable_for_independent_validation": false,
+        "is_station_network": true,
+        "agricultural_context": "VERY LOW \u2014 Sited in heavy urban intersections, commercial centers, and industrial parks; subject to intense urban heat island (UHI) contamination.",
+        "validation_value": "LOW FOR AGRO-WEATHER \u2014 Provides dense urban spatial pairs, but cannot be treated as representative of rural agricultural microclimates."
+      },
+      {
+        "network_id": "NET_NOAA_ISD_SYNOPTIC",
+        "network_name": "NOAA Integrated Surface Database (ISD) / WMO GTS Synoptic Network",
+        "institution": "World Meteorological Organization (WMO) / NOAA NCEI / IMD",
+        "geographic_scope": "National (Pan-India)",
+        "station_count": 45,
+        "spatial_scale": "Macro-Synoptic / Aerodrome (~75 to 150 km separation)",
+        "cadence": "Hourly to 3-Hourly Synoptic",
+        "variables": [
+          "Air Temperature (2m)",
+          "Dewpoint Temperature",
+          "Relative Humidity",
+          "Surface Pressure",
+          "Wind Speed & Direction"
+        ],
+        "current_status": "OPEN",
+        "status_semantic_valid": true,
+        "access_route": "NOAA NCEI ISD Lite Public Data Access (https://www.ncei.noaa.gov/pub/data/noaa/isd-lite/).",
+        "access_granted": true,
+        "current_repo_contains_actual_observations": true,
+        "usable_for_independent_validation": true,
+        "is_station_network": true,
+        "agricultural_context": "MODERATE \u2014 Gold-standard calibrated physical thermometers, but primarily sited at civil aerodromes and regional IMD offices.",
+        "validation_value": "FOUNDATIONAL BASELINE \u2014 Proves national macro-scale calibration, but structurally incapable of sub-5 km Panchayat validation."
+      }
+    ]
+  },
+  "dry_run_reproduction": {
+    "status": "PASS",
+    "reproduction_exact": true,
+    "sample_size": 434,
+    "station_1": {
+      "id": "424790-99999",
+      "name": "Varanasi Babatpur Airport",
+      "coords": [
+        25.45,
+        82.86
+      ],
+      "elev_m": 76.0,
+      "in_training": true
+    },
+    "station_2": {
+      "id": "424830-99999",
+      "name": "Varanasi Synoptic",
+      "coords": [
+        25.3,
+        83.017
+      ],
+      "elev_m": 90.0,
+      "in_training": false
+    },
+    "station_separation_km": 22.13,
+    "date_range": [
+      "2024-06-01T00:00:00+00:00",
+      "2024-08-31T12:00:00+00:00"
+    ],
+    "comparisons": {
+      "aligned_observations": {
+        "reproduced": 434,
+        "committed": 434,
+        "match": true
+      },
+      "observed_delta_mean_c": {
+        "reproduced": -0.3926267281105992,
+        "committed": -0.3926267281105992,
+        "abs_diff": 0.0
+      },
+      "observed_delta_std_c": {
+        "reproduced": 1.1776102544387685,
+        "committed": 1.1776102544387685,
+        "abs_diff": 0.0
+      },
+      "observed_spatial_variance_c2": {
+        "reproduced": 1.3867659113593414,
+        "committed": 1.3867659113593414,
+        "abs_diff": 0.0
+      },
+      "certified_baseline_same_variance_c2": {
+        "reproduced": 0.0,
+        "committed": 0.0,
+        "abs_diff": 0.0
+      },
+      "dynamic_v2_variance_c2": {
+        "reproduced": 0.21621158071485336,
+        "committed": 0.21621158071485336,
+        "abs_diff": 0.0
+      },
+      "baseline_same_gradient_mae_c": {
+        "reproduced": 0.9202764976958526,
+        "committed": 0.9202764976958526,
+        "abs_diff": 0.0
+      },
+      "baseline_near_gradient_mae_c": {
+        "reproduced": 1.0905529953917052,
+        "committed": 1.0905529953917052,
+        "abs_diff": 0.0
+      },
+      "dynamic_v2_gradient_mae_c": {
+        "reproduced": 1.0082374735740725,
+        "committed": 1.0082374735740725,
+        "abs_diff": 0.0
+      },
+      "baseline_gradient_rmse_c": {
+        "reproduced": 1.2413386560428123,
+        "committed": 1.2413386560428123,
+        "abs_diff": 0.0
+      },
+      "dynamic_gradient_rmse_c": {
+        "reproduced": 1.3545440679757625,
+        "committed": 1.3545440679757625,
+        "abs_diff": 0.0
+      },
+      "spatial_correlation": {
+        "reproduced": -0.20554123035506128,
+        "committed": -0.20554123035506128,
+        "abs_diff": 0.0
+      }
+    },
+    "mathematical_interpretation": {
+      "model_output_spatial_variance": 0.0,
+      "real_world_observed_spatial_variance": 1.3867659113593414,
+      "baseline_gradient_mae": 0.9202764976958526,
+      "dynamic_v2_gradient_mae": 1.0082374735740725,
+      "dynamic_v2_spatial_correlation": -0.20554123035506128,
+      "scientific_takeaway": "Certified Baseline produces identical predictions for collocated stations in the same ERA5 coarse cell, leading to zero model spatial variance. However, real-world observed spatial variance is 1.3868\u00b0C\u00b2, meaning the baseline has an unavoidable gradient MAE of 0.9203\u00b0C. Dynamic V2 produces non-zero gradients but achieves a worse gradient MAE (1.0082\u00b0C) and negative spatial correlation (-0.2055), confirming it is unready for production cutover."
+    }
+  },
+  "fail_closed_test_report": {
+    "total_tests": 19,
+    "passed": 19,
+    "failed": 0,
+    "skipped": 0,
+    "overall_status": "PASS",
+    "fail_closed_guarantee": "VERIFIED"
+  },
+  "executive_verdict": {
+    "verdict": "PANCHAYAT VALIDATION READINESS \u2014 VERIFIED WITH LIMITATIONS",
+    "status": "PASS_WITH_LIMITATIONS",
+    "scientific_takeaway": "Panchayat-scale validation infrastructure is operational and fail-closed. The empirical validation claim remains pending authorized independent agricultural observations. No model, frozen weights, certified baseline, website, or mobile UI were modified."
+  }
+}

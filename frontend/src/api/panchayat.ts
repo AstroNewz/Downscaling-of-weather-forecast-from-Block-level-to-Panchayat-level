@@ -177,8 +177,9 @@ export async function getPanchayatsGeoJson(blockId?: number): Promise<any> {
   return apiClient<any>(`/panchayat/geojson${query}`);
 }
 
-export async function getPanchayatDetail(panchayatId: number | string): Promise<PanchayatDetailPayload> {
-  const raw = await apiClient<any>(`/panchayat/${panchayatId}/detail`);
+export async function getPanchayatDetail(panchayatId: number | string, date?: string): Promise<PanchayatDetailPayload> {
+  const query = date ? `?date=${encodeURIComponent(date)}` : '';
+  const raw = await apiClient<any>(`/panchayat/${panchayatId}/detail${query}`);
   const p = raw.panchayat || {};
   const weatherRaw = raw.latest_weather || {};
 
@@ -190,11 +191,24 @@ export async function getPanchayatDetail(panchayatId: number | string): Promise<
     wind_speed_kmh: weatherRaw.wind_speed_kmh ?? 14.5,
     rainfall_mm: weatherRaw.rainfall_mm ?? 0.0,
     predicted_residual_delta_c: weatherRaw.predicted_residual_delta_c ?? weatherRaw.mean_residual_c ?? 0.7351,
+    operational_residual_c: weatherRaw.operational_residual_c ?? 0.7351,
+    coarse_temperature_c: weatherRaw.coarse_temperature_c,
     coverage_pct: weatherRaw.coverage_pct ?? 95.3,
     quality_status: weatherRaw.quality_status ?? 'VALID',
     source_model: weatherRaw.source_model ?? 'CERTIFIED_PRODUCTION_BASELINE_PHASE24',
+    source_provider: weatherRaw.source_provider ?? weatherRaw.source_model ?? 'CANONICAL_PILOT_FIXTURE',
+    source_type: weatherRaw.source_type ?? 'PILOT_FIXTURE',
+    source_timestamp: weatherRaw.source_timestamp,
+    retrieval_timestamp: weatherRaw.retrieval_timestamp,
+    live_request_id: weatherRaw.live_request_id || raw.live_request_id,
     model_version: weatherRaw.model_version ?? 'Certified Production Baseline (+0.7351°C)',
+    model_used: weatherRaw.model_used ?? 'DYNAMIC_V2',
     forecast_valid_time: weatherRaw.forecast_valid_time,
+    data_mode: weatherRaw.data_mode,
+    effective_mode: weatherRaw.effective_mode,
+    fallback_active: weatherRaw.fallback_active ?? false,
+    fallback_reason: weatherRaw.fallback_reason,
+    target_date: weatherRaw.target_date,
   };
 
   const normalizedPanchayat: Panchayat = {
@@ -226,5 +240,16 @@ export async function getPanchayatDetail(panchayatId: number | string): Promise<
     agricultural_contexts: cropContexts,
     detected_risks: risks,
     active_advisories: advisories,
+    precipitation_nowcast: raw.precipitation_nowcast || null,
   };
 }
+
+export async function getPrecipitationNowcast(panchayatId: number | string, date?: string): Promise<any> {
+  const query = date ? `?date=${encodeURIComponent(date)}` : '';
+  return apiClient<any>(`/panchayat/${panchayatId}/precipitation-nowcast${query}`);
+}
+
+export async function getPanchayatBoundary(panchayatId: number | string): Promise<any> {
+  return apiClient<any>(`/panchayat/${panchayatId}/boundary`);
+}
+

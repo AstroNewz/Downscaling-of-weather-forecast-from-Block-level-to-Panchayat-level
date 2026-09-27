@@ -1,0 +1,71 @@
+{
+  "system_identifier": "AgroWeather / SIH PS 26074",
+  "audit_timestamp_iso": "2026-09-18T16:15:00Z",
+  "system_state": "STATE_D_PARTIAL_PROGRESS_WITH_LIMITATIONS",
+  "certified_baseline_invariant": {
+    "offset_celsius": 0.7351,
+    "formula": "T_downscaled = T_coarse + 0.7351",
+    "status": "PRESERVED_AS_OPERATIONAL_DEFAULT"
+  },
+  "git_commit": "b88552421dabf38ba927060cd5e359a923af85e7",
+  "model_checksum_sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+  "track_a_imd": {
+    "provider_registered": true,
+    "status": "NOT_CONFIGURED",
+    "auth_configured": false,
+    "open_meteo_fallback": "ACTIVE",
+    "zero_mock_credentials": true
+  },
+  "track_b_nationwide_validation": {
+    "regions_total": 7,
+    "regions_validated": 6,
+    "regions_insufficient": 1,
+    "insufficient_region_name": "South India",
+    "stations_evaluated": 17,
+    "genuine_records": 23949,
+    "claim_statement": "NATIONWIDE MULTI-REGION VALIDATION COMPLETED; COVERAGE LIMITATIONS REMAIN",
+    "prohibited_claim_present": false
+  },
+  "track_c_dynamic_v2_promotion": {
+    "test_mae_celsius": 1.1690,
+    "baseline_mae_celsius": 1.2661,
+    "delta_mae_celsius": 0.0971,
+    "loso_mae_celsius": 1.4304,
+    "generalization_gap_celsius": 0.1898,
+    "pt100_uncertainty_band_celsius": [0.10, 0.20],
+    "gate_evaluations": {
+      "gate_1_min_improvement_0_10c": "FAIL (0.0971 < 0.1000)",
+      "gate_2_max_loso_1_40c": "FAIL (1.4304 > 1.4000)",
+      "gate_3_max_gap_0_15c": "FAIL (0.1898 > 0.1500)",
+      "gate_4_paired_bootstrap_p95": "PASS",
+      "gate_5_monsoon_mae_1_35c": "PASS (1.3195 <= 1.3500)",
+      "gate_6_physics_clamping_active": "PASS ([-8C, +8C])",
+      "gate_7_zero_unbounded_extrap": "PASS",
+      "gate_8_rollback_manifest_present": "PASS"
+    },
+    "scientific_decision": "RETAIN_FOR_RESEARCH",
+    "production_status": "CONTROLLED_PRODUCTION",
+    "shadow_mode_active": true
+  },
+  "panchayat_block_aggregation": {
+    "aggregation_endpoint_live": true,
+    "spatial_statistics": ["mean", "min", "max", "variance"],
+    "crop_risk_distribution_included": true
+  },
+  "test_suite_summary": {
+    "total_tests": 18,
+    "passed": 18,
+    "failed": 0,
+    "judge_attack_suite_passed": true
+  },
+  "artifacts_manifest": [
+    "reports/IMD_LIVE_INTEGRATION_AUDIT.md",
+    "reports/IMD_LIVE_INTEGRATION_AUDIT.json",
+    "reports/NATIONWIDE_VALIDATION_AUDIT.md",
+    "reports/NATIONWIDE_VALIDATION_AUDIT.json",
+    "reports/DYNAMIC_V2_PROMOTION_AUDIT.md",
+    "reports/DYNAMIC_V2_PROMOTION_AUDIT.json",
+    "reports/FINAL_THREE_TRACK_AUDIT.md",
+    "reports/FINAL_THREE_TRACK_AUDIT.json"
+  ]
+}

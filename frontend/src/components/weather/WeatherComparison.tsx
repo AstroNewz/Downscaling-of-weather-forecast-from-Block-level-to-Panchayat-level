@@ -1,6 +1,6 @@
 import React from 'react';
 import { PanchayatWeather } from '../../types';
-import { Thermometer, Wind, Droplets, CloudRain, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Thermometer, Wind, Droplets, CloudRain, ShieldCheck, Cpu, AlertTriangle, ArrowRight } from 'lucide-react';
 
 interface WeatherComparisonProps {
   weather: PanchayatWeather | null | undefined;
@@ -21,36 +21,44 @@ export const WeatherComparison: React.FC<WeatherComparisonProps> = ({
     );
   }
 
-  // Certified baseline: T_calibrated = T_coarse + 0.7351°C
-  // Therefore: T_coarse = T_calibrated - 0.7351°C
-  const deltaC = 0.7351;
-  const coarseTmean = Number((weather.tmean_c - deltaC).toFixed(2));
+  const isDynamicActive = weather.model_used === 'DYNAMIC_V2' && !weather.fallback_active;
+  const operationalResidual = weather.operational_residual_c ?? weather.predicted_residual_delta_c ?? 0.7351;
+  const coarseTmean = weather.coarse_temperature_c ?? Number((weather.tmean_c - operationalResidual).toFixed(2));
   const downscaledTmean = Number(weather.tmean_c.toFixed(2));
 
-  const coarseTmax = Number((weather.tmax_c - deltaC).toFixed(2));
+  const coarseTmax = Number((weather.tmax_c - operationalResidual).toFixed(2));
   const downscaledTmax = Number(weather.tmax_c.toFixed(2));
 
-  const coarseTmin = Number((weather.tmin_c - deltaC).toFixed(2));
+  const coarseTmin = Number((weather.tmin_c - operationalResidual).toFixed(2));
   const downscaledTmin = Number(weather.tmin_c.toFixed(2));
 
   return (
     <div className="glass-panel p-5 rounded-xl border border-slate-800 space-y-4">
-      {/* Section Header */}
+      {/* Section Header with Mandatory Operational Status Banner */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 pb-3">
         <div>
           <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-2">
             <span>Spatial Resolution Downscaling Comparison</span>
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
-            Regional NWP Grid vs Certified Panchayat Micro-Scale (1-km Calibrated)
+            Regional NWP Grid vs Operational Panchayat Micro-Scale (1-km Calibrated)
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-300 text-[11px] font-mono font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>T_calibrated = T_coarse + 0.7351°C</span>
-          </div>
+        <div className="flex flex-wrap items-center gap-2 font-mono text-xs">
+          {isDynamicActive ? (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/40 text-purple-300 shadow-sm shadow-purple-900/30">
+              <Cpu className="w-3.5 h-3.5 text-purple-400 animate-pulse" />
+              <span className="font-bold">DYNAMIC DOWNSCALING ACTIVE</span>
+              <span className="text-[10px] text-purple-400/80">(CONTROLLED_PRODUCTION)</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/40 text-amber-300">
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="font-bold">CERTIFIED BASELINE FALLBACK ACTIVE</span>
+              <span className="text-[10px] text-amber-400/80">(T_coarse + 0.7351°C)</span>
+            </div>
+          )}
         </div>
       </div>
 
@@ -61,10 +69,10 @@ export const WeatherComparison: React.FC<WeatherComparisonProps> = ({
           <div className="flex justify-between items-start">
             <div>
               <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 uppercase tracking-wider">
-                Coarse Regional Forecast
+                Coarse Regional Forecast (NWP)
               </span>
               <h4 className="text-sm font-bold text-slate-200 mt-1">{blockName}</h4>
-              <p className="text-[11px] text-slate-400 font-mono">~25 km ERA5 / NWP Grid</p>
+              <p className="text-[11px] text-slate-400 font-mono">~25 km Operational Grid</p>
             </div>
             <div className="p-2 rounded-lg bg-slate-800/60 text-slate-400">
               <Thermometer className="w-5 h-5" />
@@ -73,11 +81,11 @@ export const WeatherComparison: React.FC<WeatherComparisonProps> = ({
 
           <div className="pt-2 border-t border-slate-800/60 space-y-2">
             <div className="flex items-baseline justify-between">
-              <span className="text-xs text-slate-400">Mean Temperature:</span>
-              <span className="text-lg font-bold font-mono text-slate-300">{coarseTmean}°C</span>
+              <span className="text-xs text-slate-400">Coarse NWP Mean:</span>
+              <span className="text-xl font-bold font-mono text-slate-300">{coarseTmean}°C</span>
             </div>
             <div className="flex items-center justify-between text-xs text-slate-400">
-              <span>Max / Min Range:</span>
+              <span>Coarse Max / Min:</span>
               <span className="font-mono text-slate-300">{coarseTmax}°C / {coarseTmin}°C</span>
             </div>
             <div className="flex items-center justify-between text-xs text-slate-400">
@@ -87,40 +95,68 @@ export const WeatherComparison: React.FC<WeatherComparisonProps> = ({
           </div>
         </div>
 
-        {/* Right: Downscaled Panchayat Level (1 km) */}
-        <div className="p-4 rounded-xl border border-emerald-500/30 bg-emerald-950/10 space-y-3 relative shadow-[0_0_20px_rgba(16,185,129,0.05)]">
+        {/* Right: Operational Downscaled Panchayat Level (1 km) */}
+        <div className={`p-4 rounded-xl border space-y-3 relative ${
+          isDynamicActive 
+            ? 'border-purple-500/40 bg-purple-950/15 shadow-[0_0_20px_rgba(168,85,247,0.08)]' 
+            : 'border-emerald-500/30 bg-emerald-950/10 shadow-[0_0_20px_rgba(16,185,129,0.05)]'
+        }`}>
           <div className="flex justify-between items-start">
             <div>
-              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 border border-emerald-500/40 text-emerald-300 uppercase tracking-wider font-semibold">
-                Panchayat Scale Certified
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded uppercase tracking-wider font-semibold ${
+                isDynamicActive
+                  ? 'bg-purple-950 border border-purple-500/40 text-purple-300'
+                  : 'bg-emerald-950 border border-emerald-500/40 text-emerald-300'
+              }`}>
+                {isDynamicActive ? 'Panchayat Dynamic v2' : 'Panchayat Baseline Fallback'}
               </span>
               <h4 className="text-sm font-bold text-white mt-1">{panchayatName}</h4>
-              <p className="text-[11px] text-emerald-400/80 font-mono">1-km Calibrated Micro-Grid</p>
+              <p className="text-[11px] text-emerald-400/80 font-mono">1-km Operational Micro-Grid</p>
             </div>
-            <div className="p-2 rounded-lg bg-emerald-500/15 text-emerald-400">
+            <div className={`p-2 rounded-lg ${isDynamicActive ? 'bg-purple-500/15 text-purple-400' : 'bg-emerald-500/15 text-emerald-400'}`}>
               <Thermometer className="w-5 h-5" />
             </div>
           </div>
 
-          <div className="pt-2 border-t border-emerald-500/20 space-y-2">
+          <div className="pt-2 border-t border-slate-800/60 space-y-2">
             <div className="flex items-baseline justify-between">
-              <span className="text-xs text-emerald-200/80">Mean Temperature:</span>
+              <span className="text-xs text-slate-300">Downscaled Temperature:</span>
               <div className="flex items-baseline gap-1.5">
-                <span className="text-lg font-bold font-mono text-emerald-300">{downscaledTmean}°C</span>
-                <span className="text-xs font-mono font-medium text-emerald-400">(+0.7351°C)</span>
+                <span className={`text-xl font-bold font-mono ${isDynamicActive ? 'text-purple-300' : 'text-emerald-300'}`}>
+                  {downscaledTmean}°C
+                </span>
+                <span className={`text-xs font-mono font-medium ${isDynamicActive ? 'text-purple-400' : 'text-emerald-400'}`}>
+                  ({operationalResidual >= 0 ? `+${operationalResidual.toFixed(2)}` : operationalResidual.toFixed(2)}°C)
+                </span>
               </div>
             </div>
             <div className="flex items-center justify-between text-xs text-slate-300">
-              <span>Max / Min Range:</span>
-              <span className="font-mono text-emerald-200">{downscaledTmax}°C / {downscaledTmin}°C</span>
+              <span>Downscaled Max / Min:</span>
+              <span className="font-mono text-slate-200">{downscaledTmax}°C / {downscaledTmin}°C</span>
             </div>
             <div className="flex items-center justify-between text-xs text-slate-300">
-              <span>Scientific Status:</span>
-              <span className="font-mono text-emerald-400 font-semibold text-[11px]">
-                Phase 24 Certified Production
+              <span>Operational Pathway:</span>
+              <span className={`font-mono font-semibold text-[11px] ${isDynamicActive ? 'text-purple-400' : 'text-emerald-400'}`}>
+                {isDynamicActive ? 'Dynamic Model v2 (Controlled)' : 'Certified Baseline Fallback (+0.7351°C)'}
               </span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Exact Downscaling Formula Line */}
+      <div className="p-3 rounded-lg bg-slate-900/70 border border-slate-800 flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+        <div className="flex items-center gap-2 text-slate-400">
+          <span>Formula Resolution:</span>
+          <span className="text-slate-200 font-bold">
+            Coarse ({coarseTmean}°C) {operationalResidual >= 0 ? '+' : '-'} {Math.abs(operationalResidual).toFixed(2)}°C = {downscaledTmean}°C
+          </span>
+        </div>
+        <div className="text-slate-400 flex items-center gap-1.5">
+          <span>Active Policy:</span>
+          <span className="text-purple-300 font-semibold">
+            {isDynamicActive ? 'Primary Dynamic Path' : 'Automatic Baseline Fallback'}
+          </span>
         </div>
       </div>
 

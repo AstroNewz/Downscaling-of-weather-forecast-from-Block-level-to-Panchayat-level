@@ -54,10 +54,15 @@ class DEMTopographicEngine:
         if abs(dz_dx) < 1e-7 and abs(dz_dy) < 1e-7:
             return slope_deg, 0.0, 0.0, 1.0
 
-        # Aspect in degrees: compass direction of steepest slope (0° = North, 90° = East, etc.)
-        aspect_rad = math.atan2(-dz_dy, dz_dx)
-        aspect_deg = (math.degrees(aspect_rad) + 360.0) % 360.0
-        aspect_deg = round(aspect_deg, 2)
+        # Aspect in degrees using Horn (1981) standard GIS azimuth: 0° = North, 90° = East, 180° = South, 270° = West
+        aspect_raw = math.degrees(math.atan2(dz_dy, -dz_dx))
+        if aspect_raw < 0:
+            aspect_deg = 90.0 - aspect_raw
+        elif aspect_raw > 90.0:
+            aspect_deg = 360.0 - aspect_raw + 90.0
+        else:
+            aspect_deg = 90.0 - aspect_raw
+        aspect_deg = round(aspect_deg % 360.0, 2)
 
         # Cyclical components
         sin_asp = round(math.sin(math.radians(aspect_deg)), 4)

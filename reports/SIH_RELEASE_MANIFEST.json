@@ -1,0 +1,84 @@
+{
+  "release_tag": "v1.1.0-sih-judge-validated",
+  "system_identifier": "AgroWeather / SIH PS 26074",
+  "timestamp_iso": "2026-09-25T08:15:00Z",
+  "git_commit": "b88552421dabf38ba927060cd5e359a923af85e7",
+  "release_status": "SIH_RELEASE_READY_WITH_LIMITATIONS",
+  "certified_baseline": {
+    "status": "OPERATIONAL_PRODUCTION_DEFAULT",
+    "formula": "T_calibrated = T_coarse + 0.7351°C",
+    "coefficient_celsius": 0.7351,
+    "calibration_artifact_path": "backend/models/production_baseline/baseline_calibration.json",
+    "calibration_artifact_sha256": "3dcad5fbfd060d47ad9cbf1ec9cbe0df8c99da050e0d5a3ef2c3f76906ea1941",
+    "test_mae_celsius": 1.2661,
+    "test_rmse_celsius": 1.6842,
+    "test_r2": 0.7237
+  },
+  "dynamic_residual_model_v2": {
+    "status": "CONTROLLED_RESEARCH_SHADOW",
+    "model_path": "backend/models/candidates/temperature_residual/dynamic_temperature_residual_v2/xgboost_model.json",
+    "model_sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+    "promotion_decision": "RETAIN_FOR_RESEARCH",
+    "operational_safeguards": {
+      "residual_bounds_celsius": [-8.0, 8.0],
+      "physical_temperature_bounds_celsius": [-10.0, 55.0],
+      "ood_mahalanobis_detection": true,
+      "instant_fallback_to_baseline": true
+    },
+    "test_mae_celsius": 1.1690,
+    "delta_mae_celsius": 0.0971,
+    "loso_mae_celsius": 1.4304,
+    "generalization_gap_celsius": 0.1898,
+    "sensor_uncertainty_threshold_celsius": 0.1000
+  },
+  "dataset_integrity": {
+    "genuine_observations": 23949,
+    "synthetic_observations": 0,
+    "stations_evaluated": 17,
+    "physiographic_regimes": 6,
+    "states_and_uts": 11,
+    "temporal_period": "2024-06-01 to 2024-08-31",
+    "test_sample_count": 5288,
+    "coverage_claim": "NATIONWIDE MULTI-REGION VALIDATION COMPLETED; COVERAGE LIMITATIONS REMAIN",
+    "unvalidated_region": "South / Peninsular India (0 valid observation records in public ISD archive)"
+  },
+  "live_weather_providers": {
+    "primary_operational": {
+      "code": "open_meteo",
+      "name": "Open-Meteo Operational NWP",
+      "source_type": "FORECAST",
+      "status": "LIVE",
+      "endpoint": "https://api.open-meteo.com/v1/forecast"
+    },
+    "imd_connector": {
+      "code": "imd",
+      "name": "India Meteorological Department (IMD)",
+      "status": "NOT_CONFIGURED",
+      "source_type": "FORECAST / OBSERVATION",
+      "requires_auth": true,
+      "auth_configured": false,
+      "reason": "IMD_API_KEY_UNSET: Formal machine-readable credentials not configured in local environment."
+    },
+    "demo_fixture": {
+      "code": "demo",
+      "name": "Canonical Pilot Demo Provider",
+      "status": "LIVE",
+      "source_type": "PILOT_FIXTURE",
+      "endpoint": "internal://fixtures/canonical_varanasi_pilot"
+    }
+  },
+  "frontend_build": {
+    "build_tool": "Vite v5.4.21 + TypeScript",
+    "dist_index_html_sha256": "4c89b08937cfe87528ad156b9fd1c5d3205debc477c16edce258d97df31e764a",
+    "typescript_errors": 0,
+    "build_errors": 0,
+    "build_duration_ms": 857
+  },
+  "test_verification_summary": {
+    "core_regression_tests_total": 291,
+    "core_regression_tests_passed": 291,
+    "core_regression_tests_failed": 0,
+    "judge_attack_suite_steps": 20,
+    "judge_attack_suite_passed": 20
+  }
+}

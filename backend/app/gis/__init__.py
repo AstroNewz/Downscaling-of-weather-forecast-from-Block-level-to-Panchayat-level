@@ -14,6 +14,10 @@ from app.gis.landuse import LandUseExtractor
 from app.gis.spatial_features import SpatialFeatureExtractor
 from app.gis.feature_service import GISEnvironmentalFeatureService
 from app.gis.grid import SpatialGridGenerator, GridCellRecord, SpatialGridDomainResult
+from app.gis.boundary_ingestion import PanchayatBoundaryIngestor
+from app.gis.boundary_registry import PanchayatBoundaryRegistry, boundary_registry
+from app.gis.boundary_service import PanchayatBoundaryService, panchayat_boundary_service, resolve_panchayat_from_coordinates
+from app.gis.spatial_masking import SpatialMaskingService, spatial_masking_service, extract_panchayat_spatial_features
 
 __all__ = [
     "TerrainFeatures",
@@ -27,4 +31,16 @@ __all__ = [
     "SpatialGridGenerator",
     "GridCellRecord",
     "SpatialGridDomainResult",
+    "PanchayatBoundaryIngestor",
+    "PanchayatBoundaryRegistry",
+    "boundary_registry",
+    "PanchayatBoundaryService",
+    "panchayat_boundary_service",
+    "resolve_panchayat_from_coordinates",
+    "SpatialMaskingService",
+    "spatial_masking_service",
+    "extract_panchayat_spatial_features",
 ]
+
+
+

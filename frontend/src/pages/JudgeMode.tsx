@@ -400,7 +400,7 @@ export const JudgeMode: React.FC = () => {
           </ul>
         </div>
 
-        {/* Certified Ground Truth Banner */}
+        {/* Certified Scientific Evidence Banner */}
         <div className="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/30 flex items-center justify-between gap-2 text-xs font-mono">
           <div className="flex items-center gap-2 text-emerald-300 font-bold">
             <ShieldCheck className="w-4 h-4 text-emerald-400" />

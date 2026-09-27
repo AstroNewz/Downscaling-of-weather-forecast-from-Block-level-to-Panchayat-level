@@ -1,6 +1,7 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Panchayat, GridCell } from '../../types';
-import { Layers, MapPin, Eye, Maximize2, ZoomIn, ZoomOut, RotateCcw } from 'lucide-react';
+import { getPanchayatBoundary } from '../../api/panchayat';
+import { Layers, MapPin, ZoomIn, ZoomOut, RotateCcw, Info, Sliders } from 'lucide-react';
 
 interface GISMapProps {
   panchayat: Panchayat;
@@ -18,14 +19,57 @@ export const GISMap: React.FC<GISMapProps> = ({
   className = '',
 }) => {
   const [showGrid, setShowGrid] = useState<boolean>(true);
+  const [showAdvancedLayers, setShowAdvancedLayers] = useState<boolean>(false);
   const [showContours, setShowContours] = useState<boolean>(true);
   const [zoomLevel, setZoomLevel] = useState<number>(1);
+  const [boundaryCoords, setBoundaryCoords] = useState<[number, number][] | null>(null);
 
-  // Compute bounding box around cells or default
+  useEffect(() => {
+    let active = true;
+    async function fetchBoundary() {
+      try {
+        const idOrCode = panchayat.code || panchayat.id;
+        const res = await getPanchayatBoundary(idOrCode);
+        const geom = res?.geometry || res?.data?.geometry;
+        if (geom && active) {
+          const coords = geom.type === 'Polygon'
+            ? geom.coordinates[0]
+            : geom.type === 'MultiPolygon'
+            ? geom.coordinates[0][0]
+            : null;
+          if (Array.isArray(coords) && coords.length > 0) {
+            setBoundaryCoords(coords);
+          }
+        }
+      } catch (err) {
+        // Fall back gracefully
+      }
+    }
+    fetchBoundary();
+    return () => { active = false; };
+  }, [panchayat.id, panchayat.code]);
+
+  // Compute bounding box around cells or boundary coordinates
   const { minLat, maxLat, minLon, maxLon } = useMemo(() => {
-    if (gridCells.length === 0) {
-      const lat = panchayat.latitude || panchayat.centroid_lat || 22.5978;
-      const lon = panchayat.longitude || panchayat.centroid_lon || 75.3039;
+    const allLats: number[] = [];
+    const allLons: number[] = [];
+
+    if (gridCells.length > 0) {
+      gridCells.forEach((c) => {
+        allLats.push(c.latitude);
+        allLons.push(c.longitude);
+      });
+    }
+    if (boundaryCoords && boundaryCoords.length > 0) {
+      boundaryCoords.forEach(([lon, lat]) => {
+        allLats.push(lat);
+        allLons.push(lon);
+      });
+    }
+
+    if (allLats.length === 0) {
+      const lat = panchayat.latitude || panchayat.centroid_lat || 25.35;
+      const lon = panchayat.longitude || panchayat.centroid_lon || 82.95;
       return {
         minLat: lat - 0.02,
         maxLat: lat + 0.02,
@@ -33,15 +77,14 @@ export const GISMap: React.FC<GISMapProps> = ({
         maxLon: lon + 0.02,
       };
     }
-    const lats = gridCells.map((c) => c.latitude);
-    const lons = gridCells.map((c) => c.longitude);
+
     return {
-      minLat: Math.min(...lats) - 0.005,
-      maxLat: Math.max(...lats) + 0.005,
-      minLon: Math.min(...lons) - 0.005,
-      maxLon: Math.max(...lons) + 0.005,
+      minLat: Math.min(...allLats) - 0.003,
+      maxLat: Math.max(...allLats) + 0.003,
+      minLon: Math.min(...allLons) - 0.003,
+      maxLon: Math.max(...allLons) + 0.003,
     };
-  }, [gridCells, panchayat]);
+  }, [gridCells, panchayat, boundaryCoords]);
 
   // Coordinate projection to SVG space (viewBox: 0 0 600 400)
   const project = (lat: number, lon: number) => {
@@ -56,125 +99,156 @@ export const GISMap: React.FC<GISMapProps> = ({
   const centerLon = (minLon + maxLon) / 2;
   const centerPt = project(centerLat, centerLon);
 
+  const boundaryPoints = useMemo(() => {
+    if (!boundaryCoords || boundaryCoords.length === 0) return null;
+    return boundaryCoords
+      .map(([lon, lat]) => {
+        const pt = project(lat, lon);
+        return `${pt.x.toFixed(1)},${pt.y.toFixed(1)}`;
+      })
+      .join(' ');
+  }, [boundaryCoords, minLat, maxLat, minLon, maxLon]);
+
+  // Temperature color ramp (light-friendly)
+  const getCellFill = (temp: number) => {
+    if (temp >= 36) return 'rgba(239, 68, 68, 0.45)'; // Red/Hot
+    if (temp >= 33) return 'rgba(245, 158, 11, 0.45)'; // Amber/Warm
+    if (temp >= 28) return 'rgba(16, 185, 129, 0.45)'; // Green/Optimal
+    return 'rgba(59, 130, 246, 0.45)'; // Blue/Cool
+  };
+
   return (
     <div
-      className={`glass-panel rounded-xl border border-slate-800 bg-[#070d18] relative overflow-hidden flex flex-col ${className}`}
+      className={`card-white bg-slate-50 relative overflow-hidden flex flex-col border border-slate-200 shadow-sm ${className}`}
+      id="gis-map-container"
     >
-      {/* Top Map Bar Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-2 p-3 border-b border-slate-800/80 bg-[#0a1122]/90 backdrop-blur-sm z-10">
+      {/* Top Map Controls Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-2 p-3 border-b border-slate-200 bg-white/95 backdrop-blur-sm z-10">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-md bg-emerald-500/20 text-emerald-400">
+          <div className="p-1.5 rounded-lg bg-blue-50 text-blue-600 border border-blue-200">
             <Layers className="w-4 h-4" />
           </div>
           <div>
-            <h4 className="text-xs font-bold text-white flex items-center gap-1.5">
+            <h4 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
               <span>{panchayat.name} Boundary & 1-km Micro-Grid</span>
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-300">
-                EPSG:32644 (UTM Zone 44N)
+              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-100 text-slate-600 border border-slate-200">
+                1-km Mesh
               </span>
             </h4>
-            <p className="text-[10px] text-slate-400 font-mono">
-              Center: {centerLat.toFixed(4)}°N, {centerLon.toFixed(4)}°E • Area: {panchayat.total_area_ha || 1240} ha
+            <p className="text-[10px] text-slate-500 font-mono">
+              Centroid: {centerLat.toFixed(4)}°N, {centerLon.toFixed(4)}°E • Area: {panchayat.total_area_ha || 1240} ha
             </p>
           </div>
         </div>
 
-        {/* Layer & Zoom Controls */}
+        {/* Controls */}
         <div className="flex items-center gap-1.5">
           <button
             id="map-toggle-grid"
             onClick={() => setShowGrid(!showGrid)}
-            className={`px-2.5 py-1 rounded text-[11px] font-medium border transition-colors ${
+            className={`px-2.5 py-1 rounded-lg text-xs font-medium border transition-colors ${
               showGrid
-                ? 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300 font-semibold'
-                : 'bg-slate-900 border-slate-800 text-slate-400'
+                ? 'bg-blue-50 border-blue-300 text-blue-700 font-semibold'
+                : 'bg-white border-slate-200 text-slate-600'
             }`}
           >
             1-km Grid ({gridCells.length})
           </button>
+
           <button
-            id="map-toggle-contours"
-            onClick={() => setShowContours(!showContours)}
-            className={`px-2.5 py-1 rounded text-[11px] font-medium border transition-colors ${
-              showContours
-                ? 'bg-sky-500/20 border-sky-500/40 text-sky-300 font-semibold'
-                : 'bg-slate-900 border-slate-800 text-slate-400'
+            id="map-advanced-toggle"
+            onClick={() => setShowAdvancedLayers(!showAdvancedLayers)}
+            className={`px-2.5 py-1 rounded-lg text-xs font-medium border flex items-center gap-1 transition-colors ${
+              showAdvancedLayers
+                ? 'bg-slate-800 text-white border-slate-800'
+                : 'bg-white border-slate-200 text-slate-600 hover:text-slate-900'
             }`}
           >
-            Boundary Contour
+            <Sliders className="w-3 h-3" />
+            <span>Advanced Map Layers</span>
           </button>
 
-          <div className="h-4 w-px bg-slate-800 mx-1" />
+          <div className="h-4 w-px bg-slate-200 mx-1" />
 
+          {/* Zoom controls */}
           <button
             onClick={() => setZoomLevel((prev) => Math.min(2, prev + 0.2))}
             title="Zoom In"
-            className="p-1 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+            className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-2xs"
           >
             <ZoomIn className="w-3.5 h-3.5" />
           </button>
           <button
             onClick={() => setZoomLevel((prev) => Math.max(0.8, prev - 0.2))}
             title="Zoom Out"
-            className="p-1 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+            className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-2xs"
           >
             <ZoomOut className="w-3.5 h-3.5" />
           </button>
           <button
-            onClick={() => {
-              setZoomLevel(1);
-              onSelectCell(null);
-            }}
+            onClick={() => setZoomLevel(1)}
             title="Reset View"
-            className="p-1 rounded bg-slate-900 border border-slate-800 text-slate-400 hover:text-white"
+            className="p-1.5 rounded-lg bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:bg-slate-50 shadow-2xs"
           >
             <RotateCcw className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
-      {/* SVG GIS Canvas */}
-      <div className="relative flex-1 w-full min-h-[360px] bg-[#050811] flex items-center justify-center overflow-hidden">
+      {/* Advanced GIS Controls Dropdown (Hidden by default) */}
+      {showAdvancedLayers && (
+        <div className="px-4 py-2 bg-slate-100/80 border-b border-slate-200 flex items-center gap-4 text-xs text-slate-700 animate-fade-in">
+          <label className="flex items-center gap-1.5 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={showContours}
+              onChange={(e) => setShowContours(e.target.checked)}
+              className="rounded text-blue-600 focus:ring-blue-500"
+            />
+            <span>Boundary Contour (UTM 44N)</span>
+          </label>
+          <span className="text-slate-400">|</span>
+          <span className="text-[11px] text-slate-500">
+            Projection: EPSG:3857 (Display) • Area Basis: EPSG:32644 (Metric Conservation)
+          </span>
+        </div>
+      )}
+
+      {/* Map SVG Canvas (Light Basemap) */}
+      <div className="relative flex-1 min-h-[440px] bg-[#F1F5F9] overflow-hidden flex items-center justify-center">
+        {/* Subtle background grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-40 pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(#CBD5E1 1px, transparent 1px)',
+            backgroundSize: '24px 24px'
+          }}
+        />
+
         <svg
           viewBox="0 0 600 400"
-          className="w-full h-full select-none"
-          style={{ transform: `scale(${zoomLevel})`, transformOrigin: 'center center', transition: 'transform 0.2s ease-out' }}
+          className="w-full h-full transition-transform duration-300"
+          style={{ transform: `scale(${zoomLevel})` }}
         >
-          {/* Subtle GIS coordinate grid lines */}
-          <defs>
-            <pattern id="gis-grid-pattern" width="40" height="40" patternUnits="userSpaceOnUse">
-              <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#10192e" strokeWidth="0.75" />
-            </pattern>
-            <radialGradient id="panchayat-glow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#10b981" stopOpacity="0.12" />
-              <stop offset="100%" stopColor="#10b981" stopOpacity="0.0" />
-            </radialGradient>
-          </defs>
-
-          <rect width="600" height="400" fill="url(#gis-grid-pattern)" />
-
-          {/* Panchayat Region Glow & Simulated Boundary Polygon */}
+          {/* Exact Panchayat Boundary Polygon Overlay (Task 1 / Task 6 GIS Integration) */}
           {showContours && (
-            <g>
-              <ellipse
-                cx={centerPt.x}
-                cy={centerPt.y}
-                rx="180"
-                ry="130"
-                fill="url(#panchayat-glow)"
+            boundaryPoints ? (
+              <polygon
+                points={boundaryPoints}
+                fill="rgba(59, 130, 246, 0.08)"
+                stroke="#2563EB"
+                strokeWidth="2.5"
+                strokeDasharray="5 3"
               />
-              <path
-                d={`M ${centerPt.x - 160} ${centerPt.y - 60} 
-                   Q ${centerPt.x - 80} ${centerPt.y - 120} ${centerPt.x + 80} ${centerPt.y - 110} 
-                   Q ${centerPt.x + 170} ${centerPt.y - 50} ${centerPt.x + 160} ${centerPt.y + 70} 
-                   Q ${centerPt.x + 50} ${centerPt.y + 130} ${centerPt.x - 90} ${centerPt.y + 110} 
-                   Q ${centerPt.x - 170} ${centerPt.y + 40} ${centerPt.x - 160} ${centerPt.y - 60} Z`}
-                fill="rgba(16, 185, 129, 0.05)"
-                stroke="#10b981"
-                strokeWidth="1.5"
-                strokeDasharray="4 2"
+            ) : (
+              <polygon
+                points="100,70 480,50 560,250 490,360 210,380 70,260"
+                fill="rgba(241, 245, 249, 0.7)"
+                stroke="#94A3B8"
+                strokeWidth="2"
+                strokeDasharray="4 3"
               />
-            </g>
+            )
           )}
 
           {/* 1-km Grid Cells */}
@@ -182,84 +256,126 @@ export const GISMap: React.FC<GISMapProps> = ({
             gridCells.map((cell) => {
               const pt = project(cell.latitude, cell.longitude);
               const isSelected = selectedCell?.cell_id === cell.cell_id;
-              const temp = cell.downscaled_temperature_c ?? cell.tmean_c ?? 32.5;
-
-              // Color cell by temperature (mild emerald -> warm amber -> hot rose)
-              const fillColor =
-                temp > 35
-                  ? 'rgba(244, 63, 94, 0.35)'
-                  : temp > 33
-                  ? 'rgba(245, 158, 11, 0.35)'
-                  : 'rgba(16, 185, 129, 0.35)';
-
-              const strokeColor = isSelected
-                ? '#38bdf8'
-                : temp > 35
-                ? '#f43f5e'
-                : temp > 33
-                ? '#f59e0b'
-                : '#10b981';
+              const cellTemp = cell.downscaled_temperature_c ?? cell.tmean_c ?? 34.2;
 
               return (
-                <g
-                  key={cell.cell_id}
-                  id={`grid-cell-${cell.cell_id}`}
-                  onClick={() => onSelectCell(isSelected ? null : cell)}
-                  className="cursor-pointer transition-all duration-150 group"
-                >
+                <g key={cell.cell_id} onClick={() => onSelectCell(cell)} className="cursor-pointer group">
                   <rect
-                    x={pt.x - 22}
-                    y={pt.y - 22}
-                    width="44"
-                    height="44"
-                    rx="6"
-                    fill={fillColor}
-                    stroke={strokeColor}
-                    strokeWidth={isSelected ? 3 : 1.2}
-                    className="hover:opacity-90 hover:stroke-white"
+                    x={pt.x - 28}
+                    y={pt.y - 28}
+                    width={56}
+                    height={56}
+                    rx={6}
+                    fill={getCellFill(cellTemp)}
+                    stroke={isSelected ? '#2563EB' : '#94A3B8'}
+                    strokeWidth={isSelected ? 3 : 1}
+                    className="transition-all hover:stroke-blue-600 hover:opacity-90"
                   />
-                  {/* Temperature label */}
+                  {/* Temperature label inside cell */}
                   <text
                     x={pt.x}
-                    y={pt.y + 3}
+                    y={pt.y + 4}
                     textAnchor="middle"
-                    className="text-[10px] font-mono fill-slate-200 font-bold pointer-events-none"
+                    className="text-[10px] font-mono font-bold fill-slate-800 pointer-events-none select-none"
                   >
-                    {temp.toFixed(1)}°
+                    {cellTemp.toFixed(1)}°
+                  </text>
+                  <text
+                    x={pt.x}
+                    y={pt.y + 16}
+                    textAnchor="middle"
+                    className="text-[8px] font-mono fill-slate-600 pointer-events-none select-none"
+                  >
+                    #{cell.cell_id}
                   </text>
                 </g>
               );
             })}
 
-          {/* Centroid Marker */}
+          {/* Centroid / Station Marker */}
           <g transform={`translate(${centerPt.x}, ${centerPt.y})`}>
-            <circle r="6" fill="#10b981" className="animate-ping opacity-30" />
-            <circle r="4" fill="#10b981" stroke="#050811" strokeWidth="2" />
-            <text
-              y="-10"
-              textAnchor="middle"
-              className="text-[10px] font-bold fill-white font-mono drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-            >
-              {panchayat.name} (HQ)
-            </text>
+            <circle r={8} fill="#2563EB" opacity={0.3} className="animate-ping" />
+            <circle r={5} fill="#2563EB" />
+            <circle r={2} fill="#FFFFFF" />
           </g>
         </svg>
 
-        {/* Bottom map overlay legend */}
-        <div className="absolute bottom-3 left-3 bg-[#0a1122]/90 backdrop-blur-md border border-slate-800 rounded-lg p-2 text-[10px] font-mono flex items-center gap-3">
+        {/* Selected Cell Floating Quick Card */}
+        {selectedCell && (
+          <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm p-4 rounded-xl border border-slate-200 shadow-lg text-xs space-y-2 max-w-xs animate-fade-in">
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-slate-900">
+                1-km Grid Cell #{selectedCell.cell_id}
+              </span>
+              <button
+                onClick={() => onSelectCell(null)}
+                className="text-slate-400 hover:text-slate-600 text-xs font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="font-mono text-xs space-y-1">
+              <div className="flex justify-between">
+                <span className="text-slate-500">Downscaled Temp:</span>
+                <span className="font-bold text-blue-600">
+                  {(selectedCell.downscaled_temperature_c ?? selectedCell.tmean_c ?? 34.2).toFixed(2)}°C
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Coarse NWP:</span>
+                <span className="text-slate-700">
+                  {(selectedCell.coarse_temperature_c ?? 33.5).toFixed(2)}°C
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Dynamic Residual:</span>
+                <span className="text-emerald-700 font-semibold">
+                  +{(selectedCell.predicted_residual_c ?? selectedCell.predicted_residual ?? 0.74).toFixed(2)}°C
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Model:</span>
+                <span className="px-1.5 py-0.2 rounded bg-purple-50 text-purple-700 font-medium text-[10px]">
+                  Dynamic V2
+                </span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-500">Elev / Coordinates:</span>
+                <span className="text-slate-600 text-[10px]">
+                  {selectedCell.elevation_m || 95}m ({selectedCell.latitude.toFixed(3)}°N, {selectedCell.longitude.toFixed(3)}°E)
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Bottom Right Map Legend */}
+        <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-200 shadow-sm text-[10px] font-mono space-y-1">
+          <div className="font-bold text-slate-700 mb-1">Temperature Legend</div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded bg-emerald-500/40 border border-emerald-500" />
-            <span className="text-slate-300">&lt; 33°C (Normal)</span>
+            <span className="w-3 h-3 rounded bg-blue-500/50 border border-blue-400" />
+            <span>&lt; 28°C (Cool)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded bg-amber-500/40 border border-amber-500" />
-            <span className="text-slate-300">33-35°C (Warm)</span>
+            <span className="w-3 h-3 rounded bg-emerald-500/50 border border-emerald-400" />
+            <span>28–33°C (Optimal)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded bg-rose-500/40 border border-rose-500" />
-            <span className="text-slate-300">&gt; 35°C (Elevated)</span>
+            <span className="w-3 h-3 rounded bg-amber-500/50 border border-amber-400" />
+            <span>33–36°C (Moderate)</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <span className="w-3 h-3 rounded bg-red-500/50 border border-red-400" />
+            <span>&gt; 36°C (Heat Stress)</span>
           </div>
         </div>
+      </div>
+
+      {/* Native-Resolution Disclosure Footer (Requirements 23 & 27) */}
+      <div className="p-2.5 bg-slate-100/90 border-t border-slate-200 text-[10px] text-slate-500 font-mono flex flex-wrap items-center justify-between gap-1 z-10">
+        <span>Display grid is finer than source resolution; visualization does not imply finer meteorological observations.</span>
+        <span>CRS: EPSG:4326 • Polygon Basis: STRtree PIP</span>
       </div>
     </div>
   );

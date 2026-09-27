@@ -69,15 +69,18 @@ export const WhatIfSimulator: React.FC<WhatIfSimulatorProps> = ({
           </div>
           <div>
             <h3 className="text-sm font-semibold text-slate-100 flex items-center gap-2">
-              <span>Agro-Microclimate "What-If" Scenario Engine</span>
+              <span>Agro-Microclimate Scenario Simulator</span>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                WHAT-IF / SIMULATION
+              </span>
               {isModified && (
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40">
-                  Simulation Active
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 animate-pulse">
+                  Stress-Test Active
                 </span>
               )}
             </h3>
             <p className="text-xs text-slate-400">
-              Interactive in-memory stress-testing for {panchayatName}
+              In-memory non-mutating simulation for {panchayatName} • Does not alter production observations or certified baseline
             </p>
           </div>
         </div>

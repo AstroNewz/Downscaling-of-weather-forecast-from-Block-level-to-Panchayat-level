@@ -31,6 +31,8 @@ class AdvisoryType(str, Enum):
     EXCESS_RAIN_ADVISORY = "EXCESS_RAIN_ADVISORY"
     WIND_STRESS_ADVISORY = "WIND_STRESS_ADVISORY"
     DISEASE_FAVORABLE_CONDITIONS_ADVISORY = "DISEASE_FAVORABLE_CONDITIONS_ADVISORY"
+    PRECIPITATION_NOWCAST_ADVISORY = "PRECIPITATION_NOWCAST_ADVISORY"
+    SHORT_HORIZON_OPERATIONS_ADVISORY = "SHORT_HORIZON_OPERATIONS_ADVISORY"
     INFORMATIONAL = "INFORMATIONAL"
 
 
@@ -76,9 +78,52 @@ class AdvisoryUrgency(str, Enum):
     ROUTINE = "ROUTINE"
 
 
+class NowcastAdvisoryState(str, Enum):
+    """Explicit operational state of localized precipitation nowcast evidence in advisory decisions."""
+    NOWCAST_NOT_AVAILABLE = "NOWCAST_NOT_AVAILABLE"         # No nowcast was executed or provided
+    NOWCAST_INSUFFICIENT_DATA = "NOWCAST_INSUFFICIENT_DATA" # Evidence is stale, missing, or coverage < 20%
+    NOWCAST_LOW_CONFIDENCE = "NOWCAST_LOW_CONFIDENCE"       # Single source, high latency, or source disagreement
+    NOWCAST_MEDIUM_CONFIDENCE = "NOWCAST_MEDIUM_CONFIDENCE" # Moderate evidence; cautious operational use
+    NOWCAST_HIGH_CONFIDENCE = "NOWCAST_HIGH_CONFIDENCE"     # Consistent multi-stream evidence; actionable
+
+
 # ============================================================================
 # ADVISORY STRUCTURED ENTITIES
 # ============================================================================
+
+class LocalizedPrecipitationAdvisoryEvidence(BaseModel):
+    """Structured localized precipitation nowcast evidence attached to an advisory."""
+    panchayat_id: str = Field(..., description="Target Gram Panchayat identifier")
+    valid_time: str = Field(..., description="Target validity ISO timestamp")
+    horizon_minutes: int = Field(..., description="Forecast horizon in minutes (30, 60, or 120)")
+    rain_probability: float = Field(..., ge=0.0, le=1.0, description="Stage 1: P(rain >= threshold)")
+    expected_amount_mm: Optional[float] = Field(None, description="Stage 2: E[rain | rain >= threshold] in mm")
+    confidence: str = Field(..., description="Confidence tier: HIGH, MEDIUM, LOW, INSUFFICIENT_DATA")
+    source_state: str = Field(..., description="Contributing sources e.g. NWP_SATELLITE, NWP_ONLY")
+    evidence_sources: List[str] = Field(default_factory=list, description="List of active evidence sources")
+    evidence_disagreement: bool = Field(default=False, description="True if NWP and observations contradict")
+    disagreement_reason: Optional[str] = Field(None, description="Explanation when evidence streams disagree")
+    spatial_coverage: float = Field(default=1.0, description="Spatial coverage fraction over Panchayat")
+    observation_age_minutes: float = Field(default=0.0, description="Age of newest contributing observation in minutes")
+    method_version: str = Field(default="DETERMINISTIC_RESEARCH_HEURISTIC_V1", description="Fusion algorithm version")
+    provenance: Optional[Dict[str, Any]] = Field(None, description="Full audit trail of observation sources")
+
+    model_config = ConfigDict(extra="ignore")
+
+
+class NowcastAdvisoryExplanation(BaseModel):
+    """Explainability object detailing how localized nowcast influenced the agricultural advisory."""
+    primary_reason: str = Field(..., description="Primary reason for the advisory action")
+    localized_precipitation_signal: str = Field(..., description="Summary of localized observation signal")
+    baseline_signal: str = Field(..., description="Summary of macroscale NWP baseline signal")
+    evidence_agreement: bool = Field(..., description="True if baseline and localized signals agree")
+    confidence: str = Field(..., description="Confidence tier assigned to the nowcast evidence")
+    action_strength: str = Field(..., description="STRONG, CAUTIOUS, CONTEXT_ONLY, or NO_ACTION")
+    recommended_horizon_minutes: int = Field(default=60, description="Horizon most relevant to the action (30, 60, 120)")
+    short_horizon_recommendation: Optional[str] = Field(None, description="Specific short-horizon guidance")
+
+    model_config = ConfigDict(extra="ignore")
+
 
 class AdvisoryAction(BaseModel):
     """Structured action and management guidance."""
@@ -141,6 +186,20 @@ class AdvisoryResult(BaseModel):
     evidence: Optional[Dict[str, Any]] = None
     provenance: Optional[Dict[str, Any]] = None
     created_at: Optional[str] = None
+
+    # Localized Precipitation Nowcast Context (Phase 5 / Task 5 Extension)
+    localized_nowcast_context: Optional[LocalizedPrecipitationAdvisoryEvidence] = Field(
+        default=None, description="Localized short-horizon precipitation evidence if available"
+    )
+    baseline_precipitation_context: Optional[Dict[str, Any]] = Field(
+        default=None, description="Baseline macroscale precipitation forecast context for comparison"
+    )
+    nowcast_advisory_state: Optional[NowcastAdvisoryState] = Field(
+        default=None, description="State of the localized nowcast integration (AVAILABLE, LOW_CONFIDENCE, etc.)"
+    )
+    nowcast_explanation: Optional[NowcastAdvisoryExplanation] = Field(
+        default=None, description="Explainable rationale on how localized nowcast influenced the advisory"
+    )
 
     model_config = ConfigDict(from_attributes=True)
 

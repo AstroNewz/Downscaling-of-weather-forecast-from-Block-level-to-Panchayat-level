@@ -75,6 +75,15 @@ frontend/build/
 frontend/.vite/
 .vite/
 dist/
+frontend_backup_pre_rebuild/
+
+# --- Mobile & Flutter Build Artifacts ---
+.dart_tool/
+**/mobile/.dart_tool/
+**/mobile/build/
+**/mobile/.flutter-plugins-dependencies
+**/mobile/.pub/
+**/mobile/.pub-cache/
 
 # --- IDEs & Editors ---
 .idea/

@@ -1,0 +1,87 @@
+# ==============================================================================
+# INDIA MULTI-REGION EXPANSION CONFIGURATION
+# Project: Agroweather-Downscaling (SIH Problem Statement 26074)
+# ==============================================================================
+#
+# PURPOSE: Defines the regional grouping for future multi-region expansion.
+# ACTIVATION: Do NOT execute region-wide downloads automatically.
+#             Only the pilot AOI (india_pilot.yaml) is active during Phase 1.
+#             Enable individual regions explicitly via CLI flags.
+#
+# SCALABILITY NOTE: The pipeline code must remain identical across regions.
+# Only the AOI config, source config, date range, and partitions change.
+# ==============================================================================
+
+india_regions:
+  north:
+    description: "Northern India — Indo-Gangetic Plain and Himalayan Foothills"
+    states:
+      - Uttar Pradesh       # Pilot state (Varanasi AOI)
+      - Bihar
+      - Jharkhand
+      - Uttarakhand
+      - Himachal Pradesh
+      - Punjab
+      - Haryana
+      - Delhi
+      - Rajasthan (northern)
+    dominant_crops: [rice, wheat, sugarcane, maize, mustard]
+    agro_zone: "IGP (Indo-Gangetic Plain)"
+    active: false           # Set true only after pilot validation passes
+
+  central:
+    description: "Central India — Deccan Plateau transition and river basins"
+    states:
+      - Madhya Pradesh
+      - Chhattisgarh
+      - Maharashtra (central)
+    dominant_crops: [soybean, cotton, sorghum, wheat]
+    agro_zone: "Central Plateau"
+    active: false
+
+  south:
+    description: "Peninsular South India"
+    states:
+      - Andhra Pradesh
+      - Telangana
+      - Karnataka
+      - Tamil Nadu
+      - Kerala
+    dominant_crops: [rice, groundnut, sugarcane, coconut, cotton]
+    agro_zone: "Peninsular India"
+    active: false
+
+  east:
+    description: "Eastern India — High rainfall, river deltas"
+    states:
+      - West Bengal
+      - Odisha
+      - Bihar (eastern)
+      - Assam
+    dominant_crops: [rice, jute, tea, mustard]
+    agro_zone: "Eastern India"
+    active: false
+
+  west:
+    description: "Western India — Semi-arid and arid regions"
+    states:
+      - Gujarat
+      - Rajasthan (western)
+      - Maharashtra (western)
+    dominant_crops: [cotton, groundnut, sesame, wheat, bajra]
+    agro_zone: "Western India"
+    active: false
+
+  northeast:
+    description: "Northeast India — Biodiversity hotspot, hill agriculture"
+    states:
+      - Meghalaya
+      - Nagaland
+      - Manipur
+      - Mizoram
+      - Tripura
+      - Arunachal Pradesh
+      - Sikkim
+    dominant_crops: [rice, maize, ginger, turmeric, tea]
+    agro_zone: "Northeast Hill Region"
+    active: false

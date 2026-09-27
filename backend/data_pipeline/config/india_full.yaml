@@ -1,0 +1,54 @@
+# ==============================================================================
+# INDIA-WIDE PIPELINE CONFIGURATION STUB
+# Project: Agroweather-Downscaling (SIH Problem Statement 26074)
+# ==============================================================================
+#
+# PURPOSE: Future India-wide scale-out configuration.
+# ACTIVATION: Do NOT execute. Requires successful pilot validation first.
+#
+# SCALABILITY CONTRACT:
+#   The pipeline code does NOT change for India-wide operation.
+#   Only the following change:
+#     - AOI bounding box (India bbox: 6.5N-37.5N, 68E-97.5E)
+#     - Source configuration (same priority, wider bbox)
+#     - Date range (as configured)
+#     - Data partitions (year/month/state/district)
+#     - Processing scale (Dask/Spark for large grids)
+# ==============================================================================
+
+country: India
+
+# Full India AOI
+latitude_min: 6.5
+latitude_max: 37.5
+longitude_min: 68.0
+longitude_max: 97.5
+
+crs_geographic: EPSG:4326
+
+metric_crs:
+  note: "Dynamically calculated per-tile UTM CRS — India spans multiple UTM zones (42N-46N)"
+  zones_expected: [32642, 32643, 32644, 32645, 32646]
+
+grid_resolution_km: 1.0
+grid_resolution_m: 1000.0
+
+# Partition scheme for India-wide Parquet output
+partition_by:
+  - year
+  - month
+  - state
+  - district
+
+# Scalability flags (not active in pilot)
+use_distributed_processing: false
+dask_workers: 4
+
+# Data source configuration: same as india_pilot.yaml but India-wide bbox
+# All source access requirements remain identical
+inherits_sources_from: "india_pilot.yaml"
+
+# Status
+active: false
+requires_pilot_validation: true
+pilot_config: "india_pilot.yaml"

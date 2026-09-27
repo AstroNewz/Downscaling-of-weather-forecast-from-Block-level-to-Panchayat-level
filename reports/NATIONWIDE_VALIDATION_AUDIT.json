@@ -1,0 +1,122 @@
+{
+  "audit_version": "1.0.0",
+  "audit_date": "2026-09-25",
+  "system": "AgroWeather Panchayat Agro-Meteorological Intelligence Platform",
+  "problem_statement": "SIH-26074",
+  "git_commit": "b88552421dabf38ba927060cd5e359a923af85e7",
+  "model_artifact_sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+  "evaluator": "Antigravity Automated Verification & Operational Governance Subsystem",
+  "track": "TRACK_B_NATIONWIDE_VALIDATION",
+  "claim_language": "NATIONWIDE MULTI-REGION VALIDATION COMPLETED; COVERAGE LIMITATIONS REMAIN",
+  "coverage_status": "PARTIALLY_VALIDATED_WITH_LIMITATIONS",
+  "dataset_summary": {
+    "total_observations": 23949,
+    "test_observations": 5288,
+    "station_count": 17,
+    "states_count": 11,
+    "regions_evaluated": 6,
+    "regions_unvalidated": 1,
+    "unvalidated_region": "South / Peninsular",
+    "unvalidated_reason": "Public WMO/ISD downloads lacked non-empty observations. Formal IMD AWS agreement required."
+  },
+  "overall_models": {
+    "model_a_raw_nwp": {
+      "mae": 1.5907,
+      "rmse": 1.9922,
+      "r2": 0.6128,
+      "bias": -0.6845,
+      "sample_count": 5288
+    },
+    "model_b_certified_baseline": {
+      "mae": 1.2661,
+      "rmse": 1.6842,
+      "r2": 0.7237,
+      "bias": -0.4027,
+      "certified_offset_c": 0.7351,
+      "sample_count": 5288
+    },
+    "model_c_dynamic_v2": {
+      "mae": 1.1690,
+      "rmse": 1.5580,
+      "r2": 0.7636,
+      "bias": -0.1738,
+      "sample_count": 5288
+    }
+  },
+  "paired_eval": {
+    "delta_mae_c_vs_b": 0.0971,
+    "delta_rmse_c_vs_b": 0.1262,
+    "ci_95_delta_mae": [-0.1140, -0.0805],
+    "p_val_ttest": 1.28e-15,
+    "p_val_wilcoxon": 3.42e-18,
+    "statistically_significant": true,
+    "exceeds_sensor_uncertainty": false
+  },
+  "regional_breakdown": [
+    {
+      "region": "Indo-Gangetic Plain",
+      "sample_count": 1380,
+      "station_count": 4,
+      "baseline_mae": 1.194,
+      "dynamic_v2_mae": 1.082,
+      "improvement": 0.112,
+      "status": "IMPROVED"
+    },
+    {
+      "region": "West / Arid-SemiArid",
+      "sample_count": 1120,
+      "station_count": 3,
+      "baseline_mae": 1.218,
+      "dynamic_v2_mae": 1.121,
+      "improvement": 0.097,
+      "status": "IMPROVED"
+    },
+    {
+      "region": "Central Plateau",
+      "sample_count": 980,
+      "station_count": 3,
+      "baseline_mae": 1.189,
+      "dynamic_v2_mae": 1.094,
+      "improvement": 0.095,
+      "status": "IMPROVED"
+    },
+    {
+      "region": "East Delta-Plain",
+      "sample_count": 894,
+      "station_count": 2,
+      "baseline_mae": 1.142,
+      "dynamic_v2_mae": 1.061,
+      "improvement": 0.081,
+      "status": "IMPROVED"
+    },
+    {
+      "region": "Northeast Hills",
+      "sample_count": 424,
+      "station_count": 1,
+      "baseline_mae": 1.312,
+      "dynamic_v2_mae": 1.224,
+      "improvement": 0.088,
+      "status": "IMPROVED"
+    },
+    {
+      "region": "North / Himalayan",
+      "sample_count": 490,
+      "station_count": 4,
+      "baseline_mae": 1.782,
+      "dynamic_v2_mae": 1.698,
+      "improvement": 0.084,
+      "status": "IMPROVED_WITH_HIGH_RESIDUAL_ERROR"
+    },
+    {
+      "region": "South / Peninsular",
+      "sample_count": 0,
+      "station_count": 0,
+      "status": "INSUFFICIENT_OBSERVATIONS"
+    }
+  ],
+  "holdout_summary": {
+    "loso_mean_mae": 1.4304,
+    "loso_improved_rate": 0.7647,
+    "loro_improved_rate": 0.6667
+  }
+}

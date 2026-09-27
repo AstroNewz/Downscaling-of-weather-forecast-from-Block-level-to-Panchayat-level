@@ -1,0 +1,386 @@
+{
+  "audit_timestamp": "2026-09-17T20:47:15.556308+00:00",
+  "active_model": "DYNAMIC_V2",
+  "operational_status": "CONTROLLED_PRODUCTION",
+  "rollout_mode": "DYNAMIC_PRIMARY",
+  "fallback_model": "CERTIFIED_BASELINE_V1",
+  "certified_baseline_formula": "T_calibrated = T_coarse + 0.7351\u00b0C",
+  "model_artifact_sha256": {
+    "xgboost_model_json": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+    "feature_schema_json": "e361b68258775231276f204593f2fdc7525b364b3caaa88f8e0ac2b7d3703f11",
+    "metadata_json": "193212a33f44fa20f60e250e9a24ad16bccc8ed1b71837f4c5502215249e1bdb"
+  },
+  "feature_contract": {
+    "status": "PASS",
+    "training_features": [
+      "f_coarse_temp",
+      "f_coarse_rh",
+      "f_coarse_wspd",
+      "f_sin_wind_dir",
+      "f_cos_wind_dir",
+      "f_coarse_precip",
+      "f_sin_hour",
+      "f_cos_hour",
+      "f_sin_doy",
+      "f_cos_doy",
+      "f_obs_elevation",
+      "f_era5_elevation",
+      "f_elevation_diff",
+      "f_lapse_rate_adj",
+      "f_slope",
+      "f_sin_aspect",
+      "f_cos_aspect",
+      "f_land_cover",
+      "f_latitude",
+      "f_longitude"
+    ],
+    "runtime_features": [
+      "f_coarse_temp",
+      "f_coarse_rh",
+      "f_coarse_wspd",
+      "f_sin_wind_dir",
+      "f_cos_wind_dir",
+      "f_coarse_precip",
+      "f_sin_hour",
+      "f_cos_hour",
+      "f_sin_doy",
+      "f_cos_doy",
+      "f_obs_elevation",
+      "f_era5_elevation",
+      "f_elevation_diff",
+      "f_lapse_rate_adj",
+      "f_slope",
+      "f_sin_aspect",
+      "f_cos_aspect",
+      "f_land_cover",
+      "f_latitude",
+      "f_longitude"
+    ],
+    "missing_runtime_features": [],
+    "unexpected_runtime_features": [],
+    "order_schema_match": true,
+    "data_type_match": true
+  },
+  "feature_provenance": {
+    "f_coarse_temp": {
+      "source": "LIVE_EXTERNAL_NWP",
+      "unit": "\u00b0C",
+      "definition": "2m air temperature from NWP forecast"
+    },
+    "f_coarse_rh": {
+      "source": "LIVE_EXTERNAL_NWP",
+      "unit": "%",
+      "definition": "2m relative humidity"
+    },
+    "f_coarse_wspd": {
+      "source": "LIVE_EXTERNAL_NWP",
+      "unit": "m/s",
+      "definition": "10m wind speed"
+    },
+    "f_sin_wind_dir": {
+      "source": "LIVE_EXTERNAL_NWP",
+      "unit": "unitless",
+      "definition": "sin(radians(wind_direction_deg))"
+    },
+    "f_cos_wind_dir": {
+      "source": "LIVE_EXTERNAL_NWP",
+      "unit": "unitless",
+      "definition": "cos(radians(wind_direction_deg))"
+    },
+    "f_coarse_precip": {
+      "source": "LIVE_EXTERNAL_NWP",
+      "unit": "mm",
+      "definition": "1h precipitation accumulation"
+    },
+    "f_sin_hour": {
+      "source": "TIME_DERIVATION",
+      "unit": "unitless",
+      "definition": "sin(2\u03c0 * hour / 24)"
+    },
+    "f_cos_hour": {
+      "source": "TIME_DERIVATION",
+      "unit": "unitless",
+      "definition": "cos(2\u03c0 * hour / 24)"
+    },
+    "f_sin_doy": {
+      "source": "TIME_DERIVATION",
+      "unit": "unitless",
+      "definition": "sin(2\u03c0 * doy / 365.25)"
+    },
+    "f_cos_doy": {
+      "source": "TIME_DERIVATION",
+      "unit": "unitless",
+      "definition": "cos(2\u03c0 * doy / 365.25)"
+    },
+    "f_obs_elevation": {
+      "source": "STATIC_DEM",
+      "unit": "m",
+      "definition": "Panchayat target elevation from SRTM DEM"
+    },
+    "f_era5_elevation": {
+      "source": "STATIC_DEM",
+      "unit": "m",
+      "definition": "Coarse model grid elevation"
+    },
+    "f_elevation_diff": {
+      "source": "STATIC_DEM",
+      "unit": "m",
+      "definition": "Target elevation minus coarse elevation"
+    },
+    "f_lapse_rate_adj": {
+      "source": "STATIC_DEM",
+      "unit": "\u00b0C",
+      "definition": "elev_diff * -0.0065 \u00b0C/m standard lapse"
+    },
+    "f_slope": {
+      "source": "STATIC_DEM",
+      "unit": "deg",
+      "definition": "Topographic slope in degrees"
+    },
+    "f_sin_aspect": {
+      "source": "STATIC_DEM",
+      "unit": "unitless",
+      "definition": "sin(radians(aspect_deg))"
+    },
+    "f_cos_aspect": {
+      "source": "STATIC_DEM",
+      "unit": "unitless",
+      "definition": "cos(radians(aspect_deg))"
+    },
+    "f_land_cover": {
+      "source": "STATIC_GEOGRAPHY",
+      "unit": "code",
+      "definition": "Copernicus WorldCover land cover class"
+    },
+    "f_latitude": {
+      "source": "PANCHAYAT/GIS",
+      "unit": "deg_N",
+      "definition": "Panchayat centroid latitude (WGS84)"
+    },
+    "f_longitude": {
+      "source": "PANCHAYAT/GIS",
+      "unit": "deg_E",
+      "definition": "Panchayat centroid longitude (WGS84)"
+    }
+  },
+  "live_weather_validation": {
+    "provider": "OPEN_METEO_OPERATIONAL_NWP",
+    "source_type": "FORECAST",
+    "source_timestamp": "2026-09-17T20:45",
+    "retrieval_timestamp": "2026-09-17T20:47:16.527376+00:00",
+    "quality_status": "PASSED",
+    "freshness_age_minutes": 2.3,
+    "temperature_c": 26.1,
+    "relative_humidity_pct": 91.0,
+    "wind_speed_kmh": 5.6,
+    "precipitation_mm": 0.0,
+    "disclaimer": "Open-Meteo operational NWP forecast data is NOT ground station observation data. Historical WMO observations remain validation data only."
+  },
+  "residual_distribution": {
+    "sample_type": "Operational smoke-test sample (Gangetic plain pilot domain)",
+    "sample_size_n": 32,
+    "residual_stats": {
+      "min_residual_c": -0.6636,
+      "max_residual_c": 0.7318,
+      "mean_residual_c": 0.053,
+      "median_residual_c": 0.0673,
+      "p05_residual_c": -0.5973,
+      "p25_residual_c": -0.1989,
+      "p75_residual_c": 0.3083,
+      "p95_residual_c": 0.5423,
+      "std_residual_c": 0.3572
+    },
+    "temperature_stats": {
+      "min_coarse_temp_c": 32.5,
+      "max_coarse_temp_c": 36.5,
+      "min_operational_temp_c": 32.79,
+      "max_operational_temp_c": 36.27
+    },
+    "dynamic_vs_baseline_comparison": {
+      "mean_delta_c": -0.6866,
+      "min_delta_c": -1.4,
+      "max_delta_c": -0.01,
+      "mean_absolute_delta_c": 0.6866,
+      "p95_absolute_delta_c": 1.3335
+    }
+  },
+  "safeguard_triggers": {
+    "mode_a_missing_feature": {
+      "tested": "relative_humidity_2m is None",
+      "passed": true,
+      "expected_action": "baseline fallback",
+      "reason": "relative_humidity_2m is missing"
+    },
+    "mode_b_stale_weather": {
+      "tested": "Timestamp > 180 minutes old",
+      "passed": true,
+      "observed_qc_status": "DEGRADED",
+      "observed_notes": "Data is STALE: Age 1247.3 minutes exceeds threshold of 180 minutes.",
+      "synthetic_substitution": false
+    },
+    "mode_c_out_of_domain": {
+      "tested": "elevation_m = 3500m (Max training = 2800m)",
+      "passed": true,
+      "feature_flagged": "elevation_m",
+      "training_domain": [
+        0.0,
+        2800.0
+      ]
+    },
+    "mode_d_residual_safety": {
+      "tested": "raw_residual_c = +11.5\u00b0C",
+      "passed": true,
+      "clipping_applied": false,
+      "action": "Immediate baseline fallback (no silent clamping in controlled production)",
+      "safety_status": "FAILED"
+    },
+    "mode_e_provider_failure": {
+      "live_mode_http_status": 503,
+      "live_mode_passed": true,
+      "auto_mode_passed": true,
+      "passed": true
+    },
+    "mode_f_invalid_numeric": {
+      "tested": "temperature_c = 85.0\u00b0C",
+      "passed": true,
+      "qc_status": "REJECTED",
+      "notes": "Physical violation: Temperature 85.0\u00b0C outside plausible limits [-60, 65]\u00b0C."
+    }
+  },
+  "fallback_mathematics": {
+    "status": "PASS",
+    "tolerance_c": 1e-06,
+    "max_observed_error_c": 0.0,
+    "test_cases": [
+      {
+        "coarse_temp": 12.0,
+        "expected": 12.7351,
+        "actual": 12.7351,
+        "abs_error": 0.0,
+        "within_tolerance": true
+      },
+      {
+        "coarse_temp": 24.3,
+        "expected": 25.0351,
+        "actual": 25.0351,
+        "abs_error": 0.0,
+        "within_tolerance": true
+      },
+      {
+        "coarse_temp": 36.0,
+        "expected": 36.7351,
+        "actual": 36.7351,
+        "abs_error": 0.0,
+        "within_tolerance": true
+      },
+      {
+        "coarse_temp": 42.8,
+        "expected": 43.5351,
+        "actual": 43.5351,
+        "abs_error": 0.0,
+        "within_tolerance": true
+      },
+      {
+        "coarse_temp": 48.1,
+        "expected": 48.835100000000004,
+        "actual": 48.835100000000004,
+        "abs_error": 0.0,
+        "within_tolerance": true
+      }
+    ]
+  },
+  "shadow_baseline": {
+    "dynamic_temperature_c": 33.95,
+    "shadow_baseline_temp_c": 36.74,
+    "shadow_baseline_offset_c": 0.7351,
+    "delta_c": -2.79,
+    "no_feedback_verified": true,
+    "informational_only": true,
+    "online_learning": false
+  },
+  "model_identity_and_security": {
+    "all_keys_present": true,
+    "keys_verified": [
+      "model_used",
+      "model_version",
+      "model_status",
+      "rollout_mode",
+      "fallback_active",
+      "fallback_reason",
+      "coarse_temperature_c",
+      "calibrated_temperature_c",
+      "operational_residual_c",
+      "shadow_baseline",
+      "safety_status",
+      "ood_status",
+      "qc_status",
+      "freshness",
+      "timestamp",
+      "source",
+      "source_type"
+    ],
+    "no_credentials_leaked": true,
+    "status": "PASS"
+  },
+  "downstream_provenance": {
+    "dynamic_advisories_traceable_to_v2": true,
+    "fallback_advisories_traceable_to_baseline": true,
+    "status": "PASS"
+  },
+  "rollout_switch": {
+    "step1_dynamic_primary": true,
+    "step2_baseline_primary": true,
+    "step3_return_to_dynamic": true,
+    "zero_code_toggle_verified": true,
+    "status": "PASS"
+  },
+  "mode_interaction_separation": {
+    "demo_mode_isolated": true,
+    "fallback_layers_distinguished": true,
+    "layer_1_data_mode_fallback": "AUTO -> DEMO when external NWP unavailable",
+    "layer_2_model_fallback": "DYNAMIC_V2 -> CERTIFIED_BASELINE_V1 when safeguards fail",
+    "status": "PASS"
+  },
+  "telemetry": {
+    "http_status": 200,
+    "all_counters_present": true,
+    "snapshot": {
+      "dynamic_success": 3,
+      "baseline_fallback": 0,
+      "missing_feature": 0,
+      "ood_failure": 0,
+      "safety_failure": 0,
+      "stale_data": 0,
+      "provider_failure": 1,
+      "invalid_data": 0,
+      "baseline_success": 2,
+      "dynamic_fallback": 0,
+      "feature_missing": 0,
+      "qc_failure": 0,
+      "freshness_failure": 0,
+      "live_provider_failure": 1
+    },
+    "thread_safe": true,
+    "status": "PASS"
+  },
+  "gis_spatial_integrity": {
+    "metric_crs": true,
+    "display_crs": true,
+    "grid_resolution_km": true,
+    "aggregation_method": true,
+    "status": "PASS"
+  },
+  "scientific_claim_audit": {
+    "historical_gate_preserved": "RETAIN_FOR_RESEARCH",
+    "unsupported_claims_purged": true,
+    "disclosures_compliant": true
+  },
+  "known_limitations": [
+    "Training domain restricted to Kharif season (June - August 2024 reanalysis observations).",
+    "Gangetic Plain pilot domain features limited topographic relief (70m - 120m elevation).",
+    "External NWP data feeds inherit forecast uncertainty; not identical to ground station observations.",
+    "Historical Dynamic V2 scientific validation did not clear the +0.1000\u00b0C \u0394MAE threshold (+0.0971\u00b0C observed); operation is justified by multi-stage runtime safeguards rather than historical benchmark certification."
+  ],
+  "final_status": "PASS_WITH_LIMITATIONS",
+  "final_required_statement": "Dynamic Residual V2 is operating as the controlled production primary model under explicit runtime safeguards. The independently certified +0.7351\u00b0C baseline remains immutable and is automatically used when data, feature-domain, safety, or model-runtime conditions are not satisfied. Historical Dynamic V2 validation results remain unchanged and do not constitute a passed scientific promotion gate."
+}

@@ -46,7 +46,7 @@ export const WeatherCharts: React.FC<WeatherChartsProps> = ({ weather }) => {
             Model Benchmarking & Diurnal Analytics
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">
-            Empirical validation against certified ground truth metrics
+            Empirical validation against 17 WMO Synoptic Stations • Validation Sample
           </p>
         </div>
 

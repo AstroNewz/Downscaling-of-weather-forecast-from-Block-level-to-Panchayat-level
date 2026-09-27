@@ -1,0 +1,942 @@
+{
+  "audit_version": "1.0.0",
+  "generated_at": "2026-09-26T11:57:16.570703+00:00",
+  "final_status": "TEMPORAL VALIDATION \u2014 SUBSTANTIALLY IMPROVED",
+  "invariant_verified": "T_downscaled = T_coarse + 0.7351\u00b0C",
+  "model_modifications": "NONE",
+  "total_stations": 42,
+  "total_observations": 313754,
+  "new_temporal_observations": 260163,
+  "window_metrics": {
+    "WINDOW_A": {
+      "code": "WINDOW_A",
+      "name": "Pre-Kharif / Summer 2024",
+      "season": "Summer",
+      "period": "2024-03-01 to 2024-05-31",
+      "is_baseline_window": false,
+      "n_observations": 51261,
+      "n_stations": 42,
+      "n_states": 24,
+      "n_regimes": 41,
+      "raw_coarse": {
+        "n": 51261,
+        "mae": 1.5462,
+        "rmse": 2.0365,
+        "bias": -0.4838,
+        "med_ae": 1.2,
+        "r2": 0.883,
+        "mae_95_ci": [
+          1.5355,
+          1.5563
+        ]
+      },
+      "baseline_v1": {
+        "n": 51261,
+        "mae": 1.5111,
+        "rmse": 1.9941,
+        "bias": 0.2513,
+        "med_ae": 1.2351,
+        "r2": 0.8878,
+        "mae_95_ci": [
+          1.5007,
+          1.522
+        ]
+      },
+      "dynamic_v2": {
+        "n": 51261,
+        "mae": 1.3833,
+        "rmse": 1.838,
+        "bias": 0.1448,
+        "med_ae": 1.088,
+        "r2": 0.9047,
+        "mae_95_ci": [
+          1.3729,
+          1.3932
+        ]
+      },
+      "delta_mae_dyn_vs_base": 0.1278,
+      "delta_mae_base_vs_raw": 0.0351,
+      "independence_classification": {
+        "OUT_OF_TIME_KNOWN_STATION": 23300,
+        "OUT_OF_TIME_AND_STATION": 27961
+      },
+      "stability_vs_kharif_2024": {
+        "delta_baseline_mae": 0.2192,
+        "delta_baseline_rmse": 0.2707,
+        "delta_baseline_bias": 0.5269,
+        "delta_dyn_v2_mae": 0.1852,
+        "delta_dyn_v2_rmse": 0.2437,
+        "delta_dyn_v2_bias": 0.2223
+      }
+    },
+    "WINDOW_B": {
+      "code": "WINDOW_B",
+      "name": "Kharif 2024 (Original)",
+      "season": "Monsoon / Kharif",
+      "period": "2024-06-01 to 2024-08-31",
+      "is_baseline_window": true,
+      "n_observations": 53591,
+      "n_stations": 42,
+      "n_states": 24,
+      "n_regimes": 41,
+      "raw_coarse": {
+        "n": 53591,
+        "mae": 1.5667,
+        "rmse": 1.9788,
+        "bias": -1.0107,
+        "med_ae": 1.3,
+        "r2": 0.7643,
+        "mae_95_ci": [
+          1.5578,
+          1.5766
+        ]
+      },
+      "baseline_v1": {
+        "n": 53591,
+        "mae": 1.2919,
+        "rmse": 1.7234,
+        "bias": -0.2756,
+        "med_ae": 1.0351,
+        "r2": 0.8212,
+        "mae_95_ci": [
+          1.2826,
+          1.3019
+        ]
+      },
+      "dynamic_v2": {
+        "n": 53591,
+        "mae": 1.1981,
+        "rmse": 1.5943,
+        "bias": -0.0775,
+        "med_ae": 0.9239,
+        "r2": 0.847,
+        "mae_95_ci": [
+          1.1894,
+          1.2067
+        ]
+      },
+      "delta_mae_dyn_vs_base": 0.0938,
+      "delta_mae_base_vs_raw": 0.2748,
+      "independence_classification": {
+        "KNOWN_TIME_AND_STATION": 23853,
+        "OUT_OF_TIME_AND_STATION": 29738
+      },
+      "stability_vs_kharif_2024": {
+        "delta_baseline_mae": 0.0,
+        "delta_baseline_rmse": 0.0,
+        "delta_baseline_bias": 0.0,
+        "delta_dyn_v2_mae": 0.0,
+        "delta_dyn_v2_rmse": 0.0,
+        "delta_dyn_v2_bias": 0.0
+      }
+    },
+    "WINDOW_C": {
+      "code": "WINDOW_C",
+      "name": "Post-Kharif / Autumn 2024",
+      "season": "Autumn / Post-Monsoon",
+      "period": "2024-09-01 to 2024-11-30",
+      "is_baseline_window": false,
+      "n_observations": 51269,
+      "n_stations": 42,
+      "n_states": 24,
+      "n_regimes": 41,
+      "raw_coarse": {
+        "n": 51269,
+        "mae": 1.4877,
+        "rmse": 1.8641,
+        "bias": -1.0187,
+        "med_ae": 1.3,
+        "r2": 0.8265,
+        "mae_95_ci": [
+          1.4778,
+          1.4986
+        ]
+      },
+      "baseline_v1": {
+        "n": 51269,
+        "mae": 1.2202,
+        "rmse": 1.5867,
+        "bias": -0.2836,
+        "med_ae": 0.9649,
+        "r2": 0.8743,
+        "mae_95_ci": [
+          1.211,
+          1.2286
+        ]
+      },
+      "dynamic_v2": {
+        "n": 51269,
+        "mae": 1.2787,
+        "rmse": 1.6364,
+        "bias": -0.4667,
+        "med_ae": 1.046,
+        "r2": 0.8663,
+        "mae_95_ci": [
+          1.2692,
+          1.2882
+        ]
+      },
+      "delta_mae_dyn_vs_base": -0.0585,
+      "delta_mae_base_vs_raw": 0.2675,
+      "independence_classification": {
+        "OUT_OF_TIME_KNOWN_STATION": 22397,
+        "OUT_OF_TIME_AND_STATION": 28872
+      },
+      "stability_vs_kharif_2024": {
+        "delta_baseline_mae": -0.0717,
+        "delta_baseline_rmse": -0.1367,
+        "delta_baseline_bias": -0.008,
+        "delta_dyn_v2_mae": 0.0806,
+        "delta_dyn_v2_rmse": 0.0421,
+        "delta_dyn_v2_bias": -0.3892
+      }
+    },
+    "WINDOW_D": {
+      "code": "WINDOW_D",
+      "name": "Winter 2024\u20132025",
+      "season": "Winter",
+      "period": "2024-12-01 to 2025-02-28",
+      "is_baseline_window": false,
+      "n_observations": 52006,
+      "n_stations": 42,
+      "n_states": 24,
+      "n_regimes": 41,
+      "raw_coarse": {
+        "n": 52006,
+        "mae": 1.2356,
+        "rmse": 1.6422,
+        "bias": -0.2272,
+        "med_ae": 1.0,
+        "r2": 0.9338,
+        "mae_95_ci": [
+          1.2272,
+          1.2447
+        ]
+      },
+      "baseline_v1": {
+        "n": 52006,
+        "mae": 1.2803,
+        "rmse": 1.7038,
+        "bias": 0.5079,
+        "med_ae": 0.9649,
+        "r2": 0.9287,
+        "mae_95_ci": [
+          1.2708,
+          1.2904
+        ]
+      },
+      "dynamic_v2": {
+        "n": 52006,
+        "mae": 1.4578,
+        "rmse": 1.8912,
+        "bias": 0.6741,
+        "med_ae": 1.1701,
+        "r2": 0.9122,
+        "mae_95_ci": [
+          1.4477,
+          1.469
+        ]
+      },
+      "delta_mae_dyn_vs_base": -0.1775,
+      "delta_mae_base_vs_raw": -0.0447,
+      "independence_classification": {
+        "OUT_OF_TIME_KNOWN_STATION": 22131,
+        "OUT_OF_TIME_AND_STATION": 29875
+      },
+      "stability_vs_kharif_2024": {
+        "delta_baseline_mae": -0.0116,
+        "delta_baseline_rmse": -0.0196,
+        "delta_baseline_bias": 0.7835,
+        "delta_dyn_v2_mae": 0.2597,
+        "delta_dyn_v2_rmse": 0.2969,
+        "delta_dyn_v2_bias": 0.7516
+      }
+    },
+    "WINDOW_E": {
+      "code": "WINDOW_E",
+      "name": "Rabi / Summer 2025",
+      "season": "Rabi / Summer",
+      "period": "2025-03-01 to 2025-05-31",
+      "is_baseline_window": false,
+      "n_observations": 54297,
+      "n_stations": 42,
+      "n_states": 24,
+      "n_regimes": 41,
+      "raw_coarse": {
+        "n": 54297,
+        "mae": 1.4833,
+        "rmse": 1.9899,
+        "bias": -0.2703,
+        "med_ae": 1.2,
+        "r2": 0.8646,
+        "mae_95_ci": [
+          1.4731,
+          1.4948
+        ]
+      },
+      "baseline_v1": {
+        "n": 54297,
+        "mae": 1.5002,
+        "rmse": 2.0255,
+        "bias": 0.4648,
+        "med_ae": 1.1351,
+        "r2": 0.8597,
+        "mae_95_ci": [
+          1.4891,
+          1.5119
+        ]
+      },
+      "dynamic_v2": {
+        "n": 54297,
+        "mae": 1.4244,
+        "rmse": 1.9385,
+        "bias": 0.4933,
+        "med_ae": 1.0789,
+        "r2": 0.8715,
+        "mae_95_ci": [
+          1.4135,
+          1.4355
+        ]
+      },
+      "delta_mae_dyn_vs_base": 0.0758,
+      "delta_mae_base_vs_raw": -0.0169,
+      "independence_classification": {
+        "OUT_OF_TIME_KNOWN_STATION": 23643,
+        "OUT_OF_TIME_AND_STATION": 30654
+      },
+      "stability_vs_kharif_2024": {
+        "delta_baseline_mae": 0.2083,
+        "delta_baseline_rmse": 0.3021,
+        "delta_baseline_bias": 0.7404,
+        "delta_dyn_v2_mae": 0.2263,
+        "delta_dyn_v2_rmse": 0.3442,
+        "delta_dyn_v2_bias": 0.5708
+      }
+    },
+    "WINDOW_F": {
+      "code": "WINDOW_F",
+      "name": "Kharif 2025 (Repeat Validation)",
+      "season": "Monsoon / Kharif Repeat",
+      "period": "2025-06-01 to 2025-08-31",
+      "is_baseline_window": false,
+      "n_observations": 51330,
+      "n_stations": 42,
+      "n_states": 24,
+      "n_regimes": 41,
+      "raw_coarse": {
+        "n": 51330,
+        "mae": 1.3635,
+        "rmse": 1.7653,
+        "bias": -0.6712,
+        "med_ae": 1.1,
+        "r2": 0.7783,
+        "mae_95_ci": [
+          1.3546,
+          1.3732
+        ]
+      },
+      "baseline_v1": {
+        "n": 51330,
+        "mae": 1.2202,
+        "rmse": 1.634,
+        "bias": 0.0639,
+        "med_ae": 0.9351,
+        "r2": 0.81,
+        "mae_95_ci": [
+          1.211,
+          1.2299
+        ]
+      },
+      "dynamic_v2": {
+        "n": 51330,
+        "mae": 1.2565,
+        "rmse": 1.6667,
+        "bias": 0.2723,
+        "med_ae": 0.9758,
+        "r2": 0.8024,
+        "mae_95_ci": [
+          1.247,
+          1.2657
+        ]
+      },
+      "delta_mae_dyn_vs_base": -0.0363,
+      "delta_mae_base_vs_raw": 0.1433,
+      "independence_classification": {
+        "OUT_OF_TIME_KNOWN_STATION": 22742,
+        "OUT_OF_TIME_AND_STATION": 28588
+      },
+      "stability_vs_kharif_2024": {
+        "delta_baseline_mae": -0.0717,
+        "delta_baseline_rmse": -0.0894,
+        "delta_baseline_bias": 0.3395,
+        "delta_dyn_v2_mae": 0.0584,
+        "delta_dyn_v2_rmse": 0.0724,
+        "delta_dyn_v2_bias": 0.3498
+      }
+    }
+  },
+  "temperature_stratification": [
+    {
+      "bin": "<10\u00b0C",
+      "n": 2439,
+      "pct_of_corpus": 0.78,
+      "baseline_mae": 2.2006,
+      "baseline_bias": 0.1071,
+      "dyn_v2_mae": 2.34,
+      "dyn_v2_bias": 0.6227,
+      "delta_mae": -0.1394
+    },
+    {
+      "bin": "10\u201320\u00b0C",
+      "n": 26678,
+      "pct_of_corpus": 8.5,
+      "baseline_mae": 1.6404,
+      "baseline_bias": 0.8031,
+      "dyn_v2_mae": 1.7794,
+      "dyn_v2_bias": 1.1498,
+      "delta_mae": -0.139
+    },
+    {
+      "bin": "20\u201330\u00b0C",
+      "n": 180236,
+      "pct_of_corpus": 57.45,
+      "baseline_mae": 1.2321,
+      "baseline_bias": 0.1819,
+      "dyn_v2_mae": 1.2638,
+      "dyn_v2_bias": 0.4083,
+      "delta_mae": -0.0317
+    },
+    {
+      "bin": "30\u201340\u00b0C",
+      "n": 100829,
+      "pct_of_corpus": 32.14,
+      "baseline_mae": 1.4299,
+      "baseline_bias": -0.1648,
+      "dyn_v2_mae": 1.311,
+      "dyn_v2_bias": -0.4599,
+      "delta_mae": 0.1189
+    },
+    {
+      "bin": "40\u201350\u00b0C",
+      "n": 3572,
+      "pct_of_corpus": 1.14,
+      "baseline_mae": 1.2735,
+      "baseline_bias": 0.1819,
+      "dyn_v2_mae": 1.4456,
+      "dyn_v2_bias": -1.1929,
+      "delta_mae": -0.1721
+    }
+  ],
+  "extreme_weather": {
+    "extreme_heat_ge_40c": {
+      "n": 3572,
+      "mae": 1.2735,
+      "rmse": 1.7078,
+      "bias": 0.1819,
+      "med_ae": 1.0351,
+      "r2": -0.3049,
+      "mae_95_ci": [
+        1.2366,
+        1.3088
+      ]
+    },
+    "extreme_heat_dyn_v2": {
+      "n": 3572,
+      "mae": 1.4456,
+      "rmse": 1.8697,
+      "bias": -1.1929,
+      "med_ae": 1.1404,
+      "r2": -0.5641,
+      "mae_95_ci": [
+        1.4084,
+        1.4868
+      ]
+    },
+    "cold_le_12c": {
+      "n": 5668,
+      "mae": 2.0079,
+      "rmse": 2.6193,
+      "bias": 0.4732,
+      "med_ae": 1.5351,
+      "r2": -1.0265,
+      "mae_95_ci": [
+        1.9654,
+        2.0558
+      ]
+    },
+    "cold_dyn_v2": {
+      "n": 5668,
+      "mae": 2.1816,
+      "rmse": 2.6952,
+      "bias": 0.9841,
+      "med_ae": 1.8673,
+      "r2": -1.1457,
+      "mae_95_ci": [
+        2.1402,
+        2.2223
+      ]
+    },
+    "rapid_diurnal_trans": {
+      "n": 29038,
+      "mae": 1.5803,
+      "rmse": 2.0723,
+      "bias": 0.6894,
+      "med_ae": 1.2351,
+      "r2": 0.9324,
+      "mae_95_ci": [
+        1.5659,
+        1.5957
+      ]
+    },
+    "rapid_diurnal_trans_dyn_v2": {
+      "n": 29038,
+      "mae": 1.5849,
+      "rmse": 2.0661,
+      "bias": 0.3752,
+      "med_ae": 1.2561,
+      "r2": 0.9329,
+      "mae_95_ci": [
+        1.5703,
+        1.5987
+      ]
+    }
+  },
+  "regional_seasonal": [
+    {
+      "region": "Central Plateau",
+      "window": "WINDOW_A",
+      "season": "Summer",
+      "n": 7132,
+      "baseline_mae": 1.8463,
+      "dyn_v2_mae": 1.6306,
+      "delta_mae": 0.2157
+    },
+    {
+      "region": "Central Plateau",
+      "window": "WINDOW_B",
+      "season": "Monsoon / Kharif",
+      "n": 6898,
+      "baseline_mae": 1.347,
+      "dyn_v2_mae": 1.1184,
+      "delta_mae": 0.2286
+    },
+    {
+      "region": "Central Plateau",
+      "window": "WINDOW_C",
+      "season": "Autumn / Post-Monsoon",
+      "n": 6652,
+      "baseline_mae": 1.1457,
+      "dyn_v2_mae": 1.1211,
+      "delta_mae": 0.0246
+    },
+    {
+      "region": "Central Plateau",
+      "window": "WINDOW_D",
+      "season": "Winter",
+      "n": 6795,
+      "baseline_mae": 1.4206,
+      "dyn_v2_mae": 1.495,
+      "delta_mae": -0.0744
+    },
+    {
+      "region": "Central Plateau",
+      "window": "WINDOW_E",
+      "season": "Rabi / Summer",
+      "n": 7277,
+      "baseline_mae": 1.8358,
+      "dyn_v2_mae": 1.6073,
+      "delta_mae": 0.2285
+    },
+    {
+      "region": "Central Plateau",
+      "window": "WINDOW_F",
+      "season": "Monsoon / Kharif Repeat",
+      "n": 7409,
+      "baseline_mae": 1.2663,
+      "dyn_v2_mae": 1.2228,
+      "delta_mae": 0.0435
+    },
+    {
+      "region": "East Delta-Plain",
+      "window": "WINDOW_A",
+      "season": "Summer",
+      "n": 3932,
+      "baseline_mae": 1.4027,
+      "dyn_v2_mae": 1.2943,
+      "delta_mae": 0.1084
+    },
+    {
+      "region": "East Delta-Plain",
+      "window": "WINDOW_B",
+      "season": "Monsoon / Kharif",
+      "n": 4131,
+      "baseline_mae": 1.1334,
+      "dyn_v2_mae": 0.9179,
+      "delta_mae": 0.2155
+    },
+    {
+      "region": "East Delta-Plain",
+      "window": "WINDOW_C",
+      "season": "Autumn / Post-Monsoon",
+      "n": 4119,
+      "baseline_mae": 1.1607,
+      "dyn_v2_mae": 1.2639,
+      "delta_mae": -0.1032
+    },
+    {
+      "region": "East Delta-Plain",
+      "window": "WINDOW_D",
+      "season": "Winter",
+      "n": 4169,
+      "baseline_mae": 1.1447,
+      "dyn_v2_mae": 1.1428,
+      "delta_mae": 0.0019
+    },
+    {
+      "region": "East Delta-Plain",
+      "window": "WINDOW_E",
+      "season": "Rabi / Summer",
+      "n": 4185,
+      "baseline_mae": 1.3463,
+      "dyn_v2_mae": 1.1599,
+      "delta_mae": 0.1864
+    },
+    {
+      "region": "East Delta-Plain",
+      "window": "WINDOW_F",
+      "season": "Monsoon / Kharif Repeat",
+      "n": 3936,
+      "baseline_mae": 1.0449,
+      "dyn_v2_mae": 1.0385,
+      "delta_mae": 0.0064
+    },
+    {
+      "region": "Indo-Gangetic Plain",
+      "window": "WINDOW_A",
+      "season": "Summer",
+      "n": 9231,
+      "baseline_mae": 1.4215,
+      "dyn_v2_mae": 1.4117,
+      "delta_mae": 0.0098
+    },
+    {
+      "region": "Indo-Gangetic Plain",
+      "window": "WINDOW_B",
+      "season": "Monsoon / Kharif",
+      "n": 9503,
+      "baseline_mae": 1.4386,
+      "dyn_v2_mae": 1.1813,
+      "delta_mae": 0.2573
+    },
+    {
+      "region": "Indo-Gangetic Plain",
+      "window": "WINDOW_C",
+      "season": "Autumn / Post-Monsoon",
+      "n": 8615,
+      "baseline_mae": 1.2271,
+      "dyn_v2_mae": 1.1879,
+      "delta_mae": 0.0392
+    },
+    {
+      "region": "Indo-Gangetic Plain",
+      "window": "WINDOW_D",
+      "season": "Winter",
+      "n": 8617,
+      "baseline_mae": 1.354,
+      "dyn_v2_mae": 1.7392,
+      "delta_mae": -0.3852
+    },
+    {
+      "region": "Indo-Gangetic Plain",
+      "window": "WINDOW_E",
+      "season": "Rabi / Summer",
+      "n": 9538,
+      "baseline_mae": 1.5721,
+      "dyn_v2_mae": 1.443,
+      "delta_mae": 0.1291
+    },
+    {
+      "region": "Indo-Gangetic Plain",
+      "window": "WINDOW_F",
+      "season": "Monsoon / Kharif Repeat",
+      "n": 8705,
+      "baseline_mae": 1.2242,
+      "dyn_v2_mae": 1.2536,
+      "delta_mae": -0.0294
+    },
+    {
+      "region": "North / Himalayan",
+      "window": "WINDOW_A",
+      "season": "Summer",
+      "n": 1871,
+      "baseline_mae": 2.2564,
+      "dyn_v2_mae": 1.8181,
+      "delta_mae": 0.4383
+    },
+    {
+      "region": "North / Himalayan",
+      "window": "WINDOW_B",
+      "season": "Monsoon / Kharif",
+      "n": 2148,
+      "baseline_mae": 1.5142,
+      "dyn_v2_mae": 1.1649,
+      "delta_mae": 0.3493
+    },
+    {
+      "region": "North / Himalayan",
+      "window": "WINDOW_C",
+      "season": "Autumn / Post-Monsoon",
+      "n": 2019,
+      "baseline_mae": 1.7911,
+      "dyn_v2_mae": 1.7292,
+      "delta_mae": 0.0619
+    },
+    {
+      "region": "North / Himalayan",
+      "window": "WINDOW_D",
+      "season": "Winter",
+      "n": 1587,
+      "baseline_mae": 2.4612,
+      "dyn_v2_mae": 2.2984,
+      "delta_mae": 0.1628
+    },
+    {
+      "region": "North / Himalayan",
+      "window": "WINDOW_E",
+      "season": "Rabi / Summer",
+      "n": 2161,
+      "baseline_mae": 2.4364,
+      "dyn_v2_mae": 1.9971,
+      "delta_mae": 0.4393
+    },
+    {
+      "region": "North / Himalayan",
+      "window": "WINDOW_F",
+      "season": "Monsoon / Kharif Repeat",
+      "n": 2002,
+      "baseline_mae": 1.5973,
+      "dyn_v2_mae": 1.303,
+      "delta_mae": 0.2943
+    },
+    {
+      "region": "Northeast Hills",
+      "window": "WINDOW_A",
+      "season": "Summer",
+      "n": 4283,
+      "baseline_mae": 1.3699,
+      "dyn_v2_mae": 1.4002,
+      "delta_mae": -0.0303
+    },
+    {
+      "region": "Northeast Hills",
+      "window": "WINDOW_B",
+      "season": "Monsoon / Kharif",
+      "n": 4569,
+      "baseline_mae": 1.3462,
+      "dyn_v2_mae": 1.2047,
+      "delta_mae": 0.1415
+    },
+    {
+      "region": "Northeast Hills",
+      "window": "WINDOW_C",
+      "season": "Autumn / Post-Monsoon",
+      "n": 4429,
+      "baseline_mae": 0.9729,
+      "dyn_v2_mae": 1.1031,
+      "delta_mae": -0.1302
+    },
+    {
+      "region": "Northeast Hills",
+      "window": "WINDOW_D",
+      "season": "Winter",
+      "n": 4717,
+      "baseline_mae": 1.2855,
+      "dyn_v2_mae": 1.6984,
+      "delta_mae": -0.4129
+    },
+    {
+      "region": "Northeast Hills",
+      "window": "WINDOW_E",
+      "season": "Rabi / Summer",
+      "n": 4827,
+      "baseline_mae": 1.428,
+      "dyn_v2_mae": 1.5166,
+      "delta_mae": -0.0886
+    },
+    {
+      "region": "Northeast Hills",
+      "window": "WINDOW_F",
+      "season": "Monsoon / Kharif Repeat",
+      "n": 4616,
+      "baseline_mae": 1.0808,
+      "dyn_v2_mae": 1.2449,
+      "delta_mae": -0.1641
+    },
+    {
+      "region": "South / Peninsular India",
+      "window": "WINDOW_A",
+      "season": "Summer",
+      "n": 16042,
+      "baseline_mae": 1.4014,
+      "dyn_v2_mae": 1.3414,
+      "delta_mae": 0.06
+    },
+    {
+      "region": "South / Peninsular India",
+      "window": "WINDOW_B",
+      "season": "Monsoon / Kharif",
+      "n": 16966,
+      "baseline_mae": 1.243,
+      "dyn_v2_mae": 1.3679,
+      "delta_mae": -0.1249
+    },
+    {
+      "region": "South / Peninsular India",
+      "window": "WINDOW_C",
+      "season": "Autumn / Post-Monsoon",
+      "n": 16503,
+      "baseline_mae": 1.2177,
+      "dyn_v2_mae": 1.347,
+      "delta_mae": -0.1293
+    },
+    {
+      "region": "South / Peninsular India",
+      "window": "WINDOW_D",
+      "season": "Winter",
+      "n": 17172,
+      "baseline_mae": 1.0225,
+      "dyn_v2_mae": 1.2333,
+      "delta_mae": -0.2108
+    },
+    {
+      "region": "South / Peninsular India",
+      "window": "WINDOW_E",
+      "season": "Rabi / Summer",
+      "n": 17947,
+      "baseline_mae": 1.2751,
+      "dyn_v2_mae": 1.3288,
+      "delta_mae": -0.0537
+    },
+    {
+      "region": "South / Peninsular India",
+      "window": "WINDOW_F",
+      "season": "Monsoon / Kharif Repeat",
+      "n": 16195,
+      "baseline_mae": 1.1976,
+      "dyn_v2_mae": 1.3167,
+      "delta_mae": -0.1191
+    },
+    {
+      "region": "West / Arid-SemiArid",
+      "window": "WINDOW_A",
+      "season": "Summer",
+      "n": 4873,
+      "baseline_mae": 1.5938,
+      "dyn_v2_mae": 1.1818,
+      "delta_mae": 0.412
+    },
+    {
+      "region": "West / Arid-SemiArid",
+      "window": "WINDOW_B",
+      "season": "Monsoon / Kharif",
+      "n": 5095,
+      "baseline_mae": 1.2592,
+      "dyn_v2_mae": 1.0436,
+      "delta_mae": 0.2156
+    },
+    {
+      "region": "West / Arid-SemiArid",
+      "window": "WINDOW_C",
+      "season": "Autumn / Post-Monsoon",
+      "n": 4822,
+      "baseline_mae": 1.2874,
+      "dyn_v2_mae": 1.3548,
+      "delta_mae": -0.0674
+    },
+    {
+      "region": "West / Arid-SemiArid",
+      "window": "WINDOW_D",
+      "season": "Winter",
+      "n": 4814,
+      "baseline_mae": 1.4811,
+      "dyn_v2_mae": 1.5097,
+      "delta_mae": -0.0286
+    },
+    {
+      "region": "West / Arid-SemiArid",
+      "window": "WINDOW_E",
+      "season": "Rabi / Summer",
+      "n": 4532,
+      "baseline_mae": 1.7195,
+      "dyn_v2_mae": 1.4315,
+      "delta_mae": 0.288
+    },
+    {
+      "region": "West / Arid-SemiArid",
+      "window": "WINDOW_F",
+      "season": "Monsoon / Kharif Repeat",
+      "n": 4476,
+      "baseline_mae": 1.495,
+      "dyn_v2_mae": 1.4017,
+      "delta_mae": 0.0933
+    },
+    {
+      "region": "Western Ghats-Peninsular",
+      "window": "WINDOW_A",
+      "season": "Summer",
+      "n": 3897,
+      "baseline_mae": 1.3653,
+      "dyn_v2_mae": 1.1501,
+      "delta_mae": 0.2152
+    },
+    {
+      "region": "Western Ghats-Peninsular",
+      "window": "WINDOW_B",
+      "season": "Monsoon / Kharif",
+      "n": 4281,
+      "baseline_mae": 1.0938,
+      "dyn_v2_mae": 1.1544,
+      "delta_mae": -0.0606
+    },
+    {
+      "region": "Western Ghats-Peninsular",
+      "window": "WINDOW_C",
+      "season": "Autumn / Post-Monsoon",
+      "n": 4110,
+      "baseline_mae": 1.3027,
+      "dyn_v2_mae": 1.3432,
+      "delta_mae": -0.0405
+    },
+    {
+      "region": "Western Ghats-Peninsular",
+      "window": "WINDOW_D",
+      "season": "Winter",
+      "n": 4135,
+      "baseline_mae": 1.4113,
+      "dyn_v2_mae": 1.4028,
+      "delta_mae": 0.0085
+    },
+    {
+      "region": "Western Ghats-Peninsular",
+      "window": "WINDOW_E",
+      "season": "Rabi / Summer",
+      "n": 3830,
+      "baseline_mae": 1.2096,
+      "dyn_v2_mae": 1.3193,
+      "delta_mae": -0.1097
+    },
+    {
+      "region": "Western Ghats-Peninsular",
+      "window": "WINDOW_F",
+      "season": "Monsoon / Kharif Repeat",
+      "n": 3991,
+      "baseline_mae": 1.055,
+      "dyn_v2_mae": 1.1226,
+      "delta_mae": -0.0676
+    }
+  ],
+  "leakage_audit": {
+    "status": "PASS",
+    "violations_detected": 0
+  }
+}

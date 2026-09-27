@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { WeatherComparison } from '../components/weather/WeatherComparison';
 import { WeatherCharts } from '../components/weather/WeatherCharts';
 import { WhatIfSimulator } from '../components/weather/WhatIfSimulator';
+import { DynamicResearchPanel } from '../components/weather/DynamicResearchPanel';
 import { CloudSun, ShieldCheck, Cpu, Database } from 'lucide-react';
 
 export const WeatherAnalysis: React.FC = () => {
@@ -39,6 +40,15 @@ export const WeatherAnalysis: React.FC = () => {
         weather={weather}
         panchayatName={currentPanchayat?.name || 'Selected Panchayat'}
         blockName={currentPanchayat?.block_name || 'Dhar Block'}
+      />
+
+      {/* Dynamic Residual Downscaling Model v2 — Research Candidate */}
+      <DynamicResearchPanel
+        initialTemp={weather?.tmean_c || 30.0}
+        initialRh={weather?.relative_humidity_pct || 65}
+        initialWind={weather ? Math.round((weather.wind_speed_kmh / 3.6) * 10) / 10 : 2.5}
+        initialElev={currentPanchayat?.elevation_m || 85.0}
+        panchayatName={currentPanchayat?.name || 'Selected Panchayat'}
       />
 
       {/* Model Benchmarking & Diurnal Curve Charts */}

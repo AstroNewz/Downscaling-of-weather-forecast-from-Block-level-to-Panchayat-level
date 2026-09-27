@@ -1,0 +1,62 @@
+{
+  "audit_version": "1.0.0",
+  "audit_date": "2026-09-25",
+  "system": "AgroWeather Panchayat Agro-Meteorological Intelligence Platform",
+  "problem_statement": "SIH-26074",
+  "git_commit": "b88552421dabf38ba927060cd5e359a923af85e7",
+  "model_artifact_sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+  "evaluator": "Antigravity Automated Verification & Operational Governance Subsystem",
+  "track": "TRACK_A_IMD_LIVE_INTEGRATION",
+  "final_status": "NOT_CONFIGURED",
+  "active_operational_provider": "OPEN_METEO_OPERATIONAL_NWP",
+  "offline_benchmark_provider": "CANONICAL_PILOT_FIXTURE",
+  "provider_catalog": [
+    {
+      "code": "open_meteo",
+      "name": "Open-Meteo Operational NWP",
+      "status": "LIVE",
+      "source_type": "FORECAST",
+      "configured": true,
+      "requires_auth": false,
+      "auth_configured": true,
+      "endpoint": "https://api.open-meteo.com/v1/forecast",
+      "latency_ms": 784.1,
+      "freshness_status": "FRESH"
+    },
+    {
+      "code": "imd",
+      "name": "India Meteorological Department (IMD)",
+      "status": "NOT_CONFIGURED",
+      "source_type": "FORECAST / OBSERVATION",
+      "configured": false,
+      "requires_auth": true,
+      "auth_configured": false,
+      "endpoint": "https://placeholder-imd-api.gov.in/v1",
+      "latency_ms": null,
+      "freshness_status": "UNKNOWN",
+      "fallback_reason": "IMD_API_KEY_UNSET: Formal machine-readable credentials not configured.",
+      "required_configuration": {
+        "IMD_API_KEY": "Unset (Mandatory machine-readable API token)",
+        "IMD_API_BASE_URL": "https://placeholder-imd-api.gov.in/v1",
+        "IMD_DATA_AGREEMENT": "Formal MoES/IMD institutional data sharing agreement required (https://www.imd.gov.in/pages/services_data.php)",
+        "STATION_NETWORK": "IMD National AWS & ARG Network (Point + Block NWP)"
+      }
+    },
+    {
+      "code": "demo",
+      "name": "Canonical Pilot Demo Provider",
+      "status": "LIVE",
+      "source_type": "PILOT_FIXTURE",
+      "configured": true,
+      "requires_auth": false,
+      "auth_configured": true,
+      "endpoint": "internal://fixtures/canonical_varanasi_pilot"
+    }
+  ],
+  "governance_compliance": {
+    "zero_fake_credentials": true,
+    "zero_fabricated_observations": true,
+    "no_silent_provider_switching": true,
+    "ui_truthful_reporting": true
+  }
+}

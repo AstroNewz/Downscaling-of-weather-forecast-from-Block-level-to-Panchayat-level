@@ -1,0 +1,100 @@
+{
+  "status": "PASS",
+  "reproduction_exact": true,
+  "sample_size": 434,
+  "station_1": {
+    "id": "424790-99999",
+    "name": "Varanasi Babatpur Airport",
+    "coords": [
+      25.45,
+      82.86
+    ],
+    "elev_m": 76.0,
+    "in_training": true
+  },
+  "station_2": {
+    "id": "424830-99999",
+    "name": "Varanasi Synoptic",
+    "coords": [
+      25.3,
+      83.017
+    ],
+    "elev_m": 90.0,
+    "in_training": false
+  },
+  "station_separation_km": 22.13,
+  "date_range": [
+    "2024-06-01T00:00:00+00:00",
+    "2024-08-31T12:00:00+00:00"
+  ],
+  "comparisons": {
+    "aligned_observations": {
+      "reproduced": 434,
+      "committed": 434,
+      "match": true
+    },
+    "observed_delta_mean_c": {
+      "reproduced": -0.3926267281105992,
+      "committed": -0.3926267281105992,
+      "abs_diff": 0.0
+    },
+    "observed_delta_std_c": {
+      "reproduced": 1.1776102544387685,
+      "committed": 1.1776102544387685,
+      "abs_diff": 0.0
+    },
+    "observed_spatial_variance_c2": {
+      "reproduced": 1.3867659113593414,
+      "committed": 1.3867659113593414,
+      "abs_diff": 0.0
+    },
+    "certified_baseline_same_variance_c2": {
+      "reproduced": 0.0,
+      "committed": 0.0,
+      "abs_diff": 0.0
+    },
+    "dynamic_v2_variance_c2": {
+      "reproduced": 0.21621158071485336,
+      "committed": 0.21621158071485336,
+      "abs_diff": 0.0
+    },
+    "baseline_same_gradient_mae_c": {
+      "reproduced": 0.9202764976958526,
+      "committed": 0.9202764976958526,
+      "abs_diff": 0.0
+    },
+    "baseline_near_gradient_mae_c": {
+      "reproduced": 1.0905529953917052,
+      "committed": 1.0905529953917052,
+      "abs_diff": 0.0
+    },
+    "dynamic_v2_gradient_mae_c": {
+      "reproduced": 1.0082374735740725,
+      "committed": 1.0082374735740725,
+      "abs_diff": 0.0
+    },
+    "baseline_gradient_rmse_c": {
+      "reproduced": 1.2413386560428123,
+      "committed": 1.2413386560428123,
+      "abs_diff": 0.0
+    },
+    "dynamic_gradient_rmse_c": {
+      "reproduced": 1.3545440679757625,
+      "committed": 1.3545440679757625,
+      "abs_diff": 0.0
+    },
+    "spatial_correlation": {
+      "reproduced": -0.20554123035506128,
+      "committed": -0.20554123035506128,
+      "abs_diff": 0.0
+    }
+  },
+  "mathematical_interpretation": {
+    "model_output_spatial_variance": 0.0,
+    "real_world_observed_spatial_variance": 1.3867659113593414,
+    "baseline_gradient_mae": 0.9202764976958526,
+    "dynamic_v2_gradient_mae": 1.0082374735740725,
+    "dynamic_v2_spatial_correlation": -0.20554123035506128,
+    "scientific_takeaway": "Certified Baseline produces identical predictions for collocated stations in the same ERA5 coarse cell, leading to zero model spatial variance. However, real-world observed spatial variance is 1.3868\u00b0C\u00b2, meaning the baseline has an unavoidable gradient MAE of 0.9203\u00b0C. Dynamic V2 produces non-zero gradients but achieves a worse gradient MAE (1.0082\u00b0C) and negative spatial correlation (-0.2055), confirming it is unready for production cutover."
+  }
+}

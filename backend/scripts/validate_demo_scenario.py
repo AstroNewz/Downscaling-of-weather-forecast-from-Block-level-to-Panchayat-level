@@ -180,6 +180,9 @@ def validate_demo_scenario(date_str: str = "2026-07-15") -> bool:
         db.close()
 
 
+validate_canonical_demo = validate_demo_scenario
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Validate Canonical SIH Demonstration Scenario")
     parser.add_argument("--date", type=str, default="2026-07-15", help="Target demo date (YYYY-MM-DD)")

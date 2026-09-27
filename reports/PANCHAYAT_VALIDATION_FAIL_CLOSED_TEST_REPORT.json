@@ -1,0 +1,191 @@
+{
+  "metadata": {
+    "task": "TASK 5 \u2014 FORENSIC AUDIT OF PANCHAYAT VALIDATION READINESS",
+    "report_type": "FAIL_CLOSED_TEST_REPORT",
+    "problem_statement": "SIH Problem Statement 26074",
+    "timestamp_utc": "2026-09-26T14:45:39.065426+00:00",
+    "test_suite": "backend/tests/test_panchayat_validation_readiness.py",
+    "framework": "pytest-9.1.1 / Python 3.13"
+  },
+  "summary": {
+    "total_tests": 19,
+    "passed": 19,
+    "failed": 0,
+    "skipped": 0,
+    "overall_status": "PASS",
+    "fail_closed_guarantee": "VERIFIED"
+  },
+  "test_results": [
+    {
+      "test_id": "test_01_single_station_cannot_reach_level_3",
+      "name": "Single station cannot reach Level 3",
+      "scenario": "One station within 4 km of centroid; promotion to Level 3 blocked; remains Level 2",
+      "expected_outcome": "LEVEL_2 (SINGLE_REGIONAL_STATION_ONLY)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_02_stations_greater_than_10km_cannot_reach_level_3",
+      "name": "Two stations >10 km apart cannot reach Level 3",
+      "scenario": "Two stations separated by 14 km; promotion to Level 3 blocked; remains Level 2",
+      "expected_outcome": "LEVEL_2 (INTER_STATION_DISTANCE_EXCEEDS_10KM)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_03_insufficient_temporal_overlap_fails_closed",
+      "name": "Insufficient temporal overlap fails closed",
+      "scenario": "Two stations <=10 km apart with 45h overlap (<100h); rejected fail-closed",
+      "expected_outcome": "FAILED_CLOSED (INSUFFICIENT_TEMPORAL_OVERLAP)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_04_missing_metadata_fails_closed",
+      "name": "Missing station metadata fails closed",
+      "scenario": "Two stations <=5 km apart with null elevation/sensor height; rejected fail-closed",
+      "expected_outcome": "FAILED_CLOSED (METADATA_INCOMPLETE)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_05_training_contamination_fails_closed",
+      "name": "Training station contamination fails closed",
+      "scenario": "Two stations <=5 km apart with station 424790 from training set; rejected fail-closed",
+      "expected_outcome": "FAILED_CLOSED (TRAINING_CONTAMINATION)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_06_two_agricultural_stations_sub_5km_eligible_level_5",
+      "name": "Two agricultural stations <=5 km eligible for Level 5",
+      "scenario": "Two independent agricultural stations <=5 km apart with complete metadata and >=500h overlap",
+      "expected_outcome": "LEVEL_5 (QUALIFIED_SUB_5KM_AGRICULTURAL)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_07_intra_panchayat_agricultural_stations_eligible_level_6",
+      "name": "Intra-Panchayat agricultural stations eligible for Level 6",
+      "scenario": "Two independent agricultural stations in same Panchayat polygon with >=500h overlap",
+      "expected_outcome": "LEVEL_6 (QUALIFIED_INTRA_PANCHAYAT)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_08_synthetic_observations_rejected",
+      "name": "Synthetic observations rejected",
+      "scenario": "Candidate dataset tagged is_synthetic=True rejected immediately",
+      "expected_outcome": "REJECTED (MODEL_OR_SYNTHETIC_DATA_REJECTED)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_09_missing_coordinates_rejected",
+      "name": "Missing coordinates rejected",
+      "scenario": "Centroid coordinates null rejected fail-closed",
+      "expected_outcome": "REJECTED (MISSING_COORDINATES)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_10_invalid_coordinates_rejected",
+      "name": "Invalid coordinates rejected",
+      "scenario": "Centroid at (0.0, 0.0) or out of range rejected fail-closed",
+      "expected_outcome": "REJECTED (INVALID_COORDINATES)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_11_duplicate_station_ids_deduplicated_or_audited",
+      "name": "Duplicate station IDs deduplicated or audited",
+      "scenario": "Duplicate station records deduplicated with audit trail; count drops to 1",
+      "expected_outcome": "LEVEL_2 (Duplicate audited; 1 station preserved)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_12_timestamp_misalignment_beyond_tolerance_rejected",
+      "name": "Timestamp misalignment beyond tolerance rejected",
+      "scenario": "Observations separated by 25 min (>15 min tolerance) rejected fail-closed",
+      "expected_outcome": "REJECTED (TEMPORAL_ALIGNMENT_FAILED)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_13_missing_temperature_rejected",
+      "name": "Missing temperature values rejected",
+      "scenario": "Records with null temperature filtered; only physical readings preserved",
+      "expected_outcome": "FILTERED (MISSING_TEMPERATURE_VALUE)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_14_invalid_temperature_range_rejected",
+      "name": "Invalid temperature range rejected",
+      "scenario": "Temperatures outside [-10\u00b0C, 55\u00b0C] rejected fail-closed",
+      "expected_outcome": "REJECTED (RANGE_VIOLATION)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_15_same_era5_cell_single_station_never_spatial_validation",
+      "name": "Same ERA5 cell single station never spatial validation",
+      "scenario": "Single station in 0.25\u00b0 ERA5 cell never declared as spatial validation",
+      "expected_outcome": "LEVEL_2 (spatial_validation=False)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_16_era5_or_openmeteo_model_never_treated_as_ground_truth",
+      "name": "ERA5 or Open-Meteo model never treated as ground truth",
+      "scenario": "Model reanalysis submitted as observation rejected fail-closed",
+      "expected_outcome": "REJECTED (MODEL_OR_SYNTHETIC_DATA_REJECTED)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_17_unauthorized_institutional_source_leaves_readiness_unchanged",
+      "name": "Unauthorized institutional source leaves readiness unchanged",
+      "scenario": "Firewalled state mesonet networks without MoU remain ACCESS_REQUEST_REQUIRED",
+      "expected_outcome": "ACCESS_REQUEST_REQUIRED (Preserved for 6 nets)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_18_pipeline_can_ingest_authorized_data_without_changing_model",
+      "name": "Ingest authorized data without changing model",
+      "scenario": "Ingestion simulation validates without changing baseline calibration hash",
+      "expected_outcome": "PASS (baseline_calibration.json hash unchanged)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    },
+    {
+      "test_id": "test_19_runtime_model_outputs_remain_unchanged",
+      "name": "Runtime model outputs remain unchanged",
+      "scenario": "Model predictions before vs after evaluation bit-exact identical",
+      "expected_outcome": "PASS (Deterministic inference verified)",
+      "status": "PASS",
+      "error": null,
+      "fail_closed": true
+    }
+  ]
+}
