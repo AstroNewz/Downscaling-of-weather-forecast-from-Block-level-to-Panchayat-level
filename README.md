@@ -4,11 +4,13 @@
 
 # 🌾 Smart India Hackathon 2026
 ### **Problem Statement ID: SIH26074**
-**Category:** Software | **Theme:** Agriculture, FoodTech & Rural Development  
+**Category:** SOFTWARE | **Theme:** Agriculture, FoodTech & Rural Development  
 **Organization:** Ministry of Earth Sciences / India Meteorological Department (IMD)  
 **Team:** **Team Braket 3.1.0** — *Indian Institution of Information Technology*
 
 [![SIH 2026 Problem SIH26074](https://img.shields.io/badge/SIH%202026-Problem%20SIH26074-0052CC.svg?style=for-the-badge&logo=gov.uk)](https://www.sih.gov.in/)
+[![Project Report](https://img.shields.io/badge/Project%20Report-39%20Pages%20(LaTeX%20PDF)-crimson.svg?style=for-the-badge&logo=adobeacrobatreader)](AgroMet_SIH26074_Comprehensive_Project_Report.pdf)
+[![Presentation PDF](https://img.shields.io/badge/Presentation-SIH%202026%20(Clickable%20Links)-purple.svg?style=for-the-badge&logo=powerpoint)](SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf)
 [![Scientific Readiness](https://img.shields.io/badge/Readiness-LIMITED__VALIDATION-amber.svg?style=for-the-badge&logo=scikitlearn)](docs/RESEARCH_AND_REFERENCES.md#4-experimental-results--validation)
 [![Regression Tests](https://img.shields.io/badge/Tests-129%2F129%20Passing-brightgreen.svg?style=for-the-badge&logo=pytest)](#testing--verification)
 [![FastAPI Platform](https://img.shields.io/badge/Backend-FastAPI%20%7C%20Python%203.11-009688.svg?style=for-the-badge&logo=fastapi)](backend/)
@@ -17,7 +19,7 @@
 [![Spatial Reference](https://img.shields.io/badge/GIS%20CRS-EPSG%3A32644%20(1km)-orange.svg?style=for-the-badge&logo=qgis)](docs/RESEARCH_AND_REFERENCES.md#1-datasets--data-sources)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
-[**Explore Live Dashboard**](#quickstart--run-commands) • [**Presentation PDF (With Clickable Links)**](SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf) • [**Research & References Documentation**](docs/RESEARCH_AND_REFERENCES.md) • [**Judge Demonstration Script**](docs/SIH_DEMO_SCRIPT.md)
+[**📄 Download 39-Page LaTeX Project Report (PDF)**](AgroMet_SIH26074_Comprehensive_Project_Report.pdf) • [**📊 Presentation PDF (Interactive Links)**](SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf) • [**🔬 Research & References**](docs/RESEARCH_AND_REFERENCES.md) • [**⚖️ SIH Judge Mode Guide**](docs/SIH_DEMO_SCRIPT.md)
 
 ---
 
@@ -25,7 +27,7 @@
 
 ## 📌 Executive Summary & Core Challenge
 
-Operational Numerical Weather Prediction (NWP) models (such as IMD-GFS and ECMWF) compute forecasts at the **Block level** (~12 km to 25 km grid spacing, spanning 50,000+ hectares). However, real-world agricultural operations—such as foliar pesticide applications, pulse irrigation scheduling, sowing, and storm runoff drainage—operate at the **Gram Panchayat scale** (~1,000 hectares).
+Operational Numerical Weather Prediction (NWP) models (such as IMD-GFS and ECMWF) compute atmospheric forecasts at the **Block level** (~12 km to 25 km grid spacing, spanning 50,000+ hectares). However, real-world agricultural operations—such as foliar pesticide spraying, pulse irrigation scheduling, sowing, and storm runoff drainage—operate at the **Gram Panchayat scale** (~1,000 hectares).
 
 A single coarse block forecast treats the entire administrative block uniformly. Consequently, **localized convective rain cells, terrain-driven thermal variations, and microclimate risk windows are completely lost**, forcing farmers into suboptimal, risk-laden decisions.
 
@@ -43,46 +45,57 @@ A single coarse block forecast treats the entire administrative block uniformly.
 
 ---
 
-## 💡 Proposed Solution & 4 Pillars of Innovation
+## 🔬 Core Innovation Spotlight: Cadastral Panchayat Polygon Mapping
 
-**AgroMet** by **Team Braket 3.1.0** transforms coarse weather forecasts into high-resolution, Panchayat-specific agricultural advisories via an observation-fused, science-backed pipeline:
+> **Why Existing Weather Apps Fail**: Traditional platforms query a weather API using a single point $(x_{\text{pt}}, y_{\text{pt}})$ and snap to the **nearest coarse NWP centroid**. If a Gram Panchayat encompasses 1,200 hectares with irregular river contours or terrain slopes, assigning a single point estimate ignores up to 80% of the true spatial exposure of the agricultural fields!
 
-```
-+-----------------------------------------------------------------------------------+
-|                                 HOW IT WORKS                                      |
-+-----------------------------------------------------------------------------------+
-|  [User GPS / Panchayat]                                                           |
-|           │                                                                       |
-|           ▼                                                                       |
-|  1. Panchayat Resolution  ──► Point-in-Polygon (STRtree) against exact LGD boundary |
-|           │                                                                       |
-|           ▼                                                                       |
-|  2. Baseline Forecast     ──► IMD-GFS / Open-Meteo Synoptic Atmospheric Baseline    |
-|           │                                                                       |
-|           ▼                                                                       |
-|  3. Multi-Source Fusion   ──► 15-min INSAT-3DR Geostationary TIR + Area Masking    |
-|           │                                                                       |
-|           ▼                                                                       |
-|  4. Short-Horizon Nowcast ──► 30 / 60 / 120-min Rainfall Hurdle Model (Prob + Amt) |
-|           │                                                                       |
-|           ▼                                                                       |
-|  5. Agricultural Advisory ──► Crop Phenology + Soil Context: [Action | Why | When] |
-|           │                                                                       |
-|           ▼                                                                       |
-|  6. Dual-Client Delivery  ──► React Web Technical Portal & Flutter Mobile Farmer  |
-+-----------------------------------------------------------------------------------+
-```
+AgroMet replaces point heuristics with **cadastral polygon spatial masking**:
 
-### 🌟 Key Innovations
+<div align="center">
+  <img src="reports/project_report_latex/figures/fig1_panchayat_polygon_mapping.png" alt="Cadastral Panchayat Polygon Mapping vs Nearest Centroid" width="95%" />
+</div>
 
-1. **Exact Panchayat-Level Downscaling**:
-   - Replaces nearest-point heuristics with **exact cadastral polygon spatial masking** using official Local Government Directory (LGD) geometries and fractional area weighting.
-2. **Multi-Source Evidence Fusion**:
-   - Synergistically combines large-scale NWP guidance with real-time 15-minute INSAT-3DR thermal infrared (TIR-1/TIR-2) satellite observation grids and local AWS telemetry.
-3. **Short-Horizon Precipitation Nowcasting**:
-   - Implements a **two-stage hurdle model** (LightGBM rain occurrence classifier + GBDT conditional rain amount regressor) providing probabilistic precipitation outlooks for **30, 60, and 120-minute** horizons.
-4. **Crop-Aware Explainable Advisory Engine**:
-   - Synthesizes downscaled microclimate with crop stage (DAS/GDD) and soil available water capacity (AWC) into structured directives: **Action**, **Why**, and **Optimal Timing** compliant with IMD-GKMS standards.
+### 1. Official LGD Cadastral Ingestion & Metric Projection
+- Ingests canonical administrative vector boundaries from the **Local Government Directory (LGD)** maintained by the Ministry of Panchayati Raj (MoPR) and Survey of India.
+- Re-projects all vector and raster geometries into **Universal Transverse Mercator (UTM) Zone 44N (EPSG:32644)**, guaranteeing sub-meter planar distance and area metric precision.
+
+### 2. High-Performance Spatial Indexing via `STRtree` R-Trees
+- Indexes 250,000+ national Gram Panchayat polygons into a Sort-Tile-Recursive R-tree (**`shapely.strtree.STRtree`**).
+- Resolves arbitrary farmer GPS coordinates in **$<1.4\,\text{milliseconds}$** via hierarchical bounding box candidate pruning followed by Jordan Curve ray-casting topological containment.
+
+### 3. Strict Boundary Disambiguation (`ON_BOUNDARY`)
+- Enforces an explicit metric buffer zone of **$\epsilon = 50\,\text{meters}$** along all cadastral polygon edges:
+  - **Interior**: Coordinates strictly within the polygon ($\text{dist} > \epsilon$) resolve automatically with status `INTERIOR`.
+  - **Boundary Proximity**: Coordinates within $\epsilon = 50\text{ m}$ of a border return status **`ON_BOUNDARY`**. The system **never guesses** or arbitrarily snaps; it identifies both adjoining Panchayats, provides disaggregated forecasts for both, and prompts the farmer for revenue parcel confirmation.
+  - **Outside**: Points outside registered jurisdictions fail closed to `OUTSIDE_REGISTERED_PANCHAYATS`.
+
+### 4. Fractional Area-Weighted Pixel Extraction
+- When intersecting coarse NWP cells (12 km) or INSAT-3DR satellite thermal pixels (3.8 km) with an irregular Panchayat polygon, AgroMet computes exact Sutherland-Hodgman geometric polygon clippings:
+  $$\bar{V}_{\text{panchayat}} = \frac{\sum_{i=1}^{M} A_i \cdot V_i}{\sum_{i=1}^{M} A_i}$$
+  where $A_i = \text{Area}(\text{Polygon}_{\text{panchayat}} \cap \text{Pixel}_i)$ is the fractional planar area of intersection.
+- **Physical Conservation**: Guarantees conservation of mass and energy while eliminating boundary centroid splatting distortion.
+
+### 5. Cropland Masking (ESA WorldCover 10m)
+- Ingests ESA WorldCover 10m land-use classification. Only cropland pixels ($LULC = 40$) contribute to agricultural risk and moisture aggregations, filtering out village settlements, tarmac roads, and water bodies.
+
+---
+
+## 👥 Team Braket 3.1.0 — Complete Team Details & Roles
+
+<div align="center">
+
+### **Indian Institution of Information Technology (IIIT)**
+**Smart India Hackathon 2026** | **Problem Statement ID: SIH26074**
+
+| Team Member | Project Role | Core Specialization & Responsibilities |
+|---|---|---|
+| **Ishan Narayan Shukla** | **Project Lead & Systems Architect** | End-to-end scientific architecture, data provenance protocols, fail-closed safety design, and SIH forensic audit compliance. |
+| **Priyanshi Saraswat** | **Geospatial & GIS Engineer** | LGD cadastral boundary ingestion, STRtree spatial indexing, `ON_BOUNDARY` disambiguation, and fractional area-weighted extraction. |
+| **Prajjwal Patel** | **Machine Learning Engineer** | Two-stage hurdle precipitation nowcasting model (LightGBM + GBDT), INSAT-3DR TIR feature engineering, and uncertainty quantification. |
+| **Pratyaksh Ranjan** | **Full-Stack Web Architect** | React 18 + Vite command portal, Leaflet GIS heatmap rendering, state management, and SIH Judge Evaluation Mode (`/judge`). |
+| **Rudransh Rajveer Singh** | **Mobile App & Farmer UX Architect** | Flutter cross-platform mobile client, offline SQLite caching, GPS auto-resolution, and vernacular farmer advisory cards. |
+
+</div>
 
 ---
 
@@ -97,7 +110,7 @@ To demonstrate real-world efficacy, the system was validated in **Arajiline Bloc
 | **Administrative Boundary** | Arajiline Block (~18,000 ha) | Gram Panchayat (LGD 214892) | Gram Panchayat (LGD 214893) |
 | **Coarse Temperature** | 36.0 °C | 36.0 °C (Baseline) | 36.0 °C (Baseline) |
 | **Coarse Block Rain Chance** | 30.0% Uniform | 30.0% (Uniform Baseline) | 30.0% (Uniform Baseline) |
-| **Satellite Convective Signal** | Not assimilated | Rapid TIR cooling ($\Delta T_b = -12\text{K}$) | Quiescent anvil edge ($T_b > 285\text{K}$) |
+| **Satellite Convective Signal** | Not assimilated | Rapid TIR cooling ($\Delta T_b = -14\text{K}$) | Quiescent anvil edge ($T_b > 285\text{K}$) |
 | **Downscaled 30m Rain Prob** | N/A | **84.8% (HIGH RISK)** 🌧️ | **25.4% (LOW RISK)** ☀️ |
 | **Nowcast Rainfall Amount** | N/A | **14.2 mm/hr** | **0.0 mm/hr** |
 | **Actionable Advisory** | "Normal Farm Operations" | **HALT SPRAYING & OPEN DRAINS** | **CONTINUE WEEDING & IRRIGATION** |
@@ -106,99 +119,39 @@ To demonstrate real-world efficacy, the system was validated in **Arajiline Bloc
 
 </div>
 
+<div align="center">
+  <img src="reports/project_report_latex/figures/fig4_varanasi_case_study.png" alt="Varanasi Case Study" width="85%" />
+</div>
+
 > **Takeaway**: Conventional systems treat both Panchayats identically. AgroMet accurately identifies that Rameshwar is under an active convective storm while Jansa remains clear, preventing catastrophic crop-input wastage.
 
 ---
 
 ## 🏗️ Technical Approach: 7-Stage End-to-End Pipeline
 
-```
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│                                 TECHNICAL ARCHITECTURE                                 │
-├────────────────────────────────────────────────────────────────────────────────────────┤
-│                                                                                        │
-│   STAGE 1: PANCHAYAT RESOLUTION                                                        │
-│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
-│   │ • User GPS Coordinates / Administrative Lookup                                 │   │
-│   │ • Topological Point-in-Polygon (PIP) with Shapely STRtree R-tree index         │   │
-│   │ • Resolves exact LGD Code; strict ON_BOUNDARY fallback (no coordinate guessing)│   │
-│   └──────────────────────────────────────┬─────────────────────────────────────────┘   │
-│                                          ▼                                             │
-│   STAGE 2: BLOCK / NWP BASELINE                                                        │
-│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
-│   │ • Open-Meteo API / IMD Adapter operational feeds                               │   │
-│   │ • Establishes large-scale synoptic temperature, humidity, pressure & CAPE      │   │
-│   │ • Preserves native atmospheric background without unverified corruption        │   │
-│   └──────────────────────────────────────┬─────────────────────────────────────────┘   │
-│                                          ▼                                             │
-│   STAGE 3: SPATIAL MASKING                                                             │
-│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
-│   │ • Ingests EPSG:32644 1-km metric coordinate grid                               │   │
-│   │ • Fractional geometric polygon intersection (area-weighted pixel averaging)    │   │
-│   │ • Prevents centroid boundary distortion; preserves sensor native footprint     │   │
-│   └──────────────────────────────────────┬─────────────────────────────────────────┘   │
-│                                          ▼                                             │
-│   STAGE 4: LOCAL OBSERVATIONS & SATELLITE EVIDENCE                                     │
-│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
-│   │ • 15-minute INSAT-3DR Geostationary Thermal Infrared (TIR-1 / TIR-2)           │   │
-│   │ • Cloud-top brightness temperature depression tracking: dT_b / dt              │   │
-│   │ • Automated quality control gates: Freshness (<45 min), Range, Fail-Closed     │   │
-│   └──────────────────────────────────────┬─────────────────────────────────────────┘   │
-│                                          ▼                                             │
-│   STAGE 5: PRECIPITATION NOWCASTING (30 / 60 / 120 MIN)                                │
-│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
-│   │ • Two-Stage Hurdle Model:                                                      │   │
-│   │   - Classifier: LightGBM Rain Occurrence Probability (P_rain)                  │   │
-│   │   - Regressor: GBDT Conditional Precipitation Intensity (mm/hr)                │   │
-│   │ • Explicit Confidence Score (HIGH / MEDIUM / LOW) & Disagreement Detection     │   │
-│   └──────────────────────────────────────┬─────────────────────────────────────────┘   │
-│                                          ▼                                             │
-│   STAGE 6: ADVISORY INTEGRATION ENGINE                                                 │
-│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
-│   │ • Fuses localized nowcast with Crop Phenology (DAS/GDD) and Soil AWC           │   │
-│   │ • Certified IMD-GKMS agronomic rule matrix (Thermal, Lodging, Rain, Pathogen)  │   │
-│   │ • Generates actionable farm directives: [Action] | [Why] | [Optimal Timing]    │   │
-│   └──────────────────────────────────────┬─────────────────────────────────────────┘   │
-│                                          ▼                                             │
-│   STAGE 7: DUAL-CLIENT MULTI-PLATFORM DELIVERY                                         │
-│   ┌────────────────────────────────────────────────────────────────────────────────┐   │
-│   │ • Web Portal (React 18 + Vite + Leaflet): GIS Map, Weather, Advisory, Judge   │   │
-│   │ • Mobile App (Flutter 3.47+): Farmer vernacular cards, role switching, offline │   │
-│   └────────────────────────────────────────────────────────────────────────────────┘   │
-│                                                                                        │
-└────────────────────────────────────────────────────────────────────────────────────────┘
-```
+<div align="center">
+  <img src="reports/project_report_latex/figures/fig2_system_architecture.png" alt="System Architecture Flowchart" width="95%" />
+</div>
 
----
-
-## ⚡ Feasibility, Viability & Key Challenges
-
-### 1. Operational Feasibility
-- **Data Readiness**: Utilizes active operational feeds—IMD-GFS NWP, INSAT-3DR geostationary satellite imagery (MOSDAC), and LGD boundaries.
-- **Geospatial Infrastructure**: 11 completed, modular stages running on open-source Python GIS tooling (Shapely, GeoPandas, Rasterio, pyproj).
-- **Deployment Ready**: Fully verified FastAPI backend with interoperable React (Web) and Flutter (Mobile) clients.
-
-### 2. Strategic Viability & Impact
-- **For Farmers**: Empowers farmers with microclimate nowcasts, saving input costs (pesticides, diesel, water) and preventing crop lodging.
-- **For Government**: Provides district disaster officers and Krishi Vigyan Kendras (KVKs) with audit-trailed, Panchayat-level situational awareness.
-- **National Scalability**: Architecture scales horizontally across 250,000+ Gram Panchayats and readily assimilates state mesonets (KSNDMC, Mahavedh).
-
-### 3. Engineering Challenges & Mitigations
-
-| Identified Challenge | Practical Mitigation Implemented |
-|---|---|
-| **Limited Radar Coverage in Rural Belts** | Satellite-first architecture leveraging INSAT-3DR TIR; radar assimilated opportunistically where available. |
-| **Missing or Stale Upstream Feeds** | Strict **fail-closed** policy: stale feeds (>45 min) trigger visible `FALLBACK_COARSE` mode with user disclaimers. |
-| **Panchayat Boundary Edge Ambiguity** | Exact R-tree point-in-polygon; points within 50m of borders return `ON_BOUNDARY` rather than guessing. |
-| **Sensor Resolution Coarseness (~3.8 km)** | Fractional polygon area weighting preserves native sensor uncertainty; system explicitly flags source resolution. |
+1. **Stage 1: Panchayat Resolution**: Topological Point-in-Polygon (PIP) with Shapely STRtree R-tree index resolving exact LGD Codes with strict `ON_BOUNDARY` safety.
+2. **Stage 2: Block / NWP Baseline**: Ingests IMD-GFS / Open-Meteo feeds, preserving large-scale synoptic moisture convergence and CAPE.
+3. **Stage 3: Spatial Masking**: Fractional geometric polygon clipping (area-weighted pixel averaging) in UTM Zone 44N (EPSG:32644).
+4. **Stage 4: Local Observations & Satellite Evidence**: 15-minute INSAT-3DR Geostationary Thermal Infrared (TIR-1 / TIR-2) cloud-top depression tracking ($\Delta T_b / \Delta t$).
+5. **Stage 5: Precipitation Nowcasting (30 / 60 / 120 Min)**: Two-stage hurdle model (LightGBM rain occurrence classifier + GBDT conditional rain intensity regressor).
+6. **Stage 6: Advisory Integration Engine**: Contextualizes nowcasts with Crop Phenology (DAS/GDD) and Soil AWC to issue structured directives: **Action**, **Why**, and **Optimal Timing**.
+7. **Stage 7: Dual-Client Multi-Platform Delivery**: React 18 + Vite command dashboard and Flutter mobile app with offline caching and vernacular cards.
 
 ---
 
 ## 📊 Scientific Readiness & Empirical Validation
 
 - **Readiness Classification**: Certified **`LIMITED_VALIDATION`** under Task 9 Forensic Audit.
-- **Pilot Domain**: Varanasi District, Uttar Pradesh (Arajiline Block, Rameshwar & Jansa Panchayats).
-- **Benchmark Dataset**: 12 curated convective rainfall events ($N=24$ station-event pairs) validated against independent ground-truth AWS (ICAR-IIVR and BHU Agronomy).
+- **Pilot Domain**: Varanasi District, Uttar Pradesh (Arajiline Block: Rameshwar & Jansa Panchayats).
+- **Benchmark Dataset**: 12 curated convective rainfall events ($N=24$ station-event pairs) benchmarked against independent ground-truth AWS (ICAR-IIVR and BHU Agronomy).
+
+<div align="center">
+  <img src="reports/project_report_latex/figures/fig5_benchmark_metrics.png" alt="Benchmark Metrics" width="88%" />
+</div>
 
 ```
 +-----------------------------------------------------------------------------------+
@@ -227,6 +180,7 @@ As presented on **Slide 6** of our official [SIH Presentation](SIH2026-IDEA-Pres
 | **03. Research Gaps** | Sub-block variability, boundary ambiguity, rural radar blindspots, data freshness, and explainability. | [**Inspect Gaps**](docs/RESEARCH_AND_REFERENCES.md#3-research-challenges--gaps) |
 | **04. Experimental Results** | Varanasi pilot benchmarks, CSI (0.933), POD (0.950), MAE (0.879mm), and Rameshwar vs. Jansa validation. | [**View Results**](docs/RESEARCH_AND_REFERENCES.md#4-experimental-results--validation) |
 | **05. Future Scope** | National Mesonet ingestion (KSNDMC/Mahavedh), Doppler radar mosaics, deep learning PINOs, and WhatsApp delivery. | [**Explore Scope**](docs/RESEARCH_AND_REFERENCES.md#5-future-scope--scalability) |
+| **Comprehensive Report** | Complete 39-page LaTeX engineering project report with mathematical formulations and figures. | [**Download 39-Page PDF**](AgroMet_SIH26074_Comprehensive_Project_Report.pdf) |
 
 > 💡 *Note: The presentation PDF [`SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf`](SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf) has interactive hyperlinks embedded directly on Slide 6 and Slide 1.*
 
@@ -254,7 +208,7 @@ The AgroMet repository provides a unified multi-tier ecosystem:
 - **`backend/`** → FastAPI scientific downscaling, spatial masking, and nowcasting engine.
 - **`frontend/`** (or **`web/`**) → Comprehensive command dashboard with 8 verified views (Explorer, Detail, GIS Map, Weather Analysis, Advisory Hub, Governance, Judge Mode).
 - **`mobile/`** → Cross-platform mobile client for farmers and agricultural extension officers.
-- **`docs/`** → Scientific defense briefs, forensic audit manifests, and technical whitepapers.
+- **`reports/`** → Contains LaTeX project report source code, publication-quality figures, and forensic verification audit manifests.
 
 ---
 
@@ -335,18 +289,6 @@ python -m pytest backend/tests/test_india_pipeline.py backend/tests/test_terrain
 # Verify frontend production build (0 TypeScript or Vite errors)
 cd frontend && npm run build
 ```
-
----
-
-## 👥 Team Braket 3.1.0 (IIIT)
-
-| Team Member | Role & Responsibilities |
-|---|---|
-| **Ishan Narayan Shukla** | Project Lead, Scientific Architecture & Systems Integration |
-| **Priyanshi Saraswat** | Geospatial Pipeline, Spatial Masking & LGD Topology |
-| **Prajjwal Patel** | Precipitation Nowcasting & ML Hurdle Models |
-| **Pratyaksh Ranjan** | Full-Stack Web Architecture & GIS Visualization |
-| **Rudransh Rajveer Singh** | Flutter Mobile Application & Farmer UX |
 
 ---
 

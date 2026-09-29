@@ -5,6 +5,11 @@
 **Team**: Team Braket 3.1.0 — Indian Institution of Information Technology  
 **Scientific Readiness Status**: `LIMITED_VALIDATION` (Certified Pilot Audit)
 
+> 📄 **Official Documents & Direct Artifacts**:
+> * **[Download Comprehensive 39-Page LaTeX Project Report (PDF)](../AgroMet_SIH26074_Comprehensive_Project_Report.pdf)**
+> * **[Download SIH 2026 Idea Presentation (PDF with Clickable Links)](../SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf)**
+> * **[Browse LaTeX Source Code & Figures](../reports/project_report_latex/)**
+
 ---
 
 ## Table of Contents

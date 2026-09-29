@@ -58,6 +58,10 @@ coverage.xml
 .env.test.local
 .env.production.local
 !.env.example
+
+# --- Local Standalone Tools ---
+tools/
+generate_latex_report.py
 *.pem
 *.key
 *.cert
