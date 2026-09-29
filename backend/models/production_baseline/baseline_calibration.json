@@ -1,0 +1,47 @@
+{
+  "experiment_id": "EXP_PRODUCTION_BASELINE_PHASE23",
+  "model_type": "CALIBRATED_ERA5_PHYSICAL_BASELINE",
+  "certification_status": "PRODUCTION_BASELINE_CERTIFIED",
+  "calibration_parameter_celsius": 0.7351,
+  "formulation": "T_downscaled = T_ERA5 + 0.7351",
+  "training_period": "2024-06-01 to 2024-07-25",
+  "train_sample_count": 14418,
+  "validation_metrics": {
+    "n": 4243,
+    "mae": 1.1431,
+    "rmse": 1.4926,
+    "r2": 0.7748,
+    "bias": -0.1523,
+    "median_ae": 0.9351,
+    "p95_ae": 3.0351
+  },
+  "frozen_test_metrics": {
+    "n": 5288,
+    "mae": 1.2661,
+    "rmse": 1.6842,
+    "r2": 0.7237,
+    "bias": -0.4026,
+    "median_ae": 0.9649,
+    "p95_ae": 3.4649
+  },
+  "uncertainty_metrics": {
+    "n_samples": 5288,
+    "mean_absolute_error_c": 1.2661,
+    "residual_std_c": 1.6354,
+    "median_absolute_error_c": 0.9649,
+    "p80_absolute_error_c": 1.9649,
+    "p90_absolute_error_c": 2.7351,
+    "p95_absolute_error_c": 3.4649,
+    "error_bound_90_pct_interval": [
+      -3.0649,
+      2.2351
+    ],
+    "error_bound_95_pct_interval": [
+      -3.6649,
+      3.1351
+    ],
+    "recommended_operational_tolerance_c": 1.96
+  },
+  "xgboost_status": "RESEARCH_ONLY",
+  "created_at_utc": "2026-09-17T13:17:20.698899+00:00"
+}

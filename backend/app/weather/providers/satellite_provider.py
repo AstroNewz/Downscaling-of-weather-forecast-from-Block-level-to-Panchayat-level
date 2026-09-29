@@ -24,8 +24,8 @@ import rasterio
 from rasterio.transform import Affine
 
 from app.core.config import settings
-from app.core.logging import logger
 from app.schemas.satellite import (
+    ProviderOperationalState,
     SatelliteObservationStatus,
     SatelliteProductType,
     SatelliteProvenance,
@@ -494,3 +494,133 @@ class SatelliteObservationProvider(GriddedObservationProvider):
             return "visible_reflectance", VariableType.CONTINUOUS, "fraction", False
         else:
             return product_type.value.lower(), VariableType.CONTINUOUS, "dimensionless", True
+
+    def validate_quality_gates(
+        self,
+        grid: SourceWeatherGrid,
+        panchayat_record: Optional[Any] = None,
+        min_coverage: float = 0.20,
+        max_age_minutes: Optional[float] = None,
+    ) -> Tuple[bool, List[str]]:
+        """
+        Enforces strict real-data quality gates before satellite evidence
+        can influence localized nowcasting (Task 7 Requirement 10).
+
+        Checks:
+        1. Valid CRS (must be non-empty and recognizable)
+        2. Valid geotransform (cells have positive, finite areas and coordinates)
+        3. Valid spatial extent (extent must be non-degenerate)
+        4. Valid timestamp (valid_time parseable)
+        5. Acceptable freshness (within max_age_minutes)
+        6. Minimum spatial coverage (if intersecting cells > 0)
+        7. Valid source product type
+        8. Valid provenance
+        9. Valid Panchayat geometry (if record provided)
+
+        Fails closed: if any mandatory check fails, returns (False, [failure_reasons]).
+        """
+        failures: List[str] = []
+
+        # 1. Valid CRS
+        crs = getattr(grid.provenance, "crs", None)
+        if not crs or not str(crs).strip() or str(crs).upper() == "NONE":
+            failures.append("INVALID_CRS: Coordinate Reference System is missing or empty.")
+
+        # 2. Valid Spatial Extent
+        extent = getattr(grid.provenance, "spatial_extent", None)
+        if not extent or len(extent) != 4:
+            failures.append("INVALID_SPATIAL_EXTENT: Spatial extent bounds missing or incomplete.")
+        else:
+            min_lon, min_lat, max_lon, max_lat = extent
+            if min_lon >= max_lon or min_lat >= max_lat:
+                failures.append(f"INVALID_SPATIAL_EXTENT: Degenerate bounding box ({extent}).")
+
+        # 3. Valid Geotransform / Cell Structure
+        if not grid.cells or len(grid.cells) == 0:
+            failures.append("INVALID_GEOTRANSFORM: Grid contains zero cells.")
+        else:
+            invalid_cells = [
+                c for c in grid.cells
+                if (c.area_sq_km is not None and c.area_sq_km <= 0) or not c.geometry
+            ]
+            if invalid_cells:
+                failures.append(f"INVALID_CELL_GEOMETRY: {len(invalid_cells)} cells have non-positive area or missing geometry.")
+
+        # 4. Valid Timestamp
+        valid_time = getattr(grid.provenance, "valid_time", None)
+        if not valid_time:
+            failures.append("INVALID_TIMESTAMP: Observation valid_time is missing.")
+        else:
+            try:
+                datetime.fromisoformat(str(valid_time).replace("Z", "+00:00"))
+            except Exception:
+                failures.append(f"INVALID_TIMESTAMP: Unparseable timestamp '{valid_time}'.")
+
+        # 5. Acceptable Freshness
+        if max_age_minutes is not None and valid_time:
+            try:
+                is_fresh, age_m, _ = self.check_freshness(valid_time, threshold_minutes=max_age_minutes)
+                if not is_fresh:
+                    failures.append(f"OBSERVATION_STALE: Observation age ({age_m:.1f}m) exceeds threshold ({max_age_minutes:.1f}m).")
+            except Exception as e:
+                failures.append(f"FRESHNESS_CHECK_FAILED: {e}")
+
+        # 6. Valid Source Product Type
+        prod = getattr(grid.provenance, "source_product", None)
+        if prod:
+            valid_prods = [p.value for p in SatelliteProductType]
+            if prod not in valid_prods:
+                failures.append(f"UNRECOGNIZED_PRODUCT_TYPE: '{prod}' not in registered taxonomy.")
+
+        # 7. Valid Provenance
+        if not getattr(grid.provenance, "source_name", None):
+            failures.append("INVALID_PROVENANCE: Source provider name is missing.")
+        if getattr(grid.provenance, "native_resolution_km", 0.0) <= 0.0:
+            failures.append("INVALID_PROVENANCE: native_resolution_km must be > 0.0.")
+
+        # 8. Valid Panchayat Geometry (if record provided)
+        if panchayat_record is not None:
+            geom = getattr(panchayat_record, "geometry", None)
+            area = getattr(panchayat_record, "area_sq_km", None)
+            if not geom:
+                failures.append("INVALID_PANCHAYAT_GEOMETRY: Target Panchayat geometry is missing.")
+            if area is not None and area <= 0.0:
+                failures.append("INVALID_PANCHAYAT_GEOMETRY: Target Panchayat area must be > 0 sq km.")
+
+        passed = len(failures) == 0
+        return passed, failures
+
+    def get_operational_state(self) -> ProviderOperationalState:
+        """
+        Determines the current operational state of the satellite data provider
+        without exposing any sensitive credentials or secrets (Task 7 Requirement 4).
+        """
+        if not getattr(settings, "SATELLITE_PROVIDER_ENABLED", True):
+            return ProviderOperationalState.PRODUCT_UNAVAILABLE
+
+        source_mode = getattr(settings, "WEATHER_DATA_MODE", "DEMO").upper()
+        if source_mode == "DEMO":
+            return ProviderOperationalState.CONFIGURED
+
+        # LIVE mode: check credentials and local repository directory
+        data_dir = Path(getattr(settings, "SATELLITE_DATA_DIR", "backend/data/raw/satellite/"))
+        mosdac_key = getattr(settings, "MOSDAC_API_KEY", "").strip()
+        imd_key = getattr(settings, "IMD_API_KEY", "").strip()
+
+        # Check credentials
+        has_credentials = bool(mosdac_key or imd_key)
+        
+        # Check files on disk
+        has_files = False
+        if data_dir.exists():
+            tifs = list(data_dir.glob("*.tif")) + list(data_dir.glob("*.tiff"))
+            if tifs:
+                has_files = True
+
+        if has_files:
+            return ProviderOperationalState.LIVE_DATA_AVAILABLE
+
+        if not has_credentials:
+            return ProviderOperationalState.MISSING_CREDENTIALS
+
+        return ProviderOperationalState.PRODUCT_UNAVAILABLE

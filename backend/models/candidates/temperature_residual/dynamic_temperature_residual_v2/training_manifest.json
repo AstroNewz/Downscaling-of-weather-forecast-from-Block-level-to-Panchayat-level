@@ -1,0 +1,41 @@
+{
+  "manifest_version": "2.0.0",
+  "experiment_id": "EXP_INDIA_DYNAMIC_RESIDUAL_V2",
+  "generated_at": "2026-09-17T20:19:21.688089+00:00",
+  "model_dir": "/Users/prajjwalpatel/Documents/SIH 2/Agroweather-Downscaling/backend/models/candidates/temperature_residual/dynamic_temperature_residual_v2",
+  "files": {
+    "xgboost_model.json": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+    "feature_schema.json": "e361b68258775231276f204593f2fdc7525b364b3caaa88f8e0ac2b7d3703f11",
+    "metadata.json": "193212a33f44fa20f60e250e9a24ad16bccc8ed1b71837f4c5502215249e1bdb"
+  },
+  "audit_summary": {
+    "criterion_1_mae_improvement": {
+      "passed": false,
+      "threshold": 0.1,
+      "actual": 0.0971
+    },
+    "criterion_2_generalization_gap": {
+      "passed": false,
+      "threshold": 0.15,
+      "actual": 0.1898
+    },
+    "criterion_3_spatial_stability": {
+      "passed": false,
+      "threshold_mean": 1.4,
+      "threshold_max": 2.5,
+      "mean": 1.4304,
+      "max": 2.1224
+    },
+    "criterion_4_safety_bounds": {
+      "passed": true,
+      "threshold_clamped_pct": 0.5,
+      "clamped_pct": 0.0
+    },
+    "criterion_5_diurnal_stability": {
+      "passed": false,
+      "threshold_gap": 0.35,
+      "actual_gap": 0.5199
+    },
+    "final_decision": "RETAIN_FOR_RESEARCH"
+  }
+}

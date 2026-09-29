@@ -23,12 +23,14 @@ from app.core.logging import logger
 from app.gis.boundary_registry import boundary_registry
 from app.gis.spatial_masking import spatial_masking_service, SpatialMaskingService
 from app.schemas.satellite import (
+    ObservationFreshnessTier,
     PanchayatSatelliteExtractionResult,
     SatelliteCloudFeatures,
     SatelliteObservationStatus,
     SatelliteProductType,
     SatelliteProvenance,
     SatelliteTemporalDelta,
+    SourceResolutionDiagnostic,
 )
 from app.schemas.spatial_masking import (
     CoverageQuality,
@@ -316,6 +318,28 @@ class SatelliteObservationService:
                 detection_threshold_mm=detection_threshold_mm,
             )
 
+        # Operational Freshness Classification (Task 7 Requirement 8)
+        if age_mins is None or math.isnan(age_mins):
+            fresh_tier = ObservationFreshnessTier.UNAVAILABLE
+        elif age_mins <= fresh_thresh:
+            fresh_tier = ObservationFreshnessTier.FRESH
+        elif age_mins <= 180.0:
+            fresh_tier = ObservationFreshnessTier.AGING
+        else:
+            fresh_tier = ObservationFreshnessTier.STALE
+
+        # Product Resolution Validation Diagnostic (Task 7 Requirement 6)
+        poly_area = base_extraction.panchayat_area_sq_km
+        native_res = satellite_grid.provenance.native_resolution_km
+        if poly_area and poly_area > 0 and native_res and native_res > 0:
+            target_scale = math.sqrt(poly_area)
+            if native_res > target_scale:
+                res_diag = SourceResolutionDiagnostic.SOURCE_RESOLUTION_COARSE_FOR_TARGET
+            else:
+                res_diag = SourceResolutionDiagnostic.SOURCE_RESOLUTION_ADEQUATE_FOR_TARGET
+        else:
+            res_diag = SourceResolutionDiagnostic.SOURCE_RESOLUTION_UNKNOWN
+
         return PanchayatSatelliteExtractionResult(
             panchayat_id=base_extraction.panchayat_id,
             panchayat_name=base_extraction.panchayat_name,
@@ -334,6 +358,8 @@ class SatelliteObservationService:
             observation_age_minutes=age_mins,
             is_fresh=is_fresh,
             freshness_status=fresh_status,
+            freshness_tier=fresh_tier,
+            resolution_diagnostic=res_diag,
             provenance=provenance,
             status="SUCCESS",
             message=None,

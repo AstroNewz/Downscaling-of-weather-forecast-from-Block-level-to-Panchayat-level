@@ -81,6 +81,17 @@ models/*
 *.pkl
 *.joblib
 
+# Whitelist Release Freeze Protected Models & Pilot Fixtures
+!models/production_baseline/
+!models/production_baseline/**
+!models/candidates/
+!models/candidates/**
+!data/raw/india/pilot/boundaries/
+!data/raw/india/pilot/boundaries/**
+!data/raw/satellite/REAL_CAPTURED_INSAT3D_TIR_VARANASI.tif
+!data/raw/panchayat_mesonet/
+!data/raw/panchayat_mesonet/**
+
 # OS generated
 .DS_Store
 Thumbs.db

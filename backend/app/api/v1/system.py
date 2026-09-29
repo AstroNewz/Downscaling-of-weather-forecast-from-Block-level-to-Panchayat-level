@@ -230,3 +230,96 @@ async def get_provider_health(provider: str) -> APIResponse[ProviderHealthRespon
         message=f"Health check completed for provider [{provider}].",
         data=health,
     )
+
+
+class OperationalProviderStatusResponse(BaseModel):
+    """
+    Standardized operational readiness and live-data status payload (Task 7 Requirement 12).
+    Discloses readiness, sensor resolution, and observation freshness without leaking credentials.
+    """
+    panchayat_boundaries: str = Field(..., description="'READY' or 'PANCHAYAT_BOUNDARIES_NOT_CONFIGURED'")
+    panchayat_count: int = Field(default=0, description="Count of loaded Panchayat boundaries")
+    satellite_provider: str = Field(..., description="Satellite provider operational state")
+    satellite_provider_name: str = Field(default="SATELLITE_OBSERVATION_ADAPTER")
+    satellite_product: Optional[str] = Field(None, description="Active or configured satellite product name")
+    latest_observation: Optional[str] = Field(None, description="Latest observation ISO 8601 UTC timestamp")
+    observation_age_minutes: Optional[float] = Field(None, description="Latency in minutes since acquisition")
+    native_resolution_km: Optional[float] = Field(None, description="Native sub-satellite sensor resolution in km")
+    spatial_coverage: Optional[float] = Field(None, description="Spatial coverage fraction")
+    overall_live_state: str = Field(..., description="Overall operational state: LIVE_DATA_AVAILABLE, CONFIGURED, etc.")
+    data_mode: str = Field(..., description="Active system data mode: DEMO, LIVE, or AUTO")
+    live_satellite_enabled: bool = Field(default=False, description="Whether live satellite ingestion is enabled")
+    validation_status: Optional[str] = Field(default="LIMITED_VALIDATION", description="Independent physical validation status under Task 8")
+
+
+@router.get(
+    "/provider-status",
+    response_model=APIResponse[OperationalProviderStatusResponse],
+    status_code=status.HTTP_200_OK,
+    summary="Operational Data Provider Readiness & Live Status",
+    description="Exposes machine-readable operational readiness for Panchayat boundaries and satellite observations without exposing credentials (Task 7 Requirement 12).",
+)
+async def get_operational_provider_status() -> APIResponse[OperationalProviderStatusResponse]:
+    from pathlib import Path
+    from app.gis.boundary_registry import boundary_registry
+    from app.weather.providers.satellite_provider import SatelliteObservationProvider
+
+    cur_mode = get_current_data_mode().upper()
+    sat_provider = SatelliteObservationProvider()
+    sat_state = sat_provider.get_operational_state().value
+    bound_status = boundary_registry.get_readiness_status()
+    bound_count = boundary_registry.count()
+
+    # Determine overall state
+    if cur_mode == "DEMO":
+        overall = "CONFIGURED"
+    elif cur_mode == "LIVE":
+        if bound_status != "READY":
+            overall = "PANCHAYAT_BOUNDARIES_NOT_CONFIGURED"
+        elif sat_state == "LIVE_DATA_AVAILABLE":
+            overall = "LIVE_DATA_AVAILABLE"
+        else:
+            overall = sat_state
+    else:  # AUTO
+        if sat_state == "LIVE_DATA_AVAILABLE" and bound_status == "READY":
+            overall = "LIVE_DATA_AVAILABLE"
+        else:
+            overall = "CONFIGURED"
+
+    # Scan for latest real satellite file if any
+    data_dir = Path(getattr(settings, "SATELLITE_DATA_DIR", "backend/data/raw/satellite/"))
+    latest_obs = None
+    age_mins = None
+    res_km = None
+    prod_name = getattr(settings, "SATELLITE_LIVE_SOURCE", "MOSDAC_ISRO")
+
+    if data_dir.exists():
+        tifs = sorted(list(data_dir.glob("*.tif")) + list(data_dir.glob("*.tiff")), key=lambda p: p.stat().st_mtime, reverse=True)
+        if tifs:
+            latest_file = tifs[0]
+            mtime = datetime.fromtimestamp(latest_file.stat().st_mtime, tz=timezone.utc)
+            latest_obs = mtime.isoformat()
+            age_mins = max(0.0, round((datetime.now(timezone.utc) - mtime).total_seconds() / 60.0, 1))
+            res_km = 4.0  # Standard INSAT-3D/3DR TIR resolution
+
+    resp = OperationalProviderStatusResponse(
+        panchayat_boundaries=bound_status,
+        panchayat_count=bound_count,
+        satellite_provider=sat_state,
+        satellite_provider_name=sat_provider.provider_name,
+        satellite_product=prod_name,
+        latest_observation=latest_obs,
+        observation_age_minutes=age_mins,
+        native_resolution_km=res_km,
+        spatial_coverage=1.0 if bound_count > 0 else 0.0,
+        overall_live_state=overall,
+        data_mode=cur_mode,
+        live_satellite_enabled=getattr(settings, "SATELLITE_LIVE_ENABLED", False),
+        validation_status="LIMITED_VALIDATION",
+    )
+
+    return APIResponse(
+        success=True,
+        message="Operational provider status retrieved successfully.",
+        data=resp,
+    )

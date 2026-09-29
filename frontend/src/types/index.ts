@@ -65,10 +65,12 @@ export interface LocalizedPrecipitationNowcast {
   provenance?: {
     satellite_provider?: string | null;
     satellite_product_id?: string | null;
+    satellite_source?: string | null;
     radar_station_id?: string | null;
     nwp_model?: string | null;
     fusion_algorithm?: string | null;
     pipeline_step?: string | null;
+    data_mode?: string | null;
   };
   success: boolean;
   data_quality_notes?: string | null;

@@ -125,6 +125,16 @@ class PanchayatBoundaryRegistry:
         with self._lock:
             return len(self._records_by_id)
 
+    def get_readiness_status(self) -> str:
+        """
+        Returns machine-readable readiness state of boundary registry (Task 7 Requirement 2):
+        'READY' or 'PANCHAYAT_BOUNDARIES_NOT_CONFIGURED'.
+        """
+        with self._lock:
+            if len(self._records_by_id) == 0:
+                return "PANCHAYAT_BOUNDARIES_NOT_CONFIGURED"
+            return "READY"
+
     def clear(self) -> None:
         """Clears all registered records from memory."""
         with self._lock:
@@ -169,9 +179,20 @@ class PanchayatBoundaryRegistry:
 
         p = Path(source_path)
         if not p.is_absolute():
-            # Resolve relative to repo root
             backend_root = Path(__file__).resolve().parent.parent.parent
-            p = (backend_root / source_path).resolve()
+            repo_root = backend_root.parent
+            stripped = source_path[len("backend/"):] if source_path.startswith("backend/") else source_path
+            candidates = [
+                (backend_root / source_path).resolve(),
+                (repo_root / source_path).resolve(),
+                (backend_root / stripped).resolve(),
+            ]
+            for c in candidates:
+                if c.exists():
+                    p = c
+                    break
+            else:
+                p = candidates[0]
 
         if not p.exists():
             logger.info(f"Configured boundary file '{p}' does not exist on disk; registry initialized empty.")

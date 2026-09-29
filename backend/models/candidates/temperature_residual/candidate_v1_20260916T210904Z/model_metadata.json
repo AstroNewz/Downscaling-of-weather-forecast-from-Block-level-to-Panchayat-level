@@ -1,0 +1,108 @@
+{
+  "model_version": "candidate_v1_20260916T210904Z",
+  "model_type": "XGBRegressor",
+  "status": "CANDIDATE",
+  "production_model_modified": false,
+  "training_timestamp_utc": "2026-09-16T21:09:04.691577+00:00",
+  "reference_type": "STATION OBSERVATION",
+  "reference_source": "NOAA_ISD_424790 (Varanasi Babatpur Airport, VEBN)",
+  "coarse_source": "OPEN_METEO_ERA5 (ERA5 reanalysis via Open-Meteo API)",
+  "experiment_label": "OBSERVATION_TO_REANALYSIS",
+  "training_dataset": {
+    "train_rows": 966,
+    "validation_rows": 334,
+    "test_rows": 644,
+    "train_period": {
+      "start": "2024-06-01",
+      "end": "2024-07-15"
+    },
+    "validation_period": {
+      "start": "2024-07-16",
+      "end": "2024-07-31"
+    },
+    "test_period": {
+      "start": "2024-08-01",
+      "end": "2024-08-31"
+    }
+  },
+  "features": [
+    "forecast_temp_min",
+    "forecast_temp_max",
+    "forecast_temp_mean",
+    "forecast_rainfall_mm",
+    "forecast_humidity_pct",
+    "forecast_wind_speed_mps",
+    "forecast_wind_direction_deg",
+    "forecast_cloud_cover_pct",
+    "forecast_lead_hours",
+    "time_diff_minutes",
+    "hour_of_day",
+    "sin_hour",
+    "cos_hour",
+    "day_of_year",
+    "sin_day_of_year",
+    "cos_day_of_year",
+    "month",
+    "sin_month",
+    "cos_month",
+    "obs_latitude",
+    "obs_longitude",
+    "obs_elevation_m",
+    "block_elevation_m",
+    "elevation_diff_m",
+    "slope_deg",
+    "aspect_deg",
+    "sin_aspect",
+    "cos_aspect",
+    "terrain_roughness",
+    "lapse_rate_temp_adjustment_c",
+    "cropland_fraction",
+    "forest_fraction",
+    "urban_fraction",
+    "water_fraction",
+    "barren_fraction"
+  ],
+  "feature_count": 35,
+  "hyperparameters": {
+    "n_estimators": 200,
+    "max_depth": 4,
+    "learning_rate": 0.05,
+    "subsample": 0.8,
+    "colsample_bytree": 0.8
+  },
+  "metrics": {
+    "train": {
+      "n": 966,
+      "MAE_C": 0.5019,
+      "RMSE_C": 0.6707,
+      "R2": 0.8208,
+      "bias_C": 0.0024
+    },
+    "validation": {
+      "n": 334,
+      "MAE_C": 0.9593,
+      "RMSE_C": 1.2379,
+      "R2": -0.4906,
+      "bias_C": -0.4039
+    },
+    "test": {
+      "n": 644,
+      "MAE_C": 1.2341,
+      "RMSE_C": 1.6064,
+      "R2": -0.4348,
+      "bias_C": -0.3337
+    }
+  },
+  "leakage_checks": {
+    "target_leakage": "PASS",
+    "temporal_leakage_train_val": "PASS",
+    "temporal_leakage_val_test": "PASS",
+    "source_independence": "PASS",
+    "era5_as_both_coarse_and_reference": false
+  },
+  "srtm_available": false,
+  "srtm_note": "Terrain features (elevation, slope, aspect) are NULL \u2014 SRTM not yet acquired",
+  "lulc_source": "ESA WorldCover 10m (tile N24E081, approximate district fractions)",
+  "data_classification": "REAL_DATA",
+  "notes": "CANDIDATE MODEL ONLY. Production model in models/temperature_residual/ is UNTOUCHED. This candidate uses 1 NOAA ISD station (Babatpur Airport) as the observation reference and 6-point ERA5 grid as the coarse input. SRTM terrain features unavailable \u2014 add OpenTopography API key to improve."
+}

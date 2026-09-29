@@ -87,12 +87,16 @@ class Settings(BaseSettings):
     IMD_API_KEY: str = ""
     WEATHER_INGESTION_INTERVAL_MINUTES: int = 180
 
-    # Satellite Observation Adapter Settings (SIH PS 26074 - Task 3)
+    # Satellite Observation Adapter Settings (SIH PS 26074 - Task 3 & Task 7)
     SATELLITE_PROVIDER_ENABLED: bool = True
     SATELLITE_DATA_DIR: str = "backend/data/raw/satellite/"
     SATELLITE_FRESHNESS_THRESHOLD_MINUTES: float = 60.0
     SATELLITE_CONVECTIVE_TEMP_THRESHOLD_K: float = 235.0  # Heuristic convective cloud-top threshold (Kelvin)
     SATELLITE_FAIL_CLOSED_ON_GEOREFERENCE: bool = True
+    SATELLITE_LIVE_ENABLED: bool = False
+    SATELLITE_LIVE_SOURCE: str = "MOSDAC_ISRO"  # MOSDAC_ISRO, EUMETSAT, NASA_GPM, LOCAL_INGESTION
+    MOSDAC_USER: str = ""
+    MOSDAC_API_KEY: str = ""
 
     # Localized Precipitation Observation-Fusion & Nowcasting (SIH PS 26074 - Task 4)
     NOWCAST_ENABLED: bool = True

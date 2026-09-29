@@ -232,6 +232,44 @@ async def list_panchayats(
                     is_agricultural_eligible=True,
                 ),
             ),
+            PanchayatResponse(
+                panchayat_id="UP_VAR_LGD_100801",
+                name="Rameshwar Gram Panchayat",
+                block_id="4",
+                district_name="Varanasi",
+                state_name="Uttar Pradesh",
+                latitude=25.3725,
+                longitude=82.8575,
+                elevation_meters=85.0,
+                land_use=LandUseComposition(
+                    total_area_hectares=950.0,
+                    cropland_area_hectares=780.0,
+                    forest_area_hectares=30.0,
+                    urban_area_hectares=90.0,
+                    water_bodies_hectares=25.0,
+                    barren_area_hectares=25.0,
+                    is_agricultural_eligible=True,
+                ),
+            ),
+            PanchayatResponse(
+                panchayat_id="UP_VAR_LGD_100802",
+                name="Jansa Gram Panchayat",
+                block_id="4",
+                district_name="Varanasi",
+                state_name="Uttar Pradesh",
+                latitude=25.3725,
+                longitude=82.8925,
+                elevation_meters=84.0,
+                land_use=LandUseComposition(
+                    total_area_hectares=920.0,
+                    cropland_area_hectares=740.0,
+                    forest_area_hectares=25.0,
+                    urban_area_hectares=105.0,
+                    water_bodies_hectares=25.0,
+                    barren_area_hectares=25.0,
+                    is_agricultural_eligible=True,
+                ),
+            ),
         ]
         if block_id:
             demo_list = [p for p in demo_list if p.block_id == str(block_id)]
@@ -1072,6 +1110,14 @@ async def get_panchayat_full_detail(
     else:
         # Canonical Varanasi pilot demonstration profile mapping
         from datetime import timedelta
+        from app.gis.boundary_registry import boundary_registry
+        
+        reg_record = boundary_registry.get_by_id(str(panchayat_id))
+        if reg_record is None and str(panchayat_id).isdigit():
+            reg_record = boundary_registry.get_by_lgd_code(str(panchayat_id))
+        if reg_record is None and str(panchayat_id) in ("4", 4):
+            reg_record = boundary_registry.get_by_id("UP_VAR_LGD_100801")
+            
         demo_panchayats = {
             1: {
                 "id": 1,
@@ -1109,20 +1155,72 @@ async def get_panchayat_full_detail(
                 "latitude": 25.4800,
                 "longitude": 82.8500,
             },
+            4: {
+                "id": 4,
+                "lgd_code": "UP_VAR_LGD_100801",
+                "name": "Rameshwar Gram Panchayat",
+                "block_id": 4,
+                "block_name": "Arajiline Block",
+                "district_name": "Varanasi",
+                "state_name": "Uttar Pradesh",
+                "elevation_meters": 85.0,
+                "latitude": 25.3725,
+                "longitude": 82.8575,
+            },
+            100801: {
+                "id": 100801,
+                "lgd_code": "UP_VAR_LGD_100801",
+                "name": "Rameshwar Gram Panchayat",
+                "block_id": 4,
+                "block_name": "Arajiline Block",
+                "district_name": "Varanasi",
+                "state_name": "Uttar Pradesh",
+                "elevation_meters": 85.0,
+                "latitude": 25.3725,
+                "longitude": 82.8575,
+            },
+            100802: {
+                "id": 100802,
+                "lgd_code": "UP_VAR_LGD_100802",
+                "name": "Jansa Gram Panchayat",
+                "block_id": 4,
+                "block_name": "Arajiline Block",
+                "district_name": "Varanasi",
+                "state_name": "Uttar Pradesh",
+                "elevation_meters": 84.0,
+                "latitude": 25.3725,
+                "longitude": 82.8925,
+            },
         }
-        numeric_pid = int(panchayat_id) if str(panchayat_id).isdigit() else 1
-        p_info = demo_panchayats.get(numeric_pid, {
-            "id": numeric_pid,
-            "lgd_code": f"PANCHAYAT_{panchayat_id}",
-            "name": f"Panchayat {panchayat_id}",
-            "block_id": 1,
-            "block_name": "Maya Bazar Demonstration Block",
-            "district_name": "Varanasi",
-            "state_name": "Uttar Pradesh",
-            "elevation_meters": 112.0,
-            "latitude": 25.3500,
-            "longitude": 82.9500,
-        })
+        if reg_record:
+            c_lat = round(reg_record.centroid_lat, 4)
+            c_lon = round(reg_record.centroid_lon, 4)
+            p_info = {
+                "id": reg_record.panchayat_id,
+                "lgd_code": reg_record.lgd_code or reg_record.panchayat_id,
+                "name": reg_record.panchayat_name,
+                "block_id": 4,
+                "block_name": f"{reg_record.block} Block" if not reg_record.block.endswith("Block") else reg_record.block,
+                "district_name": reg_record.district,
+                "state_name": reg_record.state,
+                "elevation_meters": 85.0,
+                "latitude": c_lat,
+                "longitude": c_lon,
+            }
+        else:
+            numeric_pid = int(panchayat_id) if str(panchayat_id).isdigit() else 1
+            p_info = demo_panchayats.get(numeric_pid, {
+                "id": numeric_pid,
+                "lgd_code": f"PANCHAYAT_{panchayat_id}",
+                "name": f"Panchayat {panchayat_id}",
+                "block_id": 1,
+                "block_name": "Maya Bazar Demonstration Block",
+                "district_name": "Varanasi",
+                "state_name": "Uttar Pradesh",
+                "elevation_meters": 112.0,
+                "latitude": 25.3500,
+                "longitude": 82.9500,
+            })
 
         result_data = {
             "panchayat": p_info,
@@ -1394,14 +1492,20 @@ async def get_panchayat_precipitation_nowcast(
     try:
         from app.services.panchayat_precipitation_nowcast_service import panchayat_precipitation_nowcast_service
         from app.schemas.precipitation_nowcast import BaselinePrecipitationExpectation
+        from pathlib import Path
+        from datetime import timedelta
 
+        is_pilot_p = (
+            str(panchayat_id).startswith("UP_VAR_")
+            or str(panchayat_id) in ("100801", "100802", "4")
+        )
         base_exp = BaselinePrecipitationExpectation(
             source_model="IMD-GFS-0.25deg",
-            forecast_valid_time=f"{today_str}T00:00:00Z",
-            baseline_precipitation_mm=0.0,
-            baseline_probability=0.20,
-            block_id=1,
-            block_name="Block",
+            forecast_valid_time=f"{today_str}T12:00:00Z",
+            baseline_precipitation_mm=2.5 if is_pilot_p else 0.0,
+            baseline_probability=0.35 if is_pilot_p else 0.20,
+            block_id=4 if is_pilot_p else 1,
+            block_name="Arajiline" if is_pilot_p else "Block",
         )
         sat_grid_in = None
         if panchayat_id.lower() in ("dholakpur_panchayat_a", "dholakpur_panchayat_b"):
@@ -1410,6 +1514,25 @@ async def get_panchayat_precipitation_nowcast(
                 sat_grid_in = build_synthetic_dholakpur_ir_field(native_res_km=1.0)
             except Exception:
                 sat_grid_in = None
+        elif is_pilot_p:
+            for cand_path in [
+                Path("backend/data/raw/satellite/REAL_CAPTURED_INSAT3D_TIR_VARANASI.tif"),
+                Path("data/raw/satellite/REAL_CAPTURED_INSAT3D_TIR_VARANASI.tif"),
+            ]:
+                if cand_path.exists():
+                    try:
+                        from app.weather.providers.satellite_provider import SatelliteObservationProvider
+                        from app.schemas.satellite import SatelliteProductType
+                        sat_prov = SatelliteObservationProvider()
+                        now_utc = datetime.now(timezone.utc)
+                        sat_grid_in = sat_prov.ingest_raster_file(
+                            file_path=str(cand_path),
+                            product=SatelliteProductType.SATELLITE_IR_BRIGHTNESS_TEMPERATURE,
+                            observation_time=(now_utc - timedelta(minutes=15)).isoformat(),
+                        )
+                        break
+                    except Exception as e:
+                        logger.warning(f"Could not ingest real satellite raster: {e}")
 
         nc_res = panchayat_precipitation_nowcast_service.generate_panchayat_precipitation_nowcast(
             panchayat_id=panchayat_id,

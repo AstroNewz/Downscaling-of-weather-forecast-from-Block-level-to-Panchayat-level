@@ -164,6 +164,7 @@ class PrecipitationNowcastProvenance(BaseModel):
     surface_obs_source: Optional[str] = Field(None, description="Surface observation station and timestamp")
     evidence_weight_version: str = Field(default="RESEARCH_HEURISTIC_V1", description="Evidence weighting rule version")
     config_version: str = Field(default="1.0.0", description="Configuration schema version")
+    data_mode: str = Field(default="DEMO", description="Operational data mode ('LIVE' or 'DEMO')")
     generated_at: str = Field(..., description="UTC ISO execution timestamp")
     scientific_disclaimer: str = Field(
         default=(

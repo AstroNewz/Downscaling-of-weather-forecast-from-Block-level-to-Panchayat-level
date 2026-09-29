@@ -1,0 +1,102 @@
+{
+  "audit_timestamp": "2026-09-27T17:03:46.238470+00:00",
+  "audit_version": "SIH-2024-TASK10-RELEASE-AUDIT",
+  "repository_status": "CLEAN_RELEASE_READY",
+  "scientific_readiness": "LIMITED_VALIDATION",
+  "demo_readiness": {
+    "status": "VERIFIED_READY",
+    "pilot_block": "Arajiline Block (ID 4)",
+    "pilot_district": "Varanasi",
+    "panchayat_a": {
+      "id": "UP_VAR_LGD_100801",
+      "name": "Rameshwar Gram Panchayat",
+      "evidence": "Cold cloud tops (TIR <= 240K)",
+      "rain_probability_30m": 0.848,
+      "advisory": "Postpone spraying & hold irrigation"
+    },
+    "panchayat_b": {
+      "id": "UP_VAR_LGD_100802",
+      "name": "Jansa Gram Panchayat",
+      "evidence": "Warm clear sky (TIR > 285K)",
+      "rain_probability_30m": 0.254,
+      "advisory": "Caution advisory with baseline divergence notice"
+    },
+    "directional_agreement": "100%"
+  },
+  "backend_tests": {
+    "sih_demo_acceptance": {
+      "passed": 12,
+      "failed": 0
+    },
+    "final_forensic_audit": {
+      "passed": 12,
+      "failed": 0
+    },
+    "panchayat_precipitation_validation": {
+      "passed": 18,
+      "failed": 0
+    },
+    "real_data_activation": {
+      "passed": 7,
+      "failed": 0
+    },
+    "total_core_passed": 49,
+    "total_core_failed": 0
+  },
+  "frontend_tests": {
+    "contract_tests": {
+      "passed": 9,
+      "failed": 0
+    },
+    "production_build": "PASSED (0 errors, 849ms)"
+  },
+  "flutter_tests": {
+    "unit_widget_tests": {
+      "passed": 22,
+      "failed": 0
+    },
+    "static_analysis": "PASSED (0 issues found)"
+  },
+  "cryptographic_hash_verification": {
+    "status": "ALL_MATCH_IMMUTABLE",
+    "verified_artifacts_count": 8,
+    "manifest_file": "reports/sih_final/RELEASE_FREEZE_MANIFEST.json"
+  },
+  "operational_data_separation": {
+    "live_mode": "EXPLICIT_LIVE_TAGGING",
+    "demo_mode": "CANONICAL_FIXTURE_ISOLATION",
+    "fail_closed_guarantee": "UNREGISTERED_COORDINATES_FAIL_CLOSED"
+  },
+  "claim_audit": {
+    "status": "TASK_9_ALIGNED",
+    "prohibited_language_occurrences": 0,
+    "safe_source_of_truth": "reports/FINAL_FORENSIC_AUDIT.md"
+  },
+  "validation_status": {
+    "tier": "LIMITED_VALIDATION",
+    "dataset_sample_size": 24,
+    "events_count": 12,
+    "metrics": {
+      "csi": 0.933,
+      "pod": 0.95,
+      "far": 0.0,
+      "mae_mm": 0.879
+    },
+    "geographic_scope": "Varanasi Pilot Domain (Arajiline Block)"
+  },
+  "known_limitations": [
+    "Panchayat-scale physical validation is geographically confined to Varanasi pilot.",
+    "Nationwide validation requires state mesonet MoUs (KSNDMC, Mahavedh).",
+    "INSAT-3DR satellite observations have nominal ~3.8 km resolution; masking does not create 250m radar observations.",
+    "Yield improvement and farmer income enhancement percentages require randomized controlled trials (RCTs)."
+  ],
+  "external_dependencies": [
+    "ISRO MOSDAC / IMD geostationary satellite data access.",
+    "IMD GFS / Open-Meteo operational numerical weather prediction feeds.",
+    "Local Government Directory (LGD) administrative boundary registry."
+  ],
+  "release_freeze_status": {
+    "status": "FROZEN",
+    "release_tag": "SIH-2024-FINAL-FREEZE"
+  }
+}

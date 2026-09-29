@@ -1,0 +1,135 @@
+{
+  "audit_version": "1.0.0",
+  "audit_timestamp": "2026-09-27T17:25:00Z",
+  "problem_statement": "SIH 26074 - Weather Downscaling from Block to Panchayat Level",
+  "governance_status": "RELEASE_FROZEN",
+  "scientific_readiness": "LIMITED_VALIDATION",
+  "executive_status": {
+    "overall_red_team_verdict": "GO_FOR_TECHNICAL_JURY_DEMONSTRATION",
+    "release_blocking_issues": 0,
+    "p0_catastrophic_count": 0,
+    "p1_serious_correctness_count": 0,
+    "p2_limitation_docs_count": 1,
+    "p3_cosmetic_non_blocking_count": 1,
+    "cryptographic_manifest_intact": true
+  },
+  "adversarial_panel_roles_simulated": [
+    "A. Operational Senior Meteorologist",
+    "B. GIS & Remote-Sensing Expert",
+    "C. ML & Data-Science Judge",
+    "D. Agricultural Field Scientist",
+    "E. Software & Backend Systems Reviewer",
+    "F. Government & Public-Sector Deployment Reviewer",
+    "G. Security & Reliability Red-Teamer"
+  ],
+  "judge_questions_audited_count": 27,
+  "test_execution_summary": {
+    "acceptance_tests": {
+      "file": "tests/test_sih_demo_acceptance.py",
+      "total": 12,
+      "passed": 12,
+      "failed": 0
+    },
+    "red_team_tests": {
+      "file": "backend/tests/test_sih_red_team_audit.py",
+      "total": 11,
+      "passed": 11,
+      "failed": 0
+    },
+    "core_python_verification_total": 60,
+    "core_python_verification_passed": 60,
+    "frontend_contract_tests": {
+      "file": "frontend/src/__tests__/localized_nowcast_contract.test.mjs",
+      "total": 9,
+      "passed": 9,
+      "failed": 0
+    },
+    "frontend_vite_build": {
+      "status": "PASSED",
+      "errors": 0,
+      "build_duration_ms": 886
+    },
+    "mobile_flutter_tests": {
+      "total": 22,
+      "passed": 22,
+      "failed": 0
+    },
+    "mobile_flutter_analyze": {
+      "status": "PASSED",
+      "issues": 0
+    }
+  },
+  "pilot_ab_verification": {
+    "block": "Arajiline (ID: 4, Varanasi, UP)",
+    "nwp_baseline": {
+      "source_model": "IMD-GFS-0.25deg",
+      "precipitation_mm": 2.5,
+      "probability": 0.35
+    },
+    "panchayat_a": {
+      "panchayat_id": "UP_VAR_LGD_100801",
+      "name": "Rameshwar Gram Panchayat",
+      "lgd_code": "100801",
+      "centroid": [25.3725, 82.8575],
+      "satellite_brightness_temp_k": 231.85,
+      "cloud_classification": "DEEP_CONVECTIVE",
+      "rain_probability_30m": 0.848,
+      "overall_confidence": "MEDIUM",
+      "evidence_disagreement": false,
+      "advisory_action": "Pause foliar spraying and harvesting operations immediately."
+    },
+    "panchayat_b": {
+      "panchayat_id": "UP_VAR_LGD_100802",
+      "name": "Jansa Gram Panchayat",
+      "lgd_code": "100802",
+      "centroid": [25.3725, 82.8925],
+      "satellite_brightness_temp_k": 278.45,
+      "cloud_classification": "CLEAR_SKY",
+      "rain_probability_30m": 0.254,
+      "overall_confidence": "LOW",
+      "evidence_disagreement": true,
+      "advisory_action": "Proceed with agricultural operations with caution; monitor updates."
+    }
+  },
+  "protected_artifact_hashes": {
+    "baseline_calibration_json": "dad1b693277a3be98b90bc49f1a4fda5ee7d509cce3164a2e5798bfd78457650",
+    "xgboost_model_json": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+    "dynamic_v2_metadata_json": "193212a33f44fa20f60e250e9a24ad16bccc8ed1b71837f4c5502215249e1bdb",
+    "authorized_panchayats_geojson": "2711d412cc80e3086dd9110a608284e4c6eebc2ee652984bedd5769895f0ca71",
+    "real_captured_insat3d_tir_tif": "a81ca52e2f07edd002027b9bcc123fc3c77c38dab70852338b0e0354af8afb59",
+    "final_forensic_audit_json": "72a01a726f8f68f0cd94d88cadf49a1448c464ffafc164c764da911b674e5da1",
+    "precipitation_validation_report_json": "5e617ed8371e0f1edcb9d0e72c5f8740c3a9c38c6b558ccbf85d12f7350a3257",
+    "mesonet_observations_json": "31f437cd5f438104cb4eda83b0cde328df28d4943fd0cf69204403aa05781668"
+  },
+  "findings": [
+    {
+      "id": "RT-FINDING-001",
+      "severity": "P2",
+      "classification": "OPERATIONAL_PROCESS_OBSERVATION",
+      "affected_component": "FastAPI Uvicorn Background Process Management",
+      "summary": "Long-running development servers launched without reload supervisor maintain stale in-memory routing tables",
+      "evidence": "Rehearsal curl to port 8000 returned empty item lists prior to process restart because uvicorn was started prior to Task 10 endpoint registration.",
+      "reproducibility": "Run uvicorn without --reload, modify routes in code, curl route.",
+      "remediation": "Documented in SIH Final Demo Script and release checklist: Always launch backend with uvicorn --reload or restart server before live evaluation.",
+      "affects_demo_safety": false
+    },
+    {
+      "id": "RT-FINDING-002",
+      "severity": "P3",
+      "classification": "DOCUMENTATION_PRECISION",
+      "affected_component": "Resolution Provenance Metadata",
+      "summary": "Geodetic INSAT-3DR TIR resolution at 25.3°N calculates to 3.803 km rather than nominal 4.000 km",
+      "evidence": "SourceResolutionProvenance.native_resolution_km emitted 3.803 km; test assertion adjusted from >= 4.0 to geodetic range [3.0, 5.0].",
+      "reproducibility": "Deterministic calculation from raster cell degrees (0.036 deg * 105.6 km/deg).",
+      "remediation": "Documented precise geodetic pixel size in SIH Judge QA Q7.",
+      "affects_demo_safety": false
+    }
+  ],
+  "claim_drift_audit": {
+    "total_scan_occurrences": 108,
+    "production_unhedged_claims": 0,
+    "judge_facing_unhedged_claims": 0,
+    "quarantined_claims_status": "ALL_BOUNDED_OR_FLAGGED_AS_PROHIBITED"
+  },
+  "final_release_recommendation": "GO"
+}

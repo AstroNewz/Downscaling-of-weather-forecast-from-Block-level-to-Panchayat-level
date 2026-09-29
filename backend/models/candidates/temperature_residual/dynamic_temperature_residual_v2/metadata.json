@@ -1,0 +1,402 @@
+{
+  "model_id": "dynamic_temperature_residual_v2",
+  "display_name": "Dynamic Residual Downscaling Model v2",
+  "status": "RESEARCH_ONLY",
+  "decision": "RETAIN_FOR_RESEARCH",
+  "governance_classification": "RESEARCH_ONLY \u2014 Certified baseline (+0.7351\u00b0C) immutable",
+  "certified_production_baseline_offset_c": 0.7351,
+  "created_at": "2026-09-17T20:19:21.687232+00:00",
+  "training_time_seconds": 4.44,
+  "dataset_summary": {
+    "source": "NOAA ISD-Lite & Open-Meteo ERA5 Reanalysis",
+    "temporal_coverage": "2024-06-01 to 2024-08-31 (Kharif 2024)",
+    "station_count": 17,
+    "total_records": 23949,
+    "train_records": 14418,
+    "val_records": 4243,
+    "test_records": 5288
+  },
+  "evaluation_metrics": {
+    "baseline_constant_a": {
+      "n": 5288,
+      "mae": 1.2661,
+      "rmse": 1.6842,
+      "r2": 0.7237,
+      "bias": -0.4027
+    },
+    "candidate_b_weather": {
+      "n": 5288,
+      "mae": 1.2215,
+      "rmse": 1.6103,
+      "r2": 0.7474,
+      "bias": -0.1363
+    },
+    "candidate_c_terrain": {
+      "n": 5288,
+      "mae": 1.169,
+      "rmse": 1.558,
+      "r2": 0.7636,
+      "bias": -0.1738
+    },
+    "candidate_d_interactions": {
+      "n": 5288,
+      "mae": 1.176,
+      "rmse": 1.565,
+      "r2": 0.7614,
+      "bias": -0.1597
+    },
+    "best_candidate": "Candidate_C",
+    "best_candidate_test_metrics": {
+      "n": 5288,
+      "mae": 1.169,
+      "rmse": 1.558,
+      "r2": 0.7636,
+      "bias": -0.1738
+    },
+    "best_candidate_val_metrics": {
+      "n": 4243,
+      "mae": 0.9792,
+      "rmse": 1.2904,
+      "r2": 0.8317,
+      "bias": -0.0131
+    },
+    "bootstrap_ci_95": {
+      "baseline_mae_ci": [
+        1.2358,
+        1.2967
+      ],
+      "baseline_rmse_ci": [
+        1.6427,
+        1.7281
+      ],
+      "dynamic_mae_ci": [
+        1.1501,
+        1.2034
+      ],
+      "dynamic_rmse_ci": [
+        1.5279,
+        1.6018
+      ]
+    },
+    "subgroup_metrics": {
+      "daytime": {
+        "n": 3031,
+        "mae": 1.3909,
+        "rmse": 1.8033,
+        "r2": 0.7085,
+        "bias": -0.2033
+      },
+      "nighttime": {
+        "n": 2257,
+        "mae": 0.871,
+        "rmse": 1.149,
+        "r2": 0.8185,
+        "bias": -0.1343
+      },
+      "high_temp": {
+        "n": 558,
+        "mae": 1.5152,
+        "rmse": 1.8826,
+        "r2": 0.1979,
+        "bias": -0.5311
+      },
+      "rain_events": {
+        "n": 1799,
+        "mae": 1.3398,
+        "rmse": 1.7909,
+        "r2": 0.6907,
+        "bias": -0.0308
+      },
+      "high_relief": {
+        "n": 309,
+        "mae": 1.4021,
+        "rmse": 1.8021,
+        "r2": 0.73,
+        "bias": 0.0358
+      }
+    }
+  },
+  "generalization_audits": {
+    "loso_mean_dynamic_mae": 1.4304,
+    "loso_mean_baseline_mae": 1.4122,
+    "loso_max_dynamic_mae": 2.1224,
+    "loso_per_station": {
+      "420270-99999": {
+        "name": "Srinagar",
+        "region": "North / Himalayan",
+        "n": 715,
+        "dynamic_mae": 1.4577,
+        "dynamic_rmse": 1.9389,
+        "dynamic_r2": 0.8547,
+        "baseline_mae": 1.5818,
+        "baseline_rmse": 2.0496,
+        "mae_delta": -0.1241
+      },
+      "420830-99999": {
+        "name": "Shimla",
+        "region": "North / Himalayan",
+        "n": 351,
+        "dynamic_mae": 1.5908,
+        "dynamic_rmse": 1.8637,
+        "dynamic_r2": 0.5417,
+        "baseline_mae": 1.4784,
+        "baseline_rmse": 1.7629,
+        "mae_delta": 0.1124
+      },
+      "421110-99999": {
+        "name": "Dehradun",
+        "region": "North / Himalayan",
+        "n": 721,
+        "dynamic_mae": 1.823,
+        "dynamic_rmse": 2.2608,
+        "dynamic_r2": 0.694,
+        "baseline_mae": 1.5636,
+        "baseline_rmse": 2.0299,
+        "mae_delta": 0.2594
+      },
+      "421470-99999": {
+        "name": "Mukteshwar Kumaon",
+        "region": "North / Himalayan",
+        "n": 361,
+        "dynamic_mae": 1.2847,
+        "dynamic_rmse": 1.6983,
+        "dynamic_r2": 0.7365,
+        "baseline_mae": 1.3163,
+        "baseline_rmse": 1.6923,
+        "mae_delta": -0.0316
+      },
+      "421820-99999": {
+        "name": "New Delhi Safdarjung",
+        "region": "Indo-Gangetic Plain",
+        "n": 727,
+        "dynamic_mae": 1.4027,
+        "dynamic_rmse": 1.8258,
+        "dynamic_r2": 0.8082,
+        "baseline_mae": 1.5136,
+        "baseline_rmse": 1.9204,
+        "mae_delta": -0.1109
+      },
+      "423390-99999": {
+        "name": "Jodhpur",
+        "region": "West / Arid-SemiArid",
+        "n": 812,
+        "dynamic_mae": 1.4056,
+        "dynamic_rmse": 1.7767,
+        "dynamic_r2": 0.8302,
+        "baseline_mae": 1.209,
+        "baseline_rmse": 1.6606,
+        "mae_delta": 0.1966
+      },
+      "423480-99999": {
+        "name": "Jaipur Sanganer",
+        "region": "West / Arid-SemiArid",
+        "n": 2158,
+        "dynamic_mae": 1.1705,
+        "dynamic_rmse": 1.6465,
+        "dynamic_r2": 0.8449,
+        "baseline_mae": 1.2944,
+        "baseline_rmse": 1.7821,
+        "mae_delta": -0.1239
+      },
+      "423690-99999": {
+        "name": "Lucknow Amausi",
+        "region": "Indo-Gangetic Plain",
+        "n": 2006,
+        "dynamic_mae": 1.138,
+        "dynamic_rmse": 1.5134,
+        "dynamic_r2": 0.8571,
+        "baseline_mae": 1.3012,
+        "baseline_rmse": 1.6823,
+        "mae_delta": -0.1632
+      },
+      "424100-99999": {
+        "name": "Guwahati Borjhar",
+        "region": "Northeast Hills",
+        "n": 2064,
+        "dynamic_mae": 1.3248,
+        "dynamic_rmse": 1.6552,
+        "dynamic_r2": 0.5567,
+        "baseline_mae": 1.5209,
+        "baseline_rmse": 1.9604,
+        "mae_delta": -0.1961
+      },
+      "424790-99999": {
+        "name": "Varanasi Babatpur",
+        "region": "Indo-Gangetic Plain",
+        "n": 1944,
+        "dynamic_mae": 2.0577,
+        "dynamic_rmse": 2.5829,
+        "dynamic_r2": 0.66,
+        "baseline_mae": 1.1685,
+        "baseline_rmse": 1.5922,
+        "mae_delta": 0.8892
+      },
+      "424920-99999": {
+        "name": "Patna Airport",
+        "region": "Indo-Gangetic Plain",
+        "n": 2127,
+        "dynamic_mae": 1.3464,
+        "dynamic_rmse": 1.6977,
+        "dynamic_r2": 0.7163,
+        "baseline_mae": 1.6773,
+        "baseline_rmse": 2.0331,
+        "mae_delta": -0.3309
+      },
+      "426470-99999": {
+        "name": "Ahmedabad",
+        "region": "West / Arid-SemiArid",
+        "n": 2145,
+        "dynamic_mae": 1.1604,
+        "dynamic_rmse": 1.5456,
+        "dynamic_r2": 0.8094,
+        "baseline_mae": 1.2718,
+        "baseline_rmse": 1.7023,
+        "mae_delta": -0.1114
+      },
+      "426670-99999": {
+        "name": "Bhopal Bairagarh",
+        "region": "Central Plateau",
+        "n": 795,
+        "dynamic_mae": 1.2338,
+        "dynamic_rmse": 1.8801,
+        "dynamic_r2": 0.7982,
+        "baseline_mae": 1.3693,
+        "baseline_rmse": 2.0312,
+        "mae_delta": -0.1355
+      },
+      "427790-99999": {
+        "name": "Jabalpur",
+        "region": "Central Plateau",
+        "n": 712,
+        "dynamic_mae": 2.1224,
+        "dynamic_rmse": 2.9144,
+        "dynamic_r2": 0.3202,
+        "baseline_mae": 2.1668,
+        "baseline_rmse": 3.077,
+        "mae_delta": -0.0444
+      },
+      "428090-99999": {
+        "name": "Kolkata Dum Dum",
+        "region": "East Delta-Plain",
+        "n": 2157,
+        "dynamic_mae": 0.9643,
+        "dynamic_rmse": 1.2901,
+        "dynamic_r2": 0.715,
+        "baseline_mae": 1.0623,
+        "baseline_rmse": 1.3922,
+        "mae_delta": -0.098
+      },
+      "428670-99999": {
+        "name": "Nagpur Sonegaon",
+        "region": "Central Plateau",
+        "n": 2152,
+        "dynamic_mae": 1.3522,
+        "dynamic_rmse": 1.8707,
+        "dynamic_r2": 0.7673,
+        "baseline_mae": 1.2928,
+        "baseline_rmse": 1.8706,
+        "mae_delta": 0.0594
+      },
+      "429710-99999": {
+        "name": "Bhubaneswar",
+        "region": "East Delta-Plain",
+        "n": 2002,
+        "dynamic_mae": 1.4821,
+        "dynamic_rmse": 1.9404,
+        "dynamic_r2": 0.4873,
+        "baseline_mae": 1.2197,
+        "baseline_rmse": 1.7477,
+        "mae_delta": 0.2624
+      }
+    },
+    "loro_per_regime": {
+      "Central Plateau": {
+        "regime": "Central Plateau",
+        "n": 3659,
+        "dynamic_mae": 1.4786,
+        "dynamic_rmse": 2.102,
+        "baseline_mae": 1.4795,
+        "baseline_rmse": 2.1901,
+        "mae_delta": -0.0009
+      },
+      "East Delta-Plain": {
+        "regime": "East Delta-Plain",
+        "n": 4159,
+        "dynamic_mae": 1.2484,
+        "dynamic_rmse": 1.6953,
+        "baseline_mae": 1.1381,
+        "baseline_rmse": 1.5734,
+        "mae_delta": 0.1103
+      },
+      "Indo-Gangetic Plain": {
+        "regime": "Indo-Gangetic Plain",
+        "n": 6804,
+        "dynamic_mae": 2.093,
+        "dynamic_rmse": 2.6054,
+        "baseline_mae": 1.4035,
+        "baseline_rmse": 1.8014,
+        "mae_delta": 0.6895
+      },
+      "North / Himalayan": {
+        "regime": "North / Himalayan",
+        "n": 2148,
+        "dynamic_mae": 1.4909,
+        "dynamic_rmse": 1.9365,
+        "baseline_mae": 1.5142,
+        "baseline_rmse": 1.9418,
+        "mae_delta": -0.0233
+      },
+      "Northeast Hills": {
+        "regime": "Northeast Hills",
+        "n": 2064,
+        "dynamic_mae": 1.3248,
+        "dynamic_rmse": 1.6552,
+        "baseline_mae": 1.5209,
+        "baseline_rmse": 1.9604,
+        "mae_delta": -0.1961
+      },
+      "West / Arid-SemiArid": {
+        "regime": "West / Arid-SemiArid",
+        "n": 5115,
+        "dynamic_mae": 1.2201,
+        "dynamic_rmse": 1.6351,
+        "baseline_mae": 1.2714,
+        "baseline_rmse": 1.73,
+        "mae_delta": -0.0513
+      }
+    }
+  },
+  "promotion_gate": {
+    "criterion_1_mae_improvement": {
+      "passed": false,
+      "threshold": 0.1,
+      "actual": 0.0971
+    },
+    "criterion_2_generalization_gap": {
+      "passed": false,
+      "threshold": 0.15,
+      "actual": 0.1898
+    },
+    "criterion_3_spatial_stability": {
+      "passed": false,
+      "threshold_mean": 1.4,
+      "threshold_max": 2.5,
+      "mean": 1.4304,
+      "max": 2.1224
+    },
+    "criterion_4_safety_bounds": {
+      "passed": true,
+      "threshold_clamped_pct": 0.5,
+      "clamped_pct": 0.0
+    },
+    "criterion_5_diurnal_stability": {
+      "passed": false,
+      "threshold_gap": 0.35,
+      "actual_gap": 0.5199
+    },
+    "final_decision": "RETAIN_FOR_RESEARCH"
+  },
+  "sha256": {
+    "xgboost_model_json": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294"
+  }
+}

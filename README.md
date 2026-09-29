@@ -1,11 +1,11 @@
 # AgroMet: Downscaling Weather Forecast from Block to Panchayat Level
 
 [![SIH 2024 Problem 26074](https://img.shields.io/badge/SIH%202024-Problem%2026074-blue.svg)](https://www.sih.gov.in/)
-[![Release Status](https://img.shields.io/badge/Release-SIH__PHASE20__FINAL-brightgreen.svg)](#scientific-decision--release-status)
-[![Backend Tests](https://img.shields.io/badge/Scientific%20Tests-129%20Passed%2C%200%20Failed-brightgreen.svg)](#testing)
+[![Scientific Readiness](https://img.shields.io/badge/Scientific%20Readiness-LIMITED__VALIDATION-amber.svg)](#scientific-readiness--validation-status)
+[![Regression Tests](https://img.shields.io/badge/Acceptance%20Tests-12%2F12%20Passed-brightgreen.svg)](#regression-testing)
 [![Frontend Build](https://img.shields.io/badge/Frontend%20Build-Vite%20%2B%20TypeScript%20Passing-success.svg)](#frontend-setup--run)
 [![Spatial Reference](https://img.shields.io/badge/GIS%20Grid-EPSG%3A32644%20(1000m)-orange.svg)](#crs--gis-specifications)
-[![Scientific Freeze](https://img.shields.io/badge/Freeze-EXP__VARANASI__PILOT__PHASE18__FREEZE-purple.svg)](#scientific-validation--experiment-freeze)
+[![Release Freeze](https://img.shields.io/badge/Release%20Freeze-SIH__FINAL__FREEZE-purple.svg)](#release-freeze-declaration)
 
 ---
 
@@ -17,29 +17,46 @@
 
 ---
 
-## What the System Does
+## 1. Problem Definition & Core Challenge
 
-National meteorological organizations (such as IMD and NCMRWF) issue operational Numerical Weather Prediction (NWP) guidance at the **Block level** (~12 km to 25 km grid spacing). However, critical agronomic decisions—such as irrigation scheduling, paddy flowering heat-stress mitigation, and wind-lodging prevention—operate at the **Gram Panchayat and farm field scale** (~1 km).
+Operational Numerical Weather Prediction (NWP) models (such as IMD GFS and ECMWF) provide operational guidance at the **Block level** (~12 km to 25 km grid spacing, covering 50,000+ hectares). However, critical farming decisions—such as foliar pesticide spraying, pulse irrigation, transplanting, and storm drainage—operate at the **Gram Panchayat scale** (~1,000 hectares). 
 
-**AgroMet** addresses this gap by:
-1. Ingesting operational coarse Block-level forecasts ($T_{\text{coarse}}$).
-2. Spatially downscaling temperature onto a high-resolution **1-km $\times$ 1-km metric grid** using surface predictors (elevation, slope, aspect, terrain roughness, land cover fractions).
-3. Spatially aggregating 1-km grid fields to **Gram Panchayat administrative boundaries** using area-weighted geometric intersection in a local projected metric CRS (`EPSG:32644`).
-4. Enriching the downscaled weather with **cropland eligibility masks, crop growth stages (DAS/GDD), and soil hydrological properties (AWC)**.
-5. Evaluating multi-crop hazards via a direction-aware, deterministic **Agricultural Risk Engine**.
-6. Generating **explainable, time-windowed agro-meteorological advisories** with operational conflict resolution and agronomic safety guardrails.
+A coarse block forecast treats an entire block uniformly, obscuring localized convective rain cells, micro-topographical thermal variations, and crop-specific vulnerability windows.
 
 ---
 
-## Key Capabilities
+## 2. Technical Solution
 
-- **Strict 1-km Metric Grid**: 1000 m $\times$ 1000 m cells projected in metric UTM Zone 44N (`EPSG:32644`), outputting to WGS84 (`EPSG:4326`). Calculations strictly avoid distorted Web Mercator (`EPSG:3857`).
-- **Area-Weighted Panchayat Aggregation**: Fractional geometric overlay accurately accounts for boundary-straddling grid cells.
-- **Agricultural Land Use Gating**: Enforces satellite cropland masks to exclude urban, dense water, and forest zones from crop advisory generation.
-- **Multi-Crop Separation**: Evaluates independent crop phenology profiles (e.g., Rice at Flowering vs. Maize at Tasseling) within the same Panchayat without cross-contamination.
-- **Direction-Aware Hazard Detection**: Distinguishes heat stress, chilling, wind lodging, hydrological deficit, and pathogen-favorable microclimate conditions.
-- **Agronomic Safety Guardrails**: Strict policy prevents medicalized plant disease diagnosis or chemical pesticide brand/dosage recommendations.
-- **Interactive Decision-Support UI**: 8 dedicated pages with Leaflet vector visualization, diurnal temperature profiling, resolution comparison, and an interactive 10-step SIH Judge Mode.
+**AgroMet** addresses this challenge through an end-to-end observation-fused pipeline:
+1. **Exact Panchayat Geometry**: Ingests official Local Government Directory (LGD) administrative boundaries, routing farm GPS coordinates via topological Point-in-Polygon (PIP) containment in an R-tree spatial index.
+2. **Spatial Observation Masking**: Intersects georeferenced weather and satellite fields with exact Panchayat polygons using area-weighted fractional pixel extraction.
+3. **Satellite Observational Ingestion**: Ingests 15-minute INSAT-3DR geostationary thermal infrared (TIR-1) and brightness temperature feeds with automated quality gates and fail-closed fallbacks.
+4. **Localized Precipitation Nowcasting**: Fuses NWP baseline forecasts with real-time satellite evidence using a **two-stage hurdle model** (LightGBM rain occurrence probability + GBDT conditional rain amount) for 30m, 60m, and 120m horizons.
+5. **Crop-Aware Agricultural Advisories**: Contextualizes nowcasts with crop phenology (DAS/GDD) and soil moisture capacity to issue actionable farm guidance structured into **Action**, **Why**, and **Timing** following IMD-GKMS rules.
+
+---
+
+## 3. Scientific Readiness & Pilot Validation Status
+
+- **Readiness Classification**: **`LIMITED_VALIDATION`** (Certified under Task 9 Forensic Audit)
+- **Validation Pilot Domain**: Varanasi District, Uttar Pradesh (Arajiline Block: Rameshwar & Jansa Gram Panchayats)
+- **Empirical Ground-Truth Dataset**: 12 curated convective rainfall events ($N=24$ station-event pairs) benchmarked against independent automatic weather stations (ICAR-IIVR and BHU Agronomy):
+  - **Critical Success Index (CSI)**: **0.933**
+  - **Probability of Detection (POD)**: **0.950**
+  - **Mean Absolute Error (MAE)**: **0.879 mm**
+  - **Directional Spatial Agreement**: **100%** on divergent events
+- **Important Boundary Disclosure**: Independent Panchayat-scale empirical validation is geographically confined to the Varanasi pilot. Nationwide validation remains incomplete pending formal state mesonet data-sharing agreements (KSNDMC, Mahavedh, IMD Agro-AWS).
+
+---
+
+## 4. Key Capabilities
+
+- **Exact Point-in-Polygon Routing**: Coordinates inside registered polygons resolve unambiguously; points outside registered jurisdictions fail closed (`OUTSIDE_REGISTERED_PANCHAYATS`).
+- **A/B Spatial Differentiation**: Two adjacent Panchayats inside the same block receiving identical NWP baseline forecasts receive distinct nowcasts when satellite convective evidence differs across their polygons.
+- **Disagreement Detection**: Divergence between NWP baseline and real-time satellite evidence lowers confidence to `LOW` and displays an explicit caution banner rather than silencing either source.
+- **Source Resolution Disclosure**: Native satellite resolution (~3.8 km) is explicitly disclosed alongside a disclaimer that finer polygon visualization does not imply sub-kilometer sensor observations.
+- **Immutable Temperature Baseline**: Constant scalar residual calibration ($B = +0.7351^\circ\text{C}$) certified under Phase 24 as the sole active production temperature downscaling engine, with Dynamic V2 under controlled operational guardrails.
+- **Farmer vs. Technical Multi-View UI**: React/Vite command dashboard and Flutter mobile application supporting high-level farmer directives (Action/Why/Timing) and forensic scientific transparency views.
 
 ---
 

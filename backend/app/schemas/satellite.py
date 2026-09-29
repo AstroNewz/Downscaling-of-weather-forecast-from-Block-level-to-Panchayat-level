@@ -38,6 +38,32 @@ class SatelliteObservationStatus(str, Enum):
     INSUFFICIENT_SPATIAL_COVERAGE = "INSUFFICIENT_SPATIAL_COVERAGE" # AOI falls outside satellite scene extent
 
 
+class SourceResolutionDiagnostic(str, Enum):
+    """Informational quality indicator comparing native satellite resolution with target Panchayat scale."""
+    SOURCE_RESOLUTION_COARSE_FOR_TARGET = "SOURCE_RESOLUTION_COARSE_FOR_TARGET"
+    SOURCE_RESOLUTION_ADEQUATE_FOR_TARGET = "SOURCE_RESOLUTION_ADEQUATE_FOR_TARGET"
+    SOURCE_RESOLUTION_UNKNOWN = "SOURCE_RESOLUTION_UNKNOWN"
+
+
+class ProviderOperationalState(str, Enum):
+    """Standardized operational state for external data providers and security checks."""
+    CONFIGURED = "CONFIGURED"
+    MISSING_CREDENTIALS = "MISSING_CREDENTIALS"
+    AUTHENTICATION_FAILED = "AUTHENTICATION_FAILED"
+    NETWORK_UNAVAILABLE = "NETWORK_UNAVAILABLE"
+    PRODUCT_UNAVAILABLE = "PRODUCT_UNAVAILABLE"
+    LIVE_DATA_AVAILABLE = "LIVE_DATA_AVAILABLE"
+    PANCHAYAT_BOUNDARIES_NOT_CONFIGURED = "PANCHAYAT_BOUNDARIES_NOT_CONFIGURED"
+
+
+class ObservationFreshnessTier(str, Enum):
+    """Operational latency classification for observations."""
+    FRESH = "FRESH"
+    AGING = "AGING"
+    STALE = "STALE"
+    UNAVAILABLE = "UNAVAILABLE"
+
+
 class SatelliteProvenance(BaseModel):
     """
     Complete audit trail and resolution provenance for a satellite observation.
@@ -156,6 +182,14 @@ class PanchayatSatelliteExtractionResult(BaseModel):
     observation_age_minutes: float = Field(..., description="Age of observation relative to current processing time")
     is_fresh: bool = Field(..., description="True if observation_age <= freshness_threshold_minutes")
     freshness_status: SatelliteObservationStatus = Field(..., description="Operational status: LIVE_DATA_AVAILABLE, LIVE_DATA_STALE, etc.")
+    freshness_tier: ObservationFreshnessTier = Field(
+        default=ObservationFreshnessTier.UNAVAILABLE,
+        description="Operational latency tier: FRESH, AGING, STALE, UNAVAILABLE"
+    )
+    resolution_diagnostic: SourceResolutionDiagnostic = Field(
+        default=SourceResolutionDiagnostic.SOURCE_RESOLUTION_UNKNOWN,
+        description="Informational comparison between native satellite resolution and Panchayat scale"
+    )
     
     # Provenance
     provenance: SatelliteProvenance = Field(..., description="Complete source, sensor, and resolution provenance")

@@ -50,13 +50,18 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
     try:
         from app.gis.boundary_registry import boundary_registry
         loaded = boundary_registry.load_from_configured_source()
-        if boundary_registry.count() == 0:
+        if boundary_registry.count() == 0 and settings.WEATHER_DATA_MODE.upper() != "LIVE":
             try:
                 from tests.fixtures.imaginary_panchayats_fixture import get_imaginary_panchayat_records
                 boundary_registry.register_all(get_imaginary_panchayat_records())
-                logger.info(f"Loaded {boundary_registry.count()} pilot/imaginary Panchayat boundaries.")
+                logger.info(f"Loaded {boundary_registry.count()} pilot/imaginary Panchayat boundaries in DEMO mode.")
             except Exception as e:
                 logger.warning(f"Could not load pilot boundaries: {e}")
+        elif boundary_registry.count() == 0 and settings.WEATHER_DATA_MODE.upper() == "LIVE":
+            logger.warning(
+                "OPERATIONAL SAFEGUARD: In LIVE mode with no authorized boundary file loaded. "
+                "Registry remains empty (PANCHAYAT_BOUNDARIES_NOT_CONFIGURED)."
+            )
     except Exception as exc:
         logger.warning(f"Could not load initial Panchayat boundaries: {exc}")
     yield

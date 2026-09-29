@@ -1,0 +1,13 @@
+{
+  "model_version": "production_baseline_v1.0.0",
+  "model_family": "deterministic_scalar_bias_correction",
+  "input_features": [
+    "coarse_forecast_temp_c"
+  ],
+  "bias_offset_celsius": 0.7351,
+  "uncertainty_p80_celsius": 1.9649,
+  "uncertainty_p95_celsius": 3.4649,
+  "status": "PRODUCTION_BASELINE_CERTIFIED",
+  "xgboost_research_pointer": "models/candidates/temperature_residual/phase21_candidate_20260917",
+  "production_ready": true
+}

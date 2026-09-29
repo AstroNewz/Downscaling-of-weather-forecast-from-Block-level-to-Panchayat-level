@@ -73,8 +73,8 @@ export const LocalizedPrecipitationOutlook: React.FC<LocalizedPrecipitationOutlo
           <div>
             <div className="font-bold flex items-center gap-2">
               <span>Localized Precipitation Outlook</span>
-              <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 font-mono border border-amber-200">
-                DATA UNAVAILABLE
+              <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-mono font-bold border border-amber-300">
+                LIVE • DATA UNAVAILABLE
               </span>
             </div>
             <p className="text-slate-600 text-[11px] mt-0.5">
@@ -157,6 +157,14 @@ export const LocalizedPrecipitationOutlook: React.FC<LocalizedPrecipitationOutlo
   const resolvedBlockName = nowcast.block_name || blockName || 'Block';
   const resolvedDistrictName = nowcast.district_name || districtName || 'District';
 
+  // Live vs Demo provenance detection (Section 13)
+  const isDemo =
+    nowcast.provenance?.data_mode === 'DEMO' ||
+    Boolean(nowcast.panchayat_id && nowcast.panchayat_id.toLowerCase().includes('dholakpur')) ||
+    Boolean(nowcast.provenance?.satellite_source && nowcast.provenance.satellite_source.toUpperCase().includes('SYNTHETIC')) ||
+    Boolean(nowcast.panchayat_name && nowcast.panchayat_name.toLowerCase().includes('dholakpur'));
+  const isLive = !isDemo;
+
   return (
     <div 
       className={`card-white p-5 border-slate-200 bg-white space-y-4 shadow-xs ${className}`}
@@ -169,6 +177,13 @@ export const LocalizedPrecipitationOutlook: React.FC<LocalizedPrecipitationOutlo
             <span className="flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-bold bg-blue-50 text-blue-800 border border-blue-200">
               <CloudRain className="w-3.5 h-3.5 text-blue-600" />
               LOCAL PRECIPITATION OUTLOOK
+            </span>
+            <span className={`px-2 py-0.5 rounded text-[10px] font-bold font-mono tracking-wide border ${
+              isLive
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-300'
+                : 'bg-amber-50 text-amber-700 border-amber-300'
+            }`}>
+              {isLive ? 'LIVE • SATELLITE OBSERVATION' : 'DEMO • CANONICAL PILOT DATA'}
             </span>
             <span className={`flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-semibold border ${confidenceMeta.className}`}>
               <span className={`w-1.5 h-1.5 rounded-full ${confidenceMeta.dot}`} />

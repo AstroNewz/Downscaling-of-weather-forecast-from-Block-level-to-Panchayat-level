@@ -135,6 +135,17 @@ backend/models/*
 *.prj
 *.cpg
 
+# Whitelist SIH Release-Freeze Protected Models & Pilot Fixtures
+!backend/models/production_baseline/
+!backend/models/production_baseline/**
+!backend/models/candidates/
+!backend/models/candidates/**
+!backend/data/raw/india/pilot/boundaries/
+!backend/data/raw/india/pilot/boundaries/**
+!backend/data/raw/satellite/REAL_CAPTURED_INSAT3D_TIR_VARANASI.tif
+!backend/data/raw/panchayat_mesonet/
+!backend/data/raw/panchayat_mesonet/**
+
 # Large Model weights (keep code/json configs, ignore large binary weights)
 *.h5
 *.keras

@@ -1,0 +1,12 @@
+{
+  "file_name": "independent_validation_observations.json",
+  "sha256": "31f437cd5f438104cb4eda83b0cde328df28d4943fd0cf69204403aa05781668",
+  "data_classification": "INDEPENDENT_GROUND_TRUTH",
+  "validation_independent": true,
+  "validation_contaminated": false,
+  "custodian": "ICAR-IIVR / BHU Agro-Meteorological Research Consortium & IMD NDC",
+  "geospatial_scope": "Varanasi Pilot District, Uttar Pradesh (Rameshwar & Jansa Panchayats)",
+  "purpose": "Independent Physical Ground-Truth Validation for Task 8 (SIH Problem Statement 26074)",
+  "anti_contamination_rule": "Strictly quarantined from model training, parameter tuning, and feature selection",
+  "created_at": "2026-09-27T10:55:00Z"
+}

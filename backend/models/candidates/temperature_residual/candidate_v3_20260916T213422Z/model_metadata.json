@@ -1,0 +1,182 @@
+{
+  "model_version": "candidate_v3_20260916T213422Z",
+  "model_type": "XGBRegressor",
+  "status": "CANDIDATE",
+  "production_model_modified": false,
+  "srtm_status": "ACQUIRED",
+  "srtm_source": "NASA SRTMGL1 v003 via AWS elevation-tiles-prod",
+  "srtm_tiles": {
+    "N25E082": "e4db6d8c1bc860cbd6a6cf0a1c6c2dfa823eaa88a700fff62bd72877d9a9cf33",
+    "N25E083": "77cd2d021919d848a994604d485f05375690c7931b08fd64c2200dd759b5df6a"
+  },
+  "srtm_resolution": "~30m (1 arc-second)",
+  "srtm_crs_geographic": "EPSG:4326",
+  "srtm_crs_metric": "EPSG:32644 (UTM Zone 44N)",
+  "srtm_classification": "REMOTE_SENSING",
+  "terrain_features": [
+    "obs_elevation_m",
+    "block_elevation_m",
+    "elevation_diff_m",
+    "slope_deg",
+    "aspect_deg",
+    "sin_aspect",
+    "cos_aspect",
+    "terrain_roughness",
+    "lapse_rate_temp_adjustment_c"
+  ],
+  "terrain_null_counts": {
+    "obs_elevation_m": 125,
+    "block_elevation_m": 0,
+    "elevation_diff_m": 125,
+    "slope_deg": 125,
+    "aspect_deg": 125,
+    "sin_aspect": 125,
+    "cos_aspect": 125,
+    "terrain_roughness": 125,
+    "lapse_rate_temp_adjustment_c": 125
+  },
+  "terrain_note": "NOAA_ISD_424750 (Allahabad, lon 81.734) outside tile N25E082; terrain NULL for that station",
+  "feature_columns": [
+    "forecast_temp_min",
+    "forecast_temp_max",
+    "forecast_temp_mean",
+    "forecast_rainfall_mm",
+    "forecast_humidity_pct",
+    "forecast_wind_speed_mps",
+    "forecast_wind_direction_deg",
+    "forecast_cloud_cover_pct",
+    "forecast_lead_hours",
+    "time_diff_minutes",
+    "era5_roll_3h_mean",
+    "era5_roll_6h_mean",
+    "era5_roll_12h_mean",
+    "era5_roll_24h_mean",
+    "era5_diurnal_range_24h",
+    "hour_of_day",
+    "sin_hour",
+    "cos_hour",
+    "day_of_year",
+    "sin_day_of_year",
+    "cos_day_of_year",
+    "month",
+    "sin_month",
+    "cos_month",
+    "obs_latitude",
+    "obs_longitude",
+    "obs_elevation_m",
+    "block_elevation_m",
+    "elevation_diff_m",
+    "slope_deg",
+    "aspect_deg",
+    "sin_aspect",
+    "cos_aspect",
+    "terrain_roughness",
+    "lapse_rate_temp_adjustment_c",
+    "cropland_fraction",
+    "forest_fraction",
+    "urban_fraction",
+    "water_fraction",
+    "barren_fraction"
+  ],
+  "feature_count": 40,
+  "previous_feature_count": 40,
+  "features_added": [],
+  "hyperparameters": {
+    "n_estimators": 300,
+    "max_depth": 3,
+    "learning_rate": 0.03,
+    "subsample": 0.7,
+    "colsample_bytree": 0.7,
+    "reg_alpha": 0.1,
+    "reg_lambda": 2.0,
+    "min_child_weight": 5
+  },
+  "leakage_audit": {
+    "target_leakage": "PASS",
+    "temporal_leakage_train_val": "PASS",
+    "temporal_leakage_val_test": "PASS",
+    "spatial_holdout_independence": "PASS",
+    "terrain_data_classification": "REMOTE_SENSING (not OBSERVATION)",
+    "era5_rolling_source": "REANALYSIS only"
+  },
+  "dataset": {
+    "total_rows": 2635,
+    "train_rows": 1249,
+    "val_rows": 421,
+    "test_rows": 833,
+    "holdout_rows": 132
+  },
+  "metrics": {
+    "baseline_zero_residual": {
+      "train": {
+        "n": 1249,
+        "MAE_C": 1.2999,
+        "RMSE_C": 1.6664,
+        "R2": -0.0372,
+        "bias_C": -0.3156
+      },
+      "validation": {
+        "n": 421,
+        "MAE_C": 0.8466,
+        "RMSE_C": 1.0633,
+        "R2": -0.0022,
+        "bias_C": 0.0499
+      },
+      "test": {
+        "n": 833,
+        "MAE_C": 1.0155,
+        "RMSE_C": 1.3531,
+        "R2": -0.0108,
+        "bias_C": 0.1401
+      }
+    },
+    "candidate_v3": {
+      "train": {
+        "n": 1249,
+        "MAE_C": 0.7237,
+        "RMSE_C": 0.971,
+        "R2": 0.6478,
+        "bias_C": -0.0002
+      },
+      "validation": {
+        "n": 421,
+        "MAE_C": 0.8943,
+        "RMSE_C": 1.1826,
+        "R2": -0.2399,
+        "bias_C": -0.4826
+      },
+      "test": {
+        "n": 833,
+        "MAE_C": 1.0768,
+        "RMSE_C": 1.4043,
+        "R2": -0.0888,
+        "bias_C": -0.1145
+      },
+      "spatial_holdout": {
+        "n": 132,
+        "MAE_C": 1.2147,
+        "RMSE_C": 1.6439,
+        "R2": 0.1369,
+        "bias_C": -0.1307
+      }
+    }
+  },
+  "improvement_vs_baseline": {
+    "MAE_delta": 0.0613,
+    "RMSE_delta": 0.0512,
+    "R2_delta": -0.078,
+    "improved": false
+  },
+  "physical_sanity": {
+    "residual_min": -3.351,
+    "residual_max": 3.287,
+    "residual_mean": -0.017,
+    "residual_std": 0.885,
+    "downscaled_min": 25.7,
+    "downscaled_max": 46.6,
+    "physical_plausibility": "PASS"
+  },
+  "scientific_conclusion": "V3 DOES NOT OUTPERFORM BASELINE. Terrain adds spatial structure but dataset remains limited by single-area station coverage (all 3 training stations within 30km of each other, Gangetic plain \u2014 very low elevation relief 57-82m). Lapse-rate corrections are sub-1\u00b0C (near-flat terrain) and do not provide sufficient discriminative signal for the model to outperform ERA5 directly.",
+  "historical_v1": "candidate_v1_20260916T210904Z \u2014 single station, no terrain, test MAE=1.234\u00b0C",
+  "historical_v2": "candidate_v2_20260916T212349Z \u2014 multi-station, rolling ERA5, no terrain, test MAE=1.077\u00b0C"
+}

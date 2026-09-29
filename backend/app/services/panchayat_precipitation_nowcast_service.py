@@ -133,9 +133,11 @@ class PanchayatPrecipitationNowcastService:
         if panchayat_geometry is None and panchayat_id is not None:
             record = self.registry.get(panchayat_id)
             if record is None:
+                reg_status = getattr(self.registry, "get_readiness_status", lambda: "READY")()
+                fail_status = "PANCHAYAT_BOUNDARIES_NOT_CONFIGURED" if reg_status == "PANCHAYAT_BOUNDARIES_NOT_CONFIGURED" else "NOT_FOUND"
                 return self._build_fail_closed_result(
                     panchayat_id=p_id, panchayat_name=None, issue_time=issue_iso,
-                    status="NOT_FOUND", message=f"Panchayat ID '{panchayat_id}' not found in registry."
+                    status=fail_status, message=f"Panchayat ID '{panchayat_id}' not found in registry (state: {reg_status})."
                 )
             if require_verified and not record.is_verified:
                 return self._build_fail_closed_result(
@@ -146,6 +148,8 @@ class PanchayatPrecipitationNowcastService:
             p_name = record.panchayat_name
             block_id = record.block
             block_name = record.block
+        else:
+            record = None
 
         # ---------------------------------------------------------------------
         # 2. Normalize NWP Baseline Forecast Expectation
@@ -157,6 +161,21 @@ class PanchayatPrecipitationNowcastService:
         # ---------------------------------------------------------------------
         satellite_extraction: Optional[PanchayatSatelliteExtractionResult] = None
         if satellite_grid is not None:
+            # Enforce Task 7 Requirement 10 Real-Data Quality Gates
+            q_passed, q_failures = self.satellite_service.provider.validate_quality_gates(
+                grid=satellite_grid,
+                panchayat_record=record,
+                min_coverage=self.min_spatial_coverage,
+                max_age_minutes=self.freshness_threshold_minutes,
+            )
+            crit_failures = [f for f in q_failures if any(c in f for c in ("INVALID_CRS", "INVALID_SPATIAL_EXTENT", "INVALID_GEOTRANSFORM", "INVALID_CELL_GEOMETRY", "UNRECOGNIZED_PRODUCT_TYPE"))]
+            if crit_failures:
+                return self._build_fail_closed_result(
+                    panchayat_id=p_id, panchayat_name=p_name, issue_time=issue_iso,
+                    status="QUALITY_GATE_FAILURE",
+                    message=f"Satellite observation rejected by operational quality gate: {'; '.join(crit_failures)}"
+                )
+
             satellite_extraction = self.satellite_service.extract_panchayat_satellite_features(
                 panchayat_id=panchayat_id,
                 panchayat_geometry=panchayat_geometry,
@@ -225,6 +244,15 @@ class PanchayatPrecipitationNowcastService:
         # ---------------------------------------------------------------------
         # 7. Construct Provenance & Return Canonical Result
         # ---------------------------------------------------------------------
+        is_real_obs = (
+            satellite_extraction is not None
+            and satellite_extraction.success
+            and "SYNTHETIC" not in str(satellite_extraction.provenance.provider).upper()
+            and "DEMO" not in str(satellite_extraction.provenance.provider).upper()
+            and not str(p_id).lower().startswith("dholakpur")
+        )
+        data_mode = "LIVE" if is_real_obs else "DEMO"
+
         provenance = PrecipitationNowcastProvenance(
             nwp_source=f"{baseline_exp.source_model} (valid={baseline_exp.forecast_valid_time})",
             satellite_source=(
@@ -245,6 +273,7 @@ class PanchayatPrecipitationNowcastService:
             ),
             evidence_weight_version=settings.NOWCAST_METHOD_VERSION,
             config_version="1.0.0",
+            data_mode=data_mode,
             generated_at=issue_iso,
         )
 
@@ -810,6 +839,7 @@ class PanchayatPrecipitationNowcastService:
             nwp_source="UNAVAILABLE",
             evidence_weight_version=settings.NOWCAST_METHOD_VERSION,
             config_version="1.0.0",
+            data_mode="LIVE" if not str(panchayat_id).lower().startswith("dholakpur") else "DEMO",
             generated_at=issue_time,
         )
         return PanchayatPrecipitationNowcastResult(

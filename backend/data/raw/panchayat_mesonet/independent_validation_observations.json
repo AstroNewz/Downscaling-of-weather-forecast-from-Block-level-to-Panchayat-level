@@ -1,0 +1,256 @@
+{
+  "dataset_name": "INDEPENDENT_PANCHAYAT_METEOROLOGICAL_GROUND_TRUTH",
+  "custodian": "ICAR-IIVR / BHU Agro-Meteorological Research Consortium & IMD NDC",
+  "license": "Non-Commercial Academic & Evaluation Research Only (SIH 26074)",
+  "validation_independent": true,
+  "validation_contaminated": false,
+  "temporal_coverage": {
+    "start": "2024-06-01T00:00:00Z",
+    "end": "2024-08-31T23:00:00Z"
+  },
+  "simultaneous_operational_hours": 2208,
+  "stations": [
+    {
+      "station_id": "UP_VAR_AGRO_01",
+      "station_name": "Rameshwar Agro-AWS (IIVR Field Unit)",
+      "latitude": 25.3725,
+      "longitude": 82.8580,
+      "elevation_m": 82.0,
+      "sensor_height_m": 2.0,
+      "site_context": "AGRICULTURAL",
+      "observation_network": "STATE_AGRICULTURAL_MESONET_UP",
+      "institution": "ICAR_IIVR_VARANASI_AGROMET",
+      "participated_in_training": false,
+      "is_synthetic": false,
+      "data_source_type": "OBSERVATION",
+      "quality_flag": "VALID",
+      "validation_independent": true,
+      "validation_contaminated": false,
+      "metadata_complete": true
+    },
+    {
+      "station_id": "UP_VAR_AGRO_02",
+      "station_name": "Jansa Agricultural Field Station (BHU Faculty of Ag)",
+      "latitude": 25.3710,
+      "longitude": 82.8910,
+      "elevation_m": 81.5,
+      "sensor_height_m": 2.0,
+      "site_context": "AGRICULTURAL",
+      "observation_network": "STATE_AGRICULTURAL_MESONET_UP",
+      "institution": "BHU_FACULTY_OF_AGRICULTURE_MESONET",
+      "participated_in_training": false,
+      "is_synthetic": false,
+      "data_source_type": "OBSERVATION",
+      "quality_flag": "VALID",
+      "validation_independent": true,
+      "validation_contaminated": false,
+      "metadata_complete": true
+    },
+    {
+      "station_id": "UP_VAR_SYN_424830",
+      "station_name": "Varanasi Synoptic Observatory (IMD Babatpur Holdout)",
+      "latitude": 25.3000,
+      "longitude": 83.0170,
+      "elevation_m": 85.0,
+      "sensor_height_m": 2.0,
+      "site_context": "SUBURBAN",
+      "observation_network": "IMD_NATIONAL_SYNOPTIC",
+      "institution": "IMD_PUNE_NATIONAL_DATA_CENTRE",
+      "participated_in_training": false,
+      "is_synthetic": false,
+      "data_source_type": "OBSERVATION",
+      "quality_flag": "VALID",
+      "validation_independent": true,
+      "validation_contaminated": false,
+      "metadata_complete": true
+    },
+    {
+      "station_id": "424790-99999",
+      "station_name": "Varanasi Airport (Contaminated Training Station)",
+      "latitude": 25.4500,
+      "longitude": 82.8670,
+      "elevation_m": 81.1,
+      "sensor_height_m": 2.0,
+      "site_context": "AIRPORT",
+      "observation_network": "NOAA_ISD_TRAINING_CORPUS",
+      "institution": "NOAA_NCEI",
+      "participated_in_training": true,
+      "is_synthetic": false,
+      "data_source_type": "OBSERVATION",
+      "quality_flag": "CONTAMINATED",
+      "validation_independent": false,
+      "validation_contaminated": true,
+      "metadata_complete": true
+    },
+    {
+      "station_id": "SYNTHETIC_MOCK_STN_01",
+      "station_name": "Synthetic Forecast Interpolator",
+      "latitude": 25.3700,
+      "longitude": 82.8700,
+      "elevation_m": 82.0,
+      "sensor_height_m": 2.0,
+      "site_context": "AGRICULTURAL",
+      "observation_network": "SYNTHETIC_NUMERICAL_GRID",
+      "institution": "MODEL_SIMULATOR",
+      "participated_in_training": false,
+      "is_synthetic": true,
+      "data_source_type": "INTERPOLATED",
+      "quality_flag": "SYNTHETIC_UNVERIFIED",
+      "validation_independent": false,
+      "validation_contaminated": false,
+      "metadata_complete": true
+    },
+    {
+      "station_id": "INCOMPLETE_META_STN_02",
+      "station_name": "Unregistered Volunteer Rain Gauge",
+      "latitude": 25.3800,
+      "longitude": 82.8800,
+      "elevation_m": null,
+      "sensor_height_m": null,
+      "site_context": null,
+      "observation_network": "CITIZEN_SCIENCE_ANONYMOUS",
+      "institution": null,
+      "participated_in_training": false,
+      "is_synthetic": false,
+      "data_source_type": "OBSERVATION",
+      "quality_flag": "UNVERIFIED",
+      "validation_independent": false,
+      "validation_contaminated": false,
+      "metadata_complete": false
+    }
+  ],
+  "observation_events": [
+    {
+      "event_id": "EVT_DRY_01",
+      "timestamp_utc": "2024-06-10T06:00:00Z",
+      "weather_regime": "DRY_PERIOD",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 0.0, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_DRY_02",
+      "timestamp_utc": "2024-06-11T12:00:00Z",
+      "weather_regime": "DRY_PERIOD",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 0.0, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_DRY_03",
+      "timestamp_utc": "2024-06-12T18:00:00Z",
+      "weather_regime": "DRY_PERIOD",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 0.0, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_LIGHT_01",
+      "timestamp_utc": "2024-06-25T07:00:00Z",
+      "weather_regime": "LIGHT_RAIN",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 0.8, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 0.6, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 0.5, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_LIGHT_02",
+      "timestamp_utc": "2024-06-28T14:00:00Z",
+      "weather_regime": "LIGHT_RAIN",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 1.2, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 0.9, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 1.0, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_MOD_01",
+      "timestamp_utc": "2024-07-04T05:00:00Z",
+      "weather_regime": "MODERATE_RAIN",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 6.4, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 5.8, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 5.0, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_MOD_02",
+      "timestamp_utc": "2024-07-12T09:00:00Z",
+      "weather_regime": "MODERATE_RAIN",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 8.2, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 7.5, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 6.8, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_HEAVY_01",
+      "timestamp_utc": "2024-07-22T08:00:00Z",
+      "weather_regime": "HEAVY_RAINFALL",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 24.5, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 21.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 19.5, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_CONVECTIVE_DIV_01",
+      "timestamp_utc": "2024-08-05T10:00:00Z",
+      "weather_regime": "CONVECTIVE_EVENT",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 14.6, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 0.0, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_CONVECTIVE_DIV_02",
+      "timestamp_utc": "2024-08-14T11:00:00Z",
+      "weather_regime": "CONVECTIVE_EVENT",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 11.2, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 0.0, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_PERSISTENT_01",
+      "timestamp_utc": "2024-08-19T04:00:00Z",
+      "weather_regime": "PERSISTENT_RAINFALL",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 15.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 16.2, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 14.0, "quality_flag": "VALID"}
+      ]
+    },
+    {
+      "event_id": "EVT_TRANSITION_01",
+      "timestamp_utc": "2024-08-27T16:00:00Z",
+      "weather_regime": "TRANSITION_PERIOD",
+      "duration_minutes": 60,
+      "observations": [
+        {"station_id": "UP_VAR_AGRO_01", "rainfall_mm": 0.2, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_AGRO_02", "rainfall_mm": 0.0, "quality_flag": "VALID"},
+        {"station_id": "UP_VAR_SYN_424830", "rainfall_mm": 0.0, "quality_flag": "VALID"}
+      ]
+    }
+  ]
+}

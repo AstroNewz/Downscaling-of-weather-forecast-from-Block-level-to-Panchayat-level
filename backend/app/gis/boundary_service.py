@@ -107,6 +107,7 @@ class PanchayatBoundaryService:
         lon: float,
         tolerance_deg: Optional[float] = None,
         require_verified: bool = False,
+        require_configured: bool = False,
     ) -> BoundaryResolutionResponse:
         """
         Resolves (lat, lon) coordinates to an exact Gram Panchayat polygon.
@@ -116,6 +117,7 @@ class PanchayatBoundaryService:
             lon: Longitude in decimal degrees (EPSG:4326)
             tolerance_deg: Numerical boundary ambiguity tolerance in degrees (default 1e-5 ~ 1.1m)
             require_verified: If True, fails closed if the matched polygon is unverified
+            require_configured: If True, returns PANCHAYAT_BOUNDARIES_NOT_CONFIGURED if registry is empty
         """
         # 1. Coordinate Validation
         is_valid, f_lat, f_lon, err_msg = self.validate_coordinates(lat, lon)
@@ -138,6 +140,13 @@ class PanchayatBoundaryService:
         # 2. Check Registry Population
         self._sync_spatial_index()
         if self._strtree is None or not self._tree_panchayat_ids:
+            if require_configured:
+                return BoundaryResolutionResponse(
+                    status=BoundaryResolutionStatus.PANCHAYAT_BOUNDARIES_NOT_CONFIGURED,
+                    boundary_status=PointLocationStatus.OUTSIDE_POLYGON,
+                    message="Official Panchayat boundaries not configured in registry. Ingestion required.",
+                    success=False,
+                )
             return BoundaryResolutionResponse(
                 status=BoundaryResolutionStatus.OUTSIDE_REGISTERED_PANCHAYATS,
                 boundary_status=PointLocationStatus.OUTSIDE_POLYGON,
@@ -313,6 +322,13 @@ class PanchayatBoundaryService:
         if res.status == BoundaryResolutionStatus.RESOLVED:
             return res.panchayat_id
         return None
+
+    def get_readiness_status(self) -> str:
+        """
+        Returns machine-readable readiness state of boundary service (Task 7 Requirement 2):
+        'READY' or 'PANCHAYAT_BOUNDARIES_NOT_CONFIGURED'.
+        """
+        return self.registry.get_readiness_status()
 
 
 # Global singleton service instance

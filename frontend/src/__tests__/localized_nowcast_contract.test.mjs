@@ -149,4 +149,39 @@ describe('Task 6: Frontend Localized Nowcast Integration & Presentation Contract
     const disclosure = 'Display grid is finer than source resolution; visualization does not imply finer meteorological observations.';
     assert.ok(disclosure.includes('finer than source resolution'));
   });
+
+  test('9. Badges distinguish LIVE vs DEMO vs UNAVAILABLE states faithfully', () => {
+    const resolveBadge = (nowcast) => {
+      if (!nowcast || !nowcast.success) {
+        return 'LIVE • DATA UNAVAILABLE';
+      }
+      const isDemo =
+        nowcast.provenance?.data_mode === 'DEMO' ||
+        Boolean(nowcast.panchayat_id && nowcast.panchayat_id.toLowerCase().includes('dholakpur')) ||
+        Boolean(nowcast.provenance?.satellite_source && nowcast.provenance.satellite_source.toUpperCase().includes('SYNTHETIC')) ||
+        Boolean(nowcast.panchayat_name && nowcast.panchayat_name.toLowerCase().includes('dholakpur'));
+      return isDemo ? 'DEMO • CANONICAL PILOT DATA' : 'LIVE • SATELLITE OBSERVATION';
+    };
+
+    assert.strictEqual(resolveBadge(null), 'LIVE • DATA UNAVAILABLE');
+    assert.strictEqual(resolveBadge({ success: false }), 'LIVE • DATA UNAVAILABLE');
+    assert.strictEqual(
+      resolveBadge({
+        success: true,
+        panchayat_id: 'dholakpur_panchayat_a',
+        provenance: { satellite_source: 'SYNTHETIC_INSAT3D' },
+      }),
+      'DEMO • CANONICAL PILOT DATA'
+    );
+    assert.strictEqual(
+      resolveBadge({
+        success: true,
+        panchayat_id: 'UP_VAR_LGD_100801',
+        panchayat_name: 'Rameshwar Gram Panchayat',
+        provenance: { data_mode: 'LIVE', satellite_source: 'MOSDAC_INSAT3D_TIR' },
+      }),
+      'LIVE • SATELLITE OBSERVATION'
+    );
+  });
 });
+

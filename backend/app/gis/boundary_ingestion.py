@@ -191,6 +191,9 @@ class PanchayatBoundaryIngestor:
             if file_checksum:
                 aux_props["_source_sha256"] = file_checksum
 
+            feature_verified = bool(properties["is_verified"]) if "is_verified" in properties else is_verified
+            feature_status = str(properties["geometry_status"]) if "geometry_status" in properties else geometry_status
+
             record = PanchayatBoundaryRecord(
                 panchayat_id=panchayat_id,
                 lgd_code=lgd_code,
@@ -202,10 +205,10 @@ class PanchayatBoundaryIngestor:
                 centroid_lat=centroid_lat,
                 centroid_lon=centroid_lon,
                 area_sq_km=area_sqkm,
-                geometry_source=source_name,
-                geometry_version=source_version,
-                geometry_status=geometry_status,
-                is_verified=is_verified,
+                geometry_source=properties.get("geometry_source", source_name),
+                geometry_version=properties.get("geometry_version", source_version),
+                geometry_status=feature_status,
+                is_verified=feature_verified,
                 ingestion_timestamp=ingest_ts,
                 properties=aux_props,
             )

@@ -1,0 +1,64 @@
+{
+  "manifest_version": "1.0.0",
+  "freeze_timestamp": "2026-09-27T17:00:00Z",
+  "governance_status": "RELEASE_FROZEN",
+  "scientific_readiness": "LIMITED_VALIDATION",
+  "protected_artifacts": [
+    {
+      "file": "backend/models/production_baseline/baseline_calibration.json",
+      "sha256": "dad1b693277a3be98b90bc49f1a4fda5ee7d509cce3164a2e5798bfd78457650",
+      "purpose": "Certified Scalar Baseline Calibration (+0.7351\u00b0C)",
+      "bytes": 1237,
+      "protected": true
+    },
+    {
+      "file": "backend/models/candidates/temperature_residual/dynamic_temperature_residual_v2/xgboost_model.json",
+      "sha256": "d75aeb2ac895666fd981ee7ead29da36f8279215f6279331d0dca084ceadb294",
+      "purpose": "Dynamic Residual V2 Model Weights",
+      "bytes": 1050239,
+      "protected": true
+    },
+    {
+      "file": "backend/models/candidates/temperature_residual/dynamic_temperature_residual_v2/metadata.json",
+      "sha256": "193212a33f44fa20f60e250e9a24ad16bccc8ed1b71837f4c5502215249e1bdb",
+      "purpose": "Dynamic Residual V2 Feature & Normalization Schema",
+      "bytes": 10462,
+      "protected": true
+    },
+    {
+      "file": "backend/data/raw/india/pilot/boundaries/authorized_panchayats.geojson",
+      "sha256": "2711d412cc80e3086dd9110a608284e4c6eebc2ee652984bedd5769895f0ca71",
+      "purpose": "Authoritative LGD Gram Panchayat Pilot Boundary Polygons",
+      "bytes": 2184,
+      "protected": true
+    },
+    {
+      "file": "backend/data/raw/satellite/REAL_CAPTURED_INSAT3D_TIR_VARANASI.tif",
+      "sha256": "a81ca52e2f07edd002027b9bcc123fc3c77c38dab70852338b0e0354af8afb59",
+      "purpose": "Authorized Real Captured INSAT-3DR TIR Satellite Raster",
+      "bytes": 484,
+      "protected": true
+    },
+    {
+      "file": "reports/FINAL_FORENSIC_AUDIT.json",
+      "sha256": "72a01a726f8f68f0cd94d88cadf49a1448c464ffafc164c764da911b674e5da1",
+      "purpose": "Task 9 Forensic Scientific Audit Machine Registry",
+      "bytes": 19066,
+      "protected": true
+    },
+    {
+      "file": "reports/PANCHAYAT_PRECIPITATION_VALIDATION_REPORT.json",
+      "sha256": "5e617ed8371e0f1edcb9d0e72c5f8740c3a9c38c6b558ccbf85d12f7350a3257",
+      "purpose": "Task 8 Independent Panchayat Validation Results Report",
+      "bytes": 24532,
+      "protected": true
+    },
+    {
+      "file": "backend/data/raw/panchayat_mesonet/independent_validation_observations.json",
+      "sha256": "31f437cd5f438104cb4eda83b0cde328df28d4943fd0cf69204403aa05781668",
+      "purpose": "Independent Real-Station Panchayat Precipitation Validation Observations (ICAR-IIVR / BHU)",
+      "bytes": 9816,
+      "protected": true
+    }
+  ]
+}
