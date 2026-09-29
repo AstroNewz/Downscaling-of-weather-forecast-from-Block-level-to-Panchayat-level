@@ -182,7 +182,18 @@ As presented on **Slide 6** of our official [SIH Presentation](SIH2026-IDEA-Pres
 | **05. Future Scope** | National Mesonet ingestion (KSNDMC/Mahavedh), Doppler radar mosaics, deep learning PINOs, and WhatsApp delivery. | [**Explore Scope**](docs/RESEARCH_AND_REFERENCES.md#5-future-scope--scalability) |
 | **Comprehensive Report** | Complete 39-page LaTeX engineering project report with mathematical formulations and figures. | [**Download 39-Page PDF**](AgroMet_SIH26074_Comprehensive_Project_Report.pdf) |
 
-> 💡 *Note: The presentation PDF [`SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf`](SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf) has interactive hyperlinks embedded directly on Slide 6 and Slide 1.*
+> 💡 *Note: The official presentation PDF [`SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf`](SIH2026-IDEA-Presentation-Format.pptx_20260929_133126_0000.pdf) has interactive hyperlinks embedded across all slides (Slide 1 Title/Logos, Slide 2 Video/Prototype/Report buttons, and Slide 6 Research & Reference cards).*
+
+---
+
+## 🎥 Demo Video & Prototype Walkthrough
+
+> **Interactive Video & System Walkthrough**:
+> - **Video Walkthrough & Pitch**: Comprehensive architectural and feature walkthrough covering the 7-stage downscaling pipeline, live GIS polygon masking, and farmer advisory generation:
+>   - **[Watch Presentation & Demo Video](https://github.com/AstroNewz/Downscaling-of-weather-forecast-from-Block-level-to-Panchayat-level#readme)** *(Direct submission video link)*
+> - **Interactive Web Prototype**: Launch the live React 18 dashboard locally with `npm run dev` in `frontend/` or explore the API docs at `http://localhost:8000/docs`.
+> - **39-Page LaTeX Project Report**: [Download Comprehensive Engineering Report (PDF)](AgroMet_SIH26074_Comprehensive_Project_Report.pdf)
+
 
 ---
 
